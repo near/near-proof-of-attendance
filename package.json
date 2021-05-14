@@ -1,7 +1,7 @@
 {
   "name": "proof-of-attendance",
   "version": "0.0.1",
-  "license": "UNLICENSED",
+  "license": "",
   "scripts": {
     "build": "npm run build:contract && npm run build:web",
     "build:contract": "node contract/compile.js",

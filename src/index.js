@@ -9,6 +9,7 @@ const { networkId } = getConfig(process.env.NODE_ENV || 'development')
 let currentGreeting
 
 const submitButton = document.querySelector('form button')
+const initButton = document.querySelector('#init')
 
 document.querySelector('form').onsubmit = async (event) => {
   event.preventDefault()
@@ -52,6 +53,55 @@ document.querySelector('form').onsubmit = async (event) => {
     document.querySelector('[data-behavior=notification]').style.display = 'none'
   }, 11000)
 }
+
+// this should be dynamic and extracted from a UI inputs/form.
+const set_nft_metadata = {
+  spec: "SPEC IS WORKING",
+  name: "SomeName",
+  symbol: "SomeSymbol",
+  icon: "SomeIcon",
+  base_uri: "SomeBase_uri",
+  reference: "SomeReference",
+  reference_hash: "SomeReference_hash"
+}
+
+// User should be able to deploy contract with corresponding NFT Metadata and call the init function. Init function should only be able to call once & only once upon deployment.
+// This function should be call in order for us to set NFT Metadata upon deployment.
+async function init(event) {
+  event.preventDefault();
+  try {
+    const initParams = {
+      owner_id: "johnq.testnet",
+      nft_metadata: set_nft_metadata,
+    }
+    const init = await window.contract.init(initParams)
+    const { getNFTMetadataByKey } = await window.contract
+    // This getter should actually come from one function call where to it return all values of UnorderedMap or AVLTree. 
+    // Using AVLTree.values() & UnorderedMap.values() was giving me an error, so for now it is return each key value.
+    const spec = await getNFTMetadataByKey({key: "spec"})
+    const name = await getNFTMetadataByKey({key: "name"})
+    const symbol = await getNFTMetadataByKey({key: "symbol"})
+    const icon = await getNFTMetadataByKey({key: "icon"})
+    const base_uri = await getNFTMetadataByKey({key: "base_uri"})
+    const reference = await getNFTMetadataByKey({key: "reference"})
+    const reference_hash = await getNFTMetadataByKey({key: "reference_hash"})
+    const nft_metadata = {
+      spec,
+      name,
+      symbol,
+      icon,
+      base_uri,
+      reference,
+      reference_hash,
+    }
+    console.log("nft_metadata", nft_metadata)
+  } catch (e) {
+    console.log('catch e', e);
+  }
+}
+
+initButton.addEventListener("click", init);
+
 
 document.querySelector('input#greeting').oninput = (event) => {
   if (event.target.value !== currentGreeting) {

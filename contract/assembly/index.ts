@@ -1,13 +1,18 @@
-import { Context, logging, storage } from "near-sdk-as";
+import { 
+  Context, 
+  logging, 
+  storage,
+  PersistentMap,
+} from "near-sdk-as";
 
 import {
-  TokensPerOwner,
-  TokensById,
-  TokenMetadataById,
-  OwnerId,
-  ExtraStorageInBytesPerToken,
-  Metadata,
-
+  // TokensPerOwner,
+  // TokensById,
+  // TokenMetadataById,
+  // OwnerId,
+  // ExtraStorageInBytesPerToken,
+  // Metadata,
+  NFTMetadata,
 } from './model';
 
 import {
@@ -15,37 +20,36 @@ import {
   TokenId,
   Token,
   TokenMetadata,
-  NFTMetadata,
   Promise,
   JsonToken,
   HashMap,
 
 } from "./types";
 
-const DEFAULT_MESSAGE = "Hello";
-
-export function getGreeting(accountId: string): string | null {
-  return storage.get<string>(accountId, DEFAULT_MESSAGE);
-}
-
-export function setGreeting(message: string): void {
-  const account_id = Context.sender
-  // Use logging.log to record logs permanently to the blockchain!
-  const messageLog = 'Saving greeting "' + message + '" for account "' + account_id + '"'
-  logging.log(messageLog);
-  storage.set(account_id, message);
-}
-
+let metadata = new PersistentMap<string, string>("metadata");
 // This function should be called after contract gets deployed. In rust NEAR/core-contracts/nft-simple/src/lib.rs this function is called "new". 
-export function init(owner_id: AccountId, metadata: NFTMetadata | null): void {
-  // Should have same logic as 
+export function init(owner_id: AccountId, nft_metadata: NFTMetadata): void {
+  metadata.set("spec", nft_metadata.spec);
+  metadata.set("name", nft_metadata.name);
+  metadata.set("symbol", nft_metadata.symbol);
+  metadata.set("icon", nft_metadata.icon);
+  metadata.set("base_uri", nft_metadata.base_uri);
+  metadata.set("reference", nft_metadata.reference);
+  metadata.set("reference_hash", nft_metadata.reference_hash);
+}
+
+export function getNFTMetadataByKey(key: string): string | null {
+  const logKey = 'getNFTMetadataByKey: ' + key;
+  logging.log(logKey);
+  return metadata.get(key);
 }
 
 // Internal functions extracted from "NEAR/core-contracts/nft-simple/src/internal.rs"
 export function internal_add_token_to_owner(account_id: AccountId, token_id: TokenId): string | null {
-  TokensPerOwner.set(account_id, token_id);
-  const value = TokensPerOwner.get(account_id);
-  return value;
+  // TokensPerOwner.set(account_id, token_id);
+  // const value = TokensPerOwner.get(account_id);
+  // return value;
+  return ""
 }
 
 export function internal_remove_token_from_owner(account_id: AccountId, token_id: TokenId): void {
@@ -102,4 +106,18 @@ export function nft_resolve_transfer(owner_id: AccountId, receiver_id: AccountId
 // TODO: create nft_on_revoke event accourding to NEAR/core-contracts/nft-simple/src/nft_core.rs
 export function nft_on_revoke(): void {
 
+}
+
+const DEFAULT_MESSAGE = "Hello";
+
+export function getGreeting(accountId: string): string | null {
+  return storage.get<string>(accountId, DEFAULT_MESSAGE);
+}
+
+export function setGreeting(message: string): void {
+  const account_id = Context.sender
+  // Use logging.log to record logs permanently to the blockchain!
+  const messageLog = 'Saving greeting "' + message + '" for account "' + account_id + '"'
+  logging.log(messageLog);
+  storage.set(account_id, message);
 }

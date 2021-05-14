@@ -38,16 +38,6 @@ export interface JsonToken {
    approved_account_ids: HashMap;
 }
 
-export interface NFTMetadata {
-   spec: string; // required, essentially a version like "nft-1.0.0"
-   name: string; // required, ex. "Mosaics"
-   symbol: string; // required, ex. "MOSIAC"
-   icon: string; // Data URL
-   base_uri: string; // Centralized gateway known to have reliable access to decentralized storage assets referenced by `reference` or `media` URLs
-   reference: string; // URL to a JSON file with more info
-   reference_hash: anyref | null; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
-}
-
 export interface Storage {
   TokensPerOwner: PersistentMap;
   TokensById: PersistentMap;

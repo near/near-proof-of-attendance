@@ -1,7 +1,8 @@
 EventCred | Proof of Attendance | Standard NEP171
 ==================
 
-This app was initialized with [create-near-app]
+This [React] app was initialized with [create-near-app]
+
 
 Quick Start
 ===========
@@ -91,6 +92,7 @@ Troubleshooting
 On Windows, if you're seeing an error containing `EPERM` it may be related to spaces in your path. Please see [this issue](https://github.com/zkat/npx/issues/209) for more details.
 
 
+  [React]: https://reactjs.org/
   [create-near-app]: https://github.com/near/create-near-app
   [Node.js]: https://nodejs.org/en/download/package-manager/
   [jest]: https://jestjs.io/

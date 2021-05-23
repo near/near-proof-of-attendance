@@ -11,6 +11,10 @@ import {
   HashMap,
 } from "./types"
 
+import {
+  Metadata,
+} from "./model"
+
 const DEFAULT_MESSAGE = "Hello AFTER CREATION OF NEP171 Class";
 
 @nearBindgen
@@ -23,10 +27,27 @@ export class NEP171 implements NFTCore {
   private constructor() { }
 
   public static getInstance(): NEP171 {
-      if (!NEP171.instance) {
-          NEP171.instance = new NEP171();
-      }
-      return NEP171.instance;
+    if (!NEP171.instance) {
+      NEP171.instance = new NEP171();
+    }
+    return NEP171.instance;
+  }
+  
+  public init(owner_id: AccountId, nft_metadata: NFTMetadata): void {
+    // metadata.set("spec", nft_metadata.spec);
+    // metadata.set("name", nft_metadata.name);
+    // metadata.set("symbol", nft_metadata.symbol);
+    // metadata.set("icon", nft_metadata.icon);
+    // metadata.set("base_uri", nft_metadata.base_uri);
+    // metadata.set("reference", nft_metadata.reference);
+    // metadata.set("reference_hash", nft_metadata.reference_hash);
+    Metadata.set("spec", nft_metadata.spec);
+    Metadata.set("name", nft_metadata.name);
+    Metadata.set("symbol", nft_metadata.symbol);
+    Metadata.set("icon", nft_metadata.icon);
+    Metadata.set("base_uri", nft_metadata.base_uri);
+    Metadata.set("reference", nft_metadata.reference);
+    Metadata.set("reference_hash", nft_metadata.reference_hash);
   }
 
   // Changes Methods
@@ -65,10 +86,6 @@ export class NEP171 implements NFTCore {
     logging.log(`nft_token(${token_id})`);
   };
 
-  public nft_resolve_transfer(owner_id: string, receiver_id: string, token_id: string, approved_account_ids: HashMap | null): boolean {
-
-  }
-
   public nft_metadata(): NEP171Metadata {
 
   }
@@ -98,16 +115,14 @@ export class NEP171 implements NFTCore {
 
   public nft_on_approve(token_id: TokenId, owner_id: string, approval_id: number, msg: string): void {}
   
-  public nft_resolve_transfer(owner_id: AccountId, receiver_id: AccountId, approved_account_ids: HashMap, token_id: TokenId): void {
-    
-  } 
+  public nft_resolve_transfer(owner_id: AccountId, receiver_id: AccountId, approved_account_ids: HashMap | null, token_id: TokenId): boolean {
+
+  }
   
   // TODO: create nft_on_revoke event accourding to NEAR/core-contracts/nft-simple/src/nft_core.rs
   public nft_on_revoke(): void {
 
   }
-  
-    // TODO: create nft_on_revoke event
   
   // Private/Internal Methods
   private internal_add_token_to_owner(account_id: AccountId, token_id: TokenId): void {

@@ -4,53 +4,42 @@ import { storage, Context } from "near-sdk-as";
 import {
   setGreeting,
   init,
-  internal_add_token_to_owner,
 } from "..";
 
 import {
-  TokensPerOwner,
+  // TokensPerOwner,
   // TokensById,
   // TokenMetadataById,
   // OwnerId,
   // ExtraStorageInBytesPerToken,
   // Metadata,
-
+  NFTMetadata,
 } from '../model';
- // import {
- //   log,
- //
- // } from "../utils"
 
-// Utils should be in a different folder/file. from "../utils";
+// Need to make this exported from another file ```import { console } from "../utils"
 declare namespace console {
-  @external("console", "log")
-  export function log(): void;
-}
+   @external("console", "log")
+   export function log(): void;
+ }
 
+const OwnerId: string = "johnq.testnet";
 
 describe("Hello NEP171", () => {
     beforeEach(() => {
-      init("", null)
-      log("init('someArgs')");
+      // log("consoleLog......");
+      
     });
     it("should be set and read", () => {
-        setGreeting("hello world");
-        const greeting = storage.get<string>(Context.sender);
-        expect(greeting).toBe("hello world");
-        log("it works 1");
+      log("hello world");
+      setGreeting("hello world");
+      const greeting = storage.get<string>(Context.sender);
+      expect(greeting).toBe("hello world")
     });
 
-    it("should set TokensPerOwner", () => {
-      // Where do we find tokenId?
-      const dummyAccountId = "johnq.testnet";
-      const dummyTokenId = "tokenId?";
-      internal_add_token_to_owner(dummyAccountId, "tokenId?");
-      const value = TokensPerOwner.get(dummyAccountId);
-      expect(value).toBe(dummyTokenId);
-      log("it works 2");
-        log("it works 2");
-        TokensPerOwner.set("key", "{ value: 'someValue'}");
-        const key = TokensPerOwner.get("key");
-        expect(key).toBe("{ value: 'someValue'}");
+    it("should init contract", () => {
+      log("should init contract loggg");
+      const metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", "NFTRefHash");
+      init(OwnerId, metadata);
+      expect(metadata.spec).toBe("NFTSpec");
     });
 });

@@ -7,6 +7,19 @@ beforeAll(async function () {
     changeMethods: [],
     sender: window.accountId
   })
+
+  window.walletConnection = {
+    requestSignIn() {
+    },
+    signOut() {
+    },
+    isSignedIn() {
+      return true
+    },
+    getAccountId() {
+      return window.accountId
+    }
+  }
 })
 
 test('getGreeting', async () => {

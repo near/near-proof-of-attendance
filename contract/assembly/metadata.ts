@@ -1,22 +1,3 @@
-import {
-  PersistentMap,
-  PersistentUnorderedMap,
-  PersistentSet,
-  PersistentVector,
-} from "near-sdk-as";
-
-import {
-  AccountId,
-  TokenId,
-  HashMap,
-  UnorderedSet,
-  TokenMetadata,
-  Token,
-  Storage,
-  AccountId,
-
-} from "./types"
-
 @nearBindgen
 export class NFTMetadata {
    spec: string; // required, essentially a version like "nft-1.0.0"
@@ -51,27 +32,20 @@ export class TokenMetadata {
    extra: string; // anything extra the NFT wants to store on-chain. Can be stringified JSON.
    reference: string; // URL to an off-chain JSON file with more info.
    reference_hash: u64; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
-   
+   constructor(
+     title: string, description: string, media: string,  media_hash: string, copies: u64, issued_at: string, 
+     expires_at: string, starts_at: string, updated_at: string, extra: string, reference: string, reference_hash: u64) {
+     this.title = title;
+     this.description = description;
+     this.media = media;
+     this.media_hash = media_hash;
+     this.copies = copies;
+     this.issued_at = issued_at;
+     this.expires_at = expires_at;
+     this.starts_at = starts_at;
+     this.updated_at = updated_at;
+     this.extra = extra;
+     this.reference = reference;
+     this.reference_hash = reference_hash;
+   }
 }
-
-@nearBindgen
-export class Token {
-  owner_id: string;
-  approved_account_ids: anyref[];
-  next_approval_id: i64;
-}
-
-// In theory this is already instanciated once we deploy our contracts.
-// Storage
-export const TokensPerOwner = new PersistentMap<AccountId, string>("tokens_per_owner");
-// export const TokensById = new PersistentVector<TokenId>("tokens_by_id");
-export const TokensById = new PersistentMap<TokenId, string>("tokens_by_id");
-// export const TokenMetadataById = new PersistentUnorderedMap<TokenId, TokenMetadata>("token_metadata_by_id");
-export const TokenMetadataById = new PersistentMap<TokenId, TokenMetadata>("token_metadata_by_id");
-
-// hardcoded ownerId but this should be set upon deployment.
-export const OwnerId:string = "johnq.testnet";
-
-export const ExtraStorageInBytesPerToken:u64 = 0;
-// This string is gonna be a serialized object
-export const Metadata = new PersistentMap<string, string>("metadata");

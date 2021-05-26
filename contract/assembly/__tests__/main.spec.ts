@@ -4,7 +4,7 @@ import { storage, Context } from "near-sdk-as";
 import {
   setGreeting,
   init,
-} from "..";
+} from "../old";
 
 import {
   // TokensPerOwner,
@@ -14,7 +14,7 @@ import {
   // ExtraStorageInBytesPerToken,
   // Metadata,
   NFTMetadata,
-} from '../model';
+} from '../old/model';
 
 // Need to make this exported from another file ```import { console } from "../utils"
 declare namespace console {
@@ -26,8 +26,7 @@ const OwnerId: string = "johnq.testnet";
 
 describe("Hello NEP171", () => {
     beforeEach(() => {
-      // log("consoleLog......");
-      
+
     });
     it("should be set and read", () => {
       log("hello world");

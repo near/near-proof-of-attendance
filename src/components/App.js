@@ -28,10 +28,10 @@ export default function App() {
     if (window.walletConnection.isSignedIn()) {
       
       // window.contract is set by initContract in index.js
-      window.contract.getGreeting({ accountId: window.accountId })
-        .then(greetingFromContract => {
-          setGreeting(greetingFromContract)
-        })
+      // window.contract.getGreeting({ accountId: window.accountId })
+      //   .then(greetingFromContract => {
+      //     setGreeting(greetingFromContract)
+      //   })
     }
   }
 
@@ -90,7 +90,22 @@ export default function App() {
   }
   const onInit = async (event) => {
     event.preventDefault();
-    console.log("init")
+    try {
+      const metadata = {
+        
+      }
+      await window.contract.init({
+        owner_id: "johnq",
+        metadata,
+      })
+    } catch (e) {
+      alert(
+        'Something went wrong! ' +
+        'Maybe you need to sign out and back in? ' +
+        'Check your browser console for more info.'
+      )
+      throw e
+    }
   }
   
   if (!window.walletConnection.isSignedIn()) {

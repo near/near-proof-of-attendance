@@ -1,7 +1,7 @@
 // This file is called index.ts but it really mimics "NEAR/core-contracts/nft-simple/src/lib.rs"
 import {
   PersistentMap,
-
+  logging,
 } from "near-sdk-as";
 
 import {
@@ -39,8 +39,6 @@ import {
   StorageUsage,
 } from "./types";
 
-// pub use crate::nft_core::*;
-// pub use crate::token::*;
 
 // Extracted from NEAR/core-contracts/nft-simple/src/lib.rs
 enum StorageKey {
@@ -51,13 +49,19 @@ enum StorageKey {
   NftMetadata,
 }
 
+
+
+// Storage one letter key Mappings
+// "o" --> tokens_per_owner
+// "i" --> tokens_by_id
+// "m" --> token_metadata_by_id
+
 // Storage Variables
+export const TokensPerOwner = new PersistentMap<AccountId, UnorderedSet>("o");
 
-export const TokensPerOwner = new PersistentMap<AccountId, UnorderedSet>("tokens_per_owner");
+export const TokensById = new PersistentMap<TokenId, string>("i");
 
-export const TokensById = new PersistentMap<TokenId, string>("tokens_by_id");
-
-export const TokenMetadataById = new PersistentMap<TokenId, TokenMetadata>("token_metadata_by_id");
+export const TokenMetadataById = new PersistentMap<TokenId, TokenMetadata>("m");
 
 // hardcoded for now ownerId but this should be set upon deployment.
 export const OwnerId: AccountId = "johnq.testnet";
@@ -70,6 +74,7 @@ export const Metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTS
 // in "NEAR/core-contracts/nft-simple/src/lib.rs" this function is called "pub fn new(owner_id: ValidAccountId, metadata: NFTMetadata) and it returns this/self"
 // We need to rename it to "init" because "new" is a keyword in AssemblyScript.
 export function init(owner_id: AccountId, metadata: NFTMetadata): void {
+  logging.log("I WORK!!!!!");
   // let mut this = Self {
   //     tokens_per_owner: LookupMap::new(StorageKey::TokensPerOwner.try_to_vec().unwrap()),
   //     tokens_by_id: LookupMap::new(StorageKey::TokensById.try_to_vec().unwrap()),
@@ -85,11 +90,13 @@ export function init(owner_id: AccountId, metadata: NFTMetadata): void {
   // };
   // 
   // this.measure_min_token_storage_cost();
+  measure_min_token_storage_cost();
   // 
   // this
 }
 
 export function measure_min_token_storage_cost(): void {
+  logging.log("measure_min_token_storage_cost is called");
   //     let initial_storage_usage = env::storage_usage();
   //     let tmp_account_id = "a".repeat(64);
   //     let u = UnorderedSet::new(

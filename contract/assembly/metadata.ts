@@ -1,3 +1,13 @@
+import { PersistentMap, PersistentUnorderedMap } from "near-sdk-as";
+import {
+  TokenId
+} from "./types"
+// Storage one letter key Mappings
+// "m" --> token_metadata_by_id
+
+// Storage
+export const TokenMetadataById = new PersistentUnorderedMap<TokenId, TokenMetadata>("m");
+
 @nearBindgen
 export class NFTMetadata {
    spec: string; // required, essentially a version like "nft-1.0.0"

@@ -1,11 +1,17 @@
 import {
+  Context
+} from "near-sdk-as"
+import {
   TokensById,
-  TokenMetadataById,
+  OwnerId,
+  // TokenMetadataById,
   ExtraStorageInBytesPerToken,
 } from "./index";
 
 import {
   TokenMetadata,
+  TokenMetadataById,
+
 } from "./metadata";
 
 import {
@@ -26,23 +32,17 @@ import {
 } from "./types";
 
 export function nft_mint(token_id: TokenId, metadata: TokenMetadata): void {
-  // let initial_storage_usage = env::storage_usage();
-  // self.assert_owner();
-  // let token = Token {
-  //     owner_id: self.owner_id.clone(),
-  //     approved_account_ids: Default::default(),
-  //     next_approval_id: 0,
-  // };
-  // assert!(
-  //     self.tokens_by_id.insert(&token_id, &token).is_none(),
-  //     "Token already exists"
-  // );
-  // self.token_metadata_by_id.insert(&token_id, &metadata);
-  // self.internal_add_token_to_owner(&token.owner_id, &token_id);
-  // 
-  // let new_token_size_in_bytes = env::storage_usage() - initial_storage_usage;
-  // let required_storage_in_bytes =
-  //     self.extra_storage_in_bytes_per_token + new_token_size_in_bytes;
-  // 
-  // refund_deposit(required_storage_in_bytes);
+  const initial_storage_usage = Context.storageUsage;
+  assert_owner();
+  const token: Token = new Token(OwnerId, [], 0);
+  assert(
+      TokensById.get(token_id, null) !== null,
+      "Token already exists"
+  );
+  TokenMetadataById.set(token_id, metadata);
+  internal_add_token_to_owner(token.owner_id, token_id);
+  
+  const new_token_size_in_bytes = Context.storageUsage - initial_storage_usage;
+  const required_storage_in_bytes = ExtraStorageInBytesPerToken + new_token_size_in_bytes;
+  refund_deposit(required_storage_in_bytes);
 }

@@ -15,6 +15,7 @@
     "prestart": "npm run build:contract:debug && npm run dev:deploy:contract",
     "start": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
     "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
+    "dev:contract": "nodemon --watch contract -e ts",
     "test": "npm run build:contract:debug && cd contract && npm run test && cd .. && jest test --runInBand",
     "test:contract": "cd contract && yarn test"
   },

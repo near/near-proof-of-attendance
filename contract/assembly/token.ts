@@ -10,15 +10,18 @@ import {
 
 @nearBindgen
 export class Token {
-  owner_id: string;
-  approved_account_ids: anyref[];
-  next_approval_id: i64;
+  constructor(
+    owner_id: string,
+    approved_account_ids: Map<AccountId, u64>,
+    next_approval_id: i64) {}
 }
 
 @nearBindgen
 export class JsonToken {
-  token_id: TokenId;
-  owner_id: string;
-  metadata: TokenMetadata;
-  approved_account_id: Map<AccountId, u64>;
+  constructor(
+    token_id: TokenId,
+    owner_id: string,
+    metadata: TokenMetadata,
+    approved_account_id: Map<AccountId, u64>
+  ) {}
 }

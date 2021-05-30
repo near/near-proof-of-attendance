@@ -37,11 +37,6 @@ import {
   consoleLog
 } from "./utils"
 
-// declare namespace console {
-//    @external("console", "log")
-//    export function log(): void;
-//  }
-
 // renaming this to internal for now. But should find a way to make this specific function public. In theory this function should be called "nft_mint";
 export function internal_nft_mint(token_id: TokenId, metadata: TokenMetadata): void {
   consoleLog("internal_nft_mint");
@@ -90,7 +85,7 @@ export function internal_nft_mint(token_id: TokenId, metadata: TokenMetadata): v
   consoleLog(Context.storageUsage.toString());
   const required_storage_in_bytes = ExtraStorageInBytesPerToken + new_token_size_in_bytes;
   // This is not working because attachedDeposit is "2" and it needs to be increased so it can be more than the required_cost.
-  // refund_deposit(required_storage_in_bytes);
+  refund_deposit(required_storage_in_bytes);
   logging.log("after refund_deposit()");
   logging.log("I WORK!");
 }

@@ -12,11 +12,9 @@ import {
 
 } from "../metadata";
 
-// Need to make this exported from another file ```import { console } from "../utils"
-// declare namespace console {
-//    @external("console", "log")
-//    export function log(): void;
-//  }
+import {
+  consoleLog
+} from "../utils";
 
 // const OwnerId: string = "johnq.testnet";
 // In Test suite by default Context.predecessor is "carol". So lets make OwnerId the same as predecessor

@@ -31,11 +31,6 @@ import {
 // Storage one letter key Mappings
 // "t" --> token_set
 
-// declare namespace console {
-//    @external("console", "log")
-//    export function log(): void;
-//  }
-
 const STORAGE_PRICE_PER_BYTE: Balance = u128.from(10_000_000_000_000_000_000);
 
 // Internal functions extracted from "NEAR/core-contracts/nft-simple/src/internal.rs"

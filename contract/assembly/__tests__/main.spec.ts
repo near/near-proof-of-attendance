@@ -1,9 +1,10 @@
 
-import { storage, Context } from "near-sdk-as";
+import { storage, Context, VMContext, u128 } from "near-sdk-as";
 
 import {
   init,
   nft_mint,
+  nft_transfer,
 } from "../index";
 
 import {
@@ -41,12 +42,16 @@ describe("Hello NEP171", () => {
     });
     
     it("should mint nft token metadata", () => {
+      // Set more attachedDeposit
+      const attachedDeposit = u128.from(990000);
+      VMContext.setAttached_deposit(attachedDeposit);
       // Where and What should these hashes be?
       const media_hash = 123123;
       const copies = 10
       const reference_hash = 232323;
+      const token_id = "SomeTokenId";
       const token_metadata: TokenMetadata = new TokenMetadata(
-        "SOMETokenID", "SomeNFTTitle", "https://i.imgur.com/ardmpqm.png", media_hash, 
+        "SomeNFTTitleasdasdasd", "SomeDescription", "https://i.imgur.com/ardmpqm.png", media_hash, 
         copies, "05/28/2021", "05/28/2031", "05/28/2021", 
         "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
       );
@@ -56,6 +61,16 @@ describe("Hello NEP171", () => {
       // log(Context.predecessor);
       // log("Context.sender");
       // log(Context.sender);
-      nft_mint(OwnerId, token_metadata);
+      nft_mint(OwnerId, token_id, token_metadata);
+    });
+    
+    it("should transfer nft token", () => {
+      const attachedDeposit = u128.from(1);
+      VMContext.setAttached_deposit(attachedDeposit);
+      const receiver_id = "johnq.testnet";
+      const token_id = "SomeTokenId";
+      const approval_id = 0;
+      const memo = "SomeMemo";
+      nft_transfer(receiver_id, token_id, approval_id, memo);
     })
 });

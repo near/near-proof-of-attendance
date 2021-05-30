@@ -60,14 +60,16 @@ export function internal_remove_token_from_owner(account_id: AccountId, token_id
 
 export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): Token  {
   const token = TokensById.getSome(token_id);
+  consoleLog("token");
+  consoleLog(token.approved_account_ids.toString());
   if(sender_id !== token.owner_id && !token.approved_account_ids.has(sender_id)) {
     throw "Unauthorized";
   }
   const enforce_approval_id = approval_id;
   let actual_approval_id: u64;
   if(enforce_approval_id) {
-    actual_approval_id = token.approved_account_ids.getSome(sender_id);
-    const error_message: string = "The actual approval_id" + " " + actual_approval_id + " " + "is different from the given approval_id" + " " + approval_id;
+    actual_approval_id = token.approved_account_ids.get(sender_id);
+    const error_message: string = "The actual approval_id" + " " + actual_approval_id.toString() + " " + "is different from the given approval_id" + " " + approval_id.toString();
     assert(actual_approval_id === enforce_approval_id, error_message);
   }
   assert(token.owner_id !== receiver_id, "The token owner and the receiver should be diffrent");
@@ -77,11 +79,7 @@ export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, 
   internal_remove_token_from_owner(token.owner_id, token_id);
   internal_add_token_to_owner(receiver_id, token_id);
   
-  const new_token: Token = {
-    owner_id: receiver_id,
-    approved_account_ids: token.approved_account_ids, // Default::default()
-    next_approval_id: token.next_approval_id,
-  };
+  const new_token: Token = new Token(receiver_id, token.approved_account_ids, token.next_approval_id);
   
   TokensById.set(token_id, new_token);
   if(memo) {
@@ -94,18 +92,18 @@ export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, 
 export function refund_deposit(storage_used: u64): void {
   const required_cost = u128.from(u128.from(Context.storageUsage) * u128.from(storage_used))
   const attached_deposit = Context.attachedDeposit;
-  consoleLog("required_cost");
-  consoleLog(required_cost.toString())
-  consoleLog("attached_deposit");
-  consoleLog(attached_deposit.toString());
+  // consoleLog("required_cost");
+  // consoleLog(required_cost.toString())
+  // consoleLog("attached_deposit");
+  // consoleLog(attached_deposit.toString());
   assert(required_cost <= attached_deposit, "Must attach" + " " + required_cost.toString() + "yoctoNEAR to cover storage");
   const refund = u128.from(attached_deposit - required_cost)
   const recipient = Context.predecessor;
   if(refund > u128.from(1)) {
-    consoleLog("refund > u128.from(1)")
+    // consoleLog("refund > u128.from(1)")
     const promise = ContractPromiseBatch.create(recipient).transfer(refund);
   } else {
-    consoleLog("else refund > u128.from(1)")
+    // consoleLog("else refund > u128.from(1)")
   }
 }
 
@@ -168,7 +166,7 @@ export function assert_owner(owner_id: AccountId): void {
 }
 
 export function assert_one_yocto(): void {
-  assert(Context.attachedDeposit === 1, "Requires attached deposit of exactly 1 yoctoNEAR")
+  assert(Context.attachedDeposit === u128.from(1), "Requires attached deposit of exactly 1 yoctoNEAR")
 }
 
 export function assert_at_least_one_yocto(): void {

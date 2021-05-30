@@ -16,6 +16,10 @@ import {
 } from "./mint";
 
 import {
+  internal_nft_transfer,
+} from "./nft_core";
+
+import {
   Token,
 } from "./token";
 
@@ -66,6 +70,10 @@ export function init(owner_id: AccountId, metadata: NFTMetadata): void {
 }
 
 // Is not building all my functions of my contracts, so for now I placed this function inside index.ts.TODO: need to figure out a way to build all .ts files inside contract/ folder.
-export function nft_mint(token_id: TokenId, metadata: TokenMetadata): void {
-  internal_nft_mint(token_id, metadata);
+export function nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
+  internal_nft_mint(owner_id, token_id, metadata);
+}
+
+export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {
+  internal_nft_transfer(receiver_id, token_id, approval_id, memo);
 }

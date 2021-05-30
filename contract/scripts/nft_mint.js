@@ -29,7 +29,7 @@ const debug = process.argv.pop() === '--debug'
 //   ? 'npm run build:debug'
 //   : 'npm run build'
 
-const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '{ "token_id": "SOENTTOKEN2", "metadata": { "title": "SomeNFTTitle", "description": "SomeNFTDesci", "media": "https://i.imgur.com/ardmpqm.png",  "media_hash": "what is media_hash?", "copies": "3", "issued_at": "05/28/2021", "expires_at": "05/28/2031", "starts_at": "05/28/2021", "updated_at": "what is updated_at?", "extra": "SomeNFTExtra", "reference": "SomeNFTReference", "reference_hash": "SomeNFTReferenceHash" } }' --accountId=johnq.testnet`
+const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '{ owner_id: "johnq.testnet", "token_id": "SOENTTOKEN2", "metadata": { "title": "SomeNFTTitle", "description": "SomeNFTDesci", "media": "https://i.imgur.com/ardmpqm.png",  "media_hash": "what is media_hash?", "copies": "3", "issued_at": "05/28/2021", "expires_at": "05/28/2031", "starts_at": "05/28/2021", "updated_at": "what is updated_at?", "extra": "SomeNFTExtra", "reference": "SomeNFTReference", "reference_hash": "SomeNFTReferenceHash" } }' --accountId=johnq.testnet`
 
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(nft_mint_command)

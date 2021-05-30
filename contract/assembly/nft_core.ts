@@ -39,10 +39,11 @@ export const GAS_FOR_RESOLVE_TRANSFER: Gas = 10_000_000_000_000;
 export const GAS_FOR_NFT_TRANSFER_CALL: Gas = 25_000_000_000_000 + GAS_FOR_RESOLVE_TRANSFER;
 export const NO_DEPOSIT: Balance = u128.from(0);
 
-// Pending functions to translate nft_transfer_call, nft_on_transfer, nft_resolve_transfer, nft_revoke_all, nft_revoke, nft_on_revoke, nft_approve, nft_on_approve.
+// Pending functions to translate nft_transfer_call, nft_on_transfer, nft_resolve_transfer, 
+// Approval standard methods:nft_revoke_all, nft_revoke, nft_on_revoke, nft_approve, nft_on_approve.
 
 // NonFungibleTokenCore functions extracted from nft-simple rust 
-export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {
+export function internal_nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {
   assert_one_yocto();
   const sender_id = Context.predecessor;
   const previous_token = internal_transfer(sender_id, receiver_id, token_id, approval_id, memo);

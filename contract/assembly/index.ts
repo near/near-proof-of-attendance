@@ -2,35 +2,21 @@
 import {
   PersistentMap,
   logging,
-  storage
+  storage,
+  PersistentSet,
 } from "near-sdk-as";
-
-import {
-  internal_add_token_to_owner,
-  internal_remove_token_from_owner,
-  internal_transfer,
-} from "./internal";
 
 import {
   NFTMetadata,
   TokenMetadata,
-  TokenMetadataById
 } from "./metadata";
 
 import {
-  nft_mint,
+  internal_nft_mint,
 } from "./mint";
 
 import {
-  GAS_FOR_NFT_APPROVE,
-  GAS_FOR_RESOLVE_TRANSFER,
-  GAS_FOR_NFT_TRANSFER_CALL,
-  NO_DEPOSIT,
-} from "./nft_core";
-
-import {
   Token,
-  JsonToken,
 } from "./token";
 
 import {
@@ -42,7 +28,7 @@ import {
 } from "./types";
 
 
-// Extracted from NEAR/core-contracts/nft-simple/src/lib.rs
+// Extracted from NEAR/core-contracts/nft-simple/src/lib.rs. Not used for now.
 enum StorageKey {
   TokensPerOwner,
   TokenPerOwnerInner, // what is this in AssemblyScript? { account_id_hash: CryptoHash },
@@ -58,24 +44,28 @@ enum StorageKey {
 // "m" --> token_metadata_by_id
 
 // Storage Variables
-export const TokensPerOwner = new PersistentMap<AccountId, UnorderedSet>("o");
-
+export const TokensPerOwner = new PersistentMap<AccountId, PersistentSet<string> | null>("o");
 export const TokensById = new PersistentMap<TokenId, Token>("i");
-
-// export const TokenMetadataById = new PersistentMap<TokenId, TokenMetadata>("m");
 
 // hardcoded for now ownerId but this should be set upon deployment.
 export const OwnerId: AccountId = "johnq.testnet";
+// For Testing suite use "carol";
+// export const OwnerId: AccountId = "carol";
 
 export const ExtraStorageInBytesPerToken: StorageUsage = 0;
-// This string is gonna be a serialized object
-// export const Metadata = new PersistentMap<string, string>("metadata");
-export const Metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NF÷TName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", "NFTRefHash");
+// export const Metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NF÷TName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", 123123123);
 
 // in "NEAR/core-contracts/nft-simple/src/lib.rs" this function is called "pub fn new(owner_id: ValidAccountId, metadata: NFTMetadata) and it returns this/self"
 // We need to rename it to "init" because "new" is a keyword in AssemblyScript.
 export function init(owner_id: AccountId, metadata: NFTMetadata): void {
   logging.log("I WORK!!!!!");
+  logging.log("OwnerID:" + " " + OwnerId);
+  logging.log("owner_id:" + " " + owner_id);
   const Metadata: NFTMetadata = new NFTMetadata(metadata.spec, metadata.name, metadata.symbol, metadata.icon, metadata.base_uri, metadata.reference, metadata.reference_hash);
   storage.set("n", Metadata);
+}
+
+// Is not building all my functions of my contracts, so for now I placed this function inside index.ts.TODO: need to figure out a way to build all .ts files inside contract/ folder.
+export function nft_mint(token_id: TokenId, metadata: TokenMetadata): void {
+  internal_nft_mint(token_id, metadata);
 }

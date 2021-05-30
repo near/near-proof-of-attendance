@@ -2,7 +2,7 @@ import {
   Context,
   PersistentSet,
   u128,
-  ContractPromise,
+  ContractPromiseBatch,
   logging,
 
 } from "near-sdk-as";
@@ -21,20 +21,34 @@ import {
   AccountId, 
   TokenId,
   Promise,
-  Balance
+  Balance,
+  UnorderedSet
 } from "./types";
+
+import {
+  consoleLog
+} from "./utils"
 // Storage one letter key Mappings
 // "t" --> token_set
+
+// declare namespace console {
+//    @external("console", "log")
+//    export function log(): void;
+//  }
 
 const STORAGE_PRICE_PER_BYTE: Balance = u128.from(10_000_000_000_000_000_000);
 
 // Internal functions extracted from "NEAR/core-contracts/nft-simple/src/internal.rs"
 export function internal_add_token_to_owner(account_id: AccountId, token_id: TokenId): void {
-  let token_set: anyref;
-  if(TokensPerOwner.getSome(account_id)){
-    token_set = TokensPerOwner.getSome(account_id);
-  } else {
-    token_set = new PersistentSet("t");
+  let token_set: PersistentSet<string> | null;
+  if(TokensPerOwner.get(account_id)){
+    consoleLog("TokensPerOwner.get(account_id)")
+    token_set = TokensPerOwner.get(account_id);
+  } 
+  else {
+    logging.log("else TokensPerOwner.get(account_id)")
+    consoleLog("else TokensPerOwner.get(account_id)")
+    token_set = new PersistentSet<string>("t");
     token_set.add(token_id);
   }
   TokensPerOwner.set(account_id, token_set);
@@ -83,13 +97,20 @@ export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, 
 }
 
 export function refund_deposit(storage_used: u64): void {
-  const required_cost = u128.from(Context.storageUsage) * u128.from(storage_used);
+  const required_cost = u128.from(u128.from(Context.storageUsage) * u128.from(storage_used))
   const attached_deposit = Context.attachedDeposit;
-  assert(required_cost <= attached_deposit, "Must attach" + " " + required_cost + "yoctoNEAR to cover storage");
-  const refund = attached_deposit - required_cost;
+  consoleLog("required_cost");
+  consoleLog(required_cost.toString())
+  consoleLog("attached_deposit");
+  consoleLog(attached_deposit.toString());
+  assert(required_cost <= attached_deposit, "Must attach" + " " + required_cost.toString() + "yoctoNEAR to cover storage");
+  const refund = u128.from(attached_deposit - required_cost)
   const recipient = Context.predecessor;
-  if(refund > 1) {
-    const promise =  ContractPromiseBatch.create(recipient).transfer(refund);
+  if(refund > u128.from(1)) {
+    consoleLog("refund > u128.from(1)")
+    const promise = ContractPromiseBatch.create(recipient).transfer(refund);
+  } else {
+    consoleLog("else refund > u128.from(1)")
   }
 }
 
@@ -135,7 +156,20 @@ export function refund_approved_account_ids(account_id: AccountId, approved_acco
 }
 
 export function assert_owner(owner_id: AccountId): void {
-  assert(owner_id === Context.predecessor, "Owner's method");
+  logging.log("owner_id");
+  logging.log(owner_id);
+  logging.log("Context.predecessor");
+  logging.log(Context.predecessor);
+  logging.log("Context.sender");
+  logging.log(Context.sender);
+  consoleLog("INSIDE assert_owner()");
+  consoleLog("owner_id");
+  consoleLog(owner_id);
+  consoleLog("Context.predecessor");
+  consoleLog(Context.predecessor);
+  consoleLog("Context.sender");
+  consoleLog(Context.sender);
+  assert(owner_id == Context.predecessor, "Owner's method");
 }
 
 export function assert_one_yocto(): void {

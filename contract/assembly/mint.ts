@@ -50,7 +50,7 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   // consoleLog(Context.storageUsage.toString());
   assert_owner(owner_id);
   logging.log("after assert_owner()")
-  const emptyMap = new Map<AccountId, u64>()
+  const emptyMap = new Map<AccountId, i32>()
   const token: Token = new Token(OwnerId, emptyMap, 0);
   const token_by_id = TokensById.get(token_id, null)
   // logging.log("1 token_by_id");

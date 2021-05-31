@@ -66,11 +66,11 @@ describe("Hello NEP171", () => {
     
     it("should transfer nft token", () => {
       const attachedDeposit = u128.from(1);
-      VMContext.setAttached_deposit(attachedDeposit);
       const receiver_id = "johnq.testnet";
       const token_id = "SomeTokenId";
       const approval_id = 0;
       const memo = "SomeMemo";
+      VMContext.setAttached_deposit(attachedDeposit);
       nft_transfer(receiver_id, token_id, approval_id, memo);
     })
 });

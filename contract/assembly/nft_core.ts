@@ -2,6 +2,8 @@ import {
   u128,
   Context,
   storage,
+  logging,
+  PersistentUnorderedMap,
 } from "near-sdk-as";
 
 import {
@@ -9,6 +11,7 @@ import {
 } from "./index";
 
 import {
+  TokenMetadata,
   TokenMetadataById
 } from "./metadata";
 
@@ -24,6 +27,7 @@ import {
 
 import {
   JsonToken,
+  Token
 } from "./token";
 
 import { 
@@ -31,7 +35,7 @@ import {
   AccountId,
   Balance,
   TokenId,
-  
+  HashMap,
 } from "./types";
 
 export const GAS_FOR_NFT_APPROVE: Gas = 10_000_000_000_000;
@@ -46,7 +50,8 @@ export const NO_DEPOSIT: Balance = u128.from(0);
 export function internal_nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {
   assert_one_yocto();
   const sender_id = Context.predecessor;
-  const previous_token = internal_transfer(sender_id, receiver_id, token_id, approval_id, memo);
+  const previous_token: Token = internal_transfer(sender_id, receiver_id, token_id, approval_id, memo)
+  internal_transfer(sender_id, receiver_id, token_id, approval_id, memo)
   // let sender_id = env::predecessor_account_id();
   // let previous_token = self.internal_transfer(
   //     &sender_id,
@@ -69,15 +74,13 @@ export function nft_total_supply(): i32 {
 }
 
 // should return JsonToken.
-export function nft_token(token_id: TokenId): JsonToken {
-  const token = TokensById.get(token_id);
-  if(token) {
-    const metadata = TokenMetadataById(token_id);
-    const json_token = new JsonToken(token_id, token.owner_id, metadata, token.approved_account_ids);
-    return json_token;
-  } else {
-    return ""
-  }
+export function nft_token(token_id: TokenId): JsonToken | null {
+  const token: Token | null = TokensById.get(token_id);
+  // if(token) {
+    const metadata: TokenMetadata | null = TokenMetadataById.get(token_id, null);
+    // const json_token = new JsonToken(token_id, token.owner_id, metadata, token.approved_account_ids);
+    // return json_token;
+  // } 
   // if let Some(token) = self.tokens_by_id.get(&token_id) {
   //   let metadata = self.token_metadata_by_id.get(&token_id).unwrap();
   //   Some(JsonToken {
@@ -89,6 +92,7 @@ export function nft_token(token_id: TokenId): JsonToken {
   // } else {
   //     None
   // }
+  return null;
 }
 
 // Pending Functions below 

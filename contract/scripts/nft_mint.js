@@ -12,9 +12,9 @@
 const sh = require('shelljs')
 const path = require('path')
 const fs = require('fs');
-// const utils = require('./utils');
+const utils = require('./utils');
 
-// const { writeFileSync } = utils
+const { writeFileSync } = utils
 
 // Figure out which directory the user called this script from, which we'll use
 // later to set up the symlink.
@@ -32,9 +32,6 @@ const debug = process.argv.pop() === '--debug'
 // const buildCmd = debug
 //   ? 'npm run build:debug'
 //   : 'npm run build'
-const writeFileSync = (filename, write) => {
-  fs.writeFileSync(filename, write, console.log("file has been created"));
-}
 
 let random_token_id = Math.random().toString(36).substring(7) + ".token_id";
 let fileObject= {};

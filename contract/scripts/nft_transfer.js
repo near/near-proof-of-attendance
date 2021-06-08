@@ -11,7 +11,7 @@
 // macOS, and Unix systems) on Windows as well.
 const sh = require('shelljs')
 const path = require('path')
-const fs = require('fs');
+const random_token_id = require("./random-token-id.json");
 
 // Figure out which directory the user called this script from, which we'll use
 // later to set up the symlink.
@@ -29,19 +29,14 @@ const debug = process.argv.pop() === '--debug'
 // const buildCmd = debug
 //   ? 'npm run build:debug'
 //   : 'npm run build'
-const writeFileSync = (filename, write) => {
-  fs.writeFileSync(filename, write, console.log("file has been created"));
-}
 
-let random_token_id = Math.random().toString(36).substring(7) + ".token_id";
-let fileObject= {}
-fileObject["token_id"] = random_token_id;
-fileObject = JSON.stringify(fileObject);
-writeFileSync("./random-token-id.json", fileObject);
+// this changes everytime we call nft_mint be sure to change after calling command nft_mint
+// const token_id = "hf4k0m.token_id";
+const token_id = random_token_id.token_id;
 
-const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '{ "owner_id": "johnq.testnet", "token_id": "${random_token_id}", "metadata": { "title": "SomeNFTTitle", "description": "SomeNFTDesci", "media": "https://i.imgur.com/ardmpqm.png",  "media_hash": "what is media_hash?", "copies": "3", "issued_at": "05/28/2021", "expires_at": "05/28/2031", "starts_at": "05/28/2021", "updated_at": "what is updated_at?", "extra": "SomeNFTExtra", "reference": "SomeNFTReference", "reference_hash": "SomeNFTReferenceHash" } }' --accountId=johnq.testnet --amount=1`
+const nft_transfer_command = `near call dev-1620252450193-6591749 nft_transfer '{ "receiver_id": "johnqplay.testnet", "token_id": "${token_id}", "approval_id": "0", "memo": "someMemo" }' --accountId=johnq.testnet`
 
 // Execute the build command, storing exit code for later use
-const { code } = sh.exec(nft_mint_command)
+const { code } = sh.exec(nft_transfer_command)
 
 process.exit(code)

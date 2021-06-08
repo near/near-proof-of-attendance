@@ -24,12 +24,6 @@ const OwnerId: string = "carol";
 const SenderId: string = "bob";
 
 describe("Hello NEP171", () => {
-    beforeAll(() => {
-      // log("OwnerId");
-      // log(OwnerId)
-      // log("Context.predecessor");
-      // log(Context.predecessor);
-    });
     it("should init contract and set contract NFTMetadata", () => {
       // Where and What should this be?
       const reference_hash = 123213123;
@@ -44,7 +38,6 @@ describe("Hello NEP171", () => {
     it("should mint nft token metadata", () => {
       // Set more attachedDeposit
       const attachedDeposit = u128.from(990000);
-      VMContext.setAttached_deposit(attachedDeposit);
       // Where and What should these hashes be?
       const media_hash = 123123;
       const copies = 10
@@ -55,22 +48,34 @@ describe("Hello NEP171", () => {
         copies, "05/28/2021", "05/28/2031", "05/28/2021", 
         "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
       );
-      // log("OwnerId");
-      // log(OwnerId)
-      // log("Context.predecessor");
-      // log(Context.predecessor);
-      // log("Context.sender");
-      // log(Context.sender);
+      VMContext.setAttached_deposit(attachedDeposit);
       nft_mint(OwnerId, token_id, token_metadata);
     });
     
-    it("should transfer nft token", () => {
-      const attachedDeposit = u128.from(1);
-      const receiver_id = "johnq.testnet";
+    it("should init contract, mint nft token metadata & transfer nft token", () => {
+      // Init NFT NFTMetadata
+      const reference_hash = 123213123;
+      const metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", reference_hash);
+      init(OwnerId, metadata);
+      
+      // Mint NFT TokenMetadata
+      const attachedDepositMint = u128.from(990000);
+      const media_hash = 123123;
+      const copies = 10
       const token_id = "SomeTokenId";
+      const token_metadata: TokenMetadata = new TokenMetadata(
+        "SomeNFTTitleasdasdasd", "SomeDescription", "https://i.imgur.com/ardmpqm.png", media_hash, 
+        copies, "05/28/2021", "05/28/2031", "05/28/2021", 
+        "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
+      );
+      VMContext.setAttached_deposit(attachedDepositMint);
+      nft_mint(OwnerId, token_id, token_metadata);
+
+      const attachedDepositTransfer = u128.from(1);
+      const receiver_id = "johnq.testnet";
       const approval_id = 0;
       const memo = "SomeMemo";
-      VMContext.setAttached_deposit(attachedDeposit);
+      VMContext.setAttached_deposit(attachedDepositTransfer);
       nft_transfer(receiver_id, token_id, approval_id, memo);
     })
 });

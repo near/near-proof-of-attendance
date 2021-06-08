@@ -51,6 +51,7 @@ export const TokensPerOwner = new PersistentMap<AccountId, PersistentSet<string>
 export const TokensById = new PersistentMap<TokenId, Token>("i");
 
 // hardcoded for now ownerId but this should be set upon deployment.
+// This should be a Escrow Account where the Event Manager would use for minting to attendees. TBD with Cameron.
 export const OwnerId: AccountId = "johnq.testnet";
 // For Testing suite use "carol";
 // export const OwnerId: AccountId = "carol";
@@ -68,7 +69,6 @@ export function init(owner_id: AccountId, metadata: NFTMetadata): void {
   storage.set("n", Metadata);
 }
 
-// Is not building all my functions of my contracts, so for now I placed this function inside index.ts.TODO: need to figure out a way to build all .ts files inside contract/ folder.
 export function nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
   internal_nft_mint(owner_id, token_id, metadata);
 }

@@ -12,6 +12,9 @@
 const sh = require('shelljs')
 const path = require('path')
 const fs = require('fs');
+// const utils = require('./utils');
+
+// const { writeFileSync } = utils
 
 // Figure out which directory the user called this script from, which we'll use
 // later to set up the symlink.
@@ -34,7 +37,7 @@ const writeFileSync = (filename, write) => {
 }
 
 let random_token_id = Math.random().toString(36).substring(7) + ".token_id";
-let fileObject= {}
+let fileObject= {};
 fileObject["token_id"] = random_token_id;
 fileObject = JSON.stringify(fileObject);
 writeFileSync("./random-token-id.json", fileObject);

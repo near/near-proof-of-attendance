@@ -41,11 +41,11 @@ import {
 export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
   const initial_storage_usage = Context.storageUsage;
   const initial_attached_deposit = Context.attachedDeposit
-
-  assert_owner(owner_id);
+  assert_owner();
   logging.log("after assert_owner()")
   const emptyMap = new Map<AccountId, i32>()
-  const token: Token = new Token(OwnerId, emptyMap, 0);
+  
+  const token: Token = new Token(owner_id, emptyMap, 0);
   const token_by_id = TokensById.get(token_id, null)
   assert(
     token_by_id == null,

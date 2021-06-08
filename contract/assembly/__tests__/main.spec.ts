@@ -5,6 +5,7 @@ import {
   init,
   nft_mint,
   nft_transfer,
+  OwnerId,
 } from "../index";
 
 import {
@@ -19,9 +20,11 @@ import {
 
 // const OwnerId: string = "johnq.testnet";
 // In Test suite by default Context.predecessor is "carol". So lets make OwnerId the same as predecessor
-const OwnerId: string = "carol";
+// const OwnerId: string = "carol";
 // In Test suite by default Context.sender is "bod". So lets make SenderId the same as sender
 const SenderId: string = "bob";
+
+const ReceiverId: string = "johnq.testnet";
 
 describe("Hello NEP171", () => {
     it("should init contract and set contract NFTMetadata", () => {
@@ -49,7 +52,8 @@ describe("Hello NEP171", () => {
         "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
       );
       VMContext.setAttached_deposit(attachedDeposit);
-      nft_mint(OwnerId, token_id, token_metadata);
+      VMContext.setPredecessor_account_id(OwnerId);
+      nft_mint(ReceiverId, token_id, token_metadata);
     });
     
     it("should init contract, mint nft token metadata & transfer nft token", () => {
@@ -68,14 +72,16 @@ describe("Hello NEP171", () => {
         copies, "05/28/2021", "05/28/2031", "05/28/2021", 
         "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
       );
+      VMContext.setPredecessor_account_id(OwnerId);
       VMContext.setAttached_deposit(attachedDepositMint);
       nft_mint(OwnerId, token_id, token_metadata);
 
       const attachedDepositTransfer = u128.from(1);
-      const receiver_id = "johnq.testnet";
+      const new_receiver_id = "johnqplay.testnet";
       const approval_id = 0;
       const memo = "SomeMemo";
       VMContext.setAttached_deposit(attachedDepositTransfer);
-      nft_transfer(receiver_id, token_id, approval_id, memo);
-    })
+      VMContext.setPredecessor_account_id(OwnerId);
+      nft_transfer(new_receiver_id, token_id, approval_id, memo);
+    });
 });

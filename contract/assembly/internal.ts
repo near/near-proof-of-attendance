@@ -11,6 +11,7 @@ import {
 import {
   TokensPerOwner,
   TokensById,
+  OwnerId,
 } from "./index"; // index.ts is acting as lib.rs in "NEAR/core-contracts/nft-simple/src/internal.rs"
 
 import {
@@ -160,14 +161,8 @@ export function refund_approved_account_ids(account_id: AccountId, approved_acco
   return refund_approved_account_ids_iter(account_id, approved_account_ids)
 }
 
-export function assert_owner(owner_id: AccountId): void {
-  logging.log("owner_id");
-  logging.log(owner_id);
-  logging.log("Context.predecessor");
-  logging.log(Context.predecessor);
-  logging.log("Context.sender");
-  logging.log(Context.sender);
-  assert(owner_id == Context.predecessor, "Owner's method");
+export function assert_owner(): void {
+  assert(OwnerId == Context.predecessor, "Owner's method");
 }
 
 export function assert_one_yocto(): void {

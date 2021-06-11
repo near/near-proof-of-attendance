@@ -1,87 +1,23 @@
-
-import { storage, Context, VMContext, u128 } from "near-sdk-as";
+import {
+  test_init,
+  test_nft_mint,
+  test_nft_transfer,
+} from "./test-change-functions";
 
 import {
-  init,
-  nft_mint,
-  nft_transfer,
-  OwnerId,
-} from "../index";
-
-import {
-  NFTMetadata,
-  TokenMetadata,
-
-} from "../metadata";
-
-import {
-  consoleLog
-} from "../utils";
-
-// const OwnerId: string = "johnq.testnet";
-// In Test suite by default Context.predecessor is "carol". So lets make OwnerId the same as predecessor
-// const OwnerId: string = "carol";
-// In Test suite by default Context.sender is "bod". So lets make SenderId the same as sender
-const SenderId: string = "bob";
-
-const ReceiverId: string = "johnq.testnet";
+  test_nft_token,
+  test_nft_tokens_for_owner,
+} from "./test-view-functions";
 
 describe("Hello NEP171", () => {
-    it("should init contract and set contract NFTMetadata", () => {
-      // Where and What should this be?
-      const reference_hash = 123213123;
-      const metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", reference_hash);
-      init(OwnerId, metadata);
-      const metadata_in_storage: string | null = storage.get("n", '')
-      const metadata_in_storage_should_be = 
-      `{\"spec\":\"NFTSpec\",\"name\":\"NFTName\",\"symbol\":\"NFTSymbol\",\"icon\":\"NFTIcon\",\"base_uri\":\"NFTBaseURI\",\"reference\":\"NFTRef\",\"reference_hash\":\"123213123\"}`
-      expect(metadata_in_storage).toBe(metadata_in_storage_should_be);
-    });
+    it("should init contract and set contract NFTMetadata", test_init);
     
-    it("should mint nft token metadata", () => {
-      // Set more attachedDeposit
-      const attachedDeposit = u128.from(990000);
-      // Where and What should these hashes be?
-      const media_hash = 123123;
-      const copies = 10
-      const reference_hash = 232323;
-      const token_id = "SomeTokenId";
-      const token_metadata: TokenMetadata = new TokenMetadata(
-        "SomeNFTTitleasdasdasd", "SomeDescription", "https://i.imgur.com/ardmpqm.png", media_hash, 
-        copies, "05/28/2021", "05/28/2031", "05/28/2021", 
-        "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
-      );
-      VMContext.setAttached_deposit(attachedDeposit);
-      VMContext.setPredecessor_account_id(OwnerId);
-      nft_mint(ReceiverId, token_id, token_metadata);
-    });
+    it("should mint nft token metadata", test_nft_mint);
     
-    it("should init contract, mint nft token metadata & transfer nft token", () => {
-      // Init NFT NFTMetadata
-      const reference_hash = 123213123;
-      const metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", reference_hash);
-      init(OwnerId, metadata);
-      
-      // Mint NFT TokenMetadata
-      const attachedDepositMint = u128.from(990000);
-      const media_hash = 123123;
-      const copies = 10
-      const token_id = "SomeTokenId";
-      const token_metadata: TokenMetadata = new TokenMetadata(
-        "SomeNFTTitleasdasdasd", "SomeDescription", "https://i.imgur.com/ardmpqm.png", media_hash, 
-        copies, "05/28/2021", "05/28/2031", "05/28/2021", 
-        "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
-      );
-      VMContext.setPredecessor_account_id(OwnerId);
-      VMContext.setAttached_deposit(attachedDepositMint);
-      nft_mint(OwnerId, token_id, token_metadata);
-
-      const attachedDepositTransfer = u128.from(1);
-      const new_receiver_id = "johnqplay.testnet";
-      const approval_id = 0;
-      const memo = "SomeMemo";
-      VMContext.setAttached_deposit(attachedDepositTransfer);
-      VMContext.setPredecessor_account_id(OwnerId);
-      nft_transfer(new_receiver_id, token_id, approval_id, memo);
-    });
+    it("should init contract, mint nft token metadata & transfer nft token", test_nft_transfer);
+    
+    it("should return nft token by token id", test_nft_token);
+    
+    it("should return nft tokens for owner by account id", test_nft_tokens_for_owner);
+    
 });

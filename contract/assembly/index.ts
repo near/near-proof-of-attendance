@@ -17,10 +17,13 @@ import {
 
 import {
   internal_nft_transfer,
+  internal_nft_token,
+  internal_nft_tokens_for_owner,
 } from "./nft_core";
 
 import {
   Token,
+  JsonToken,
 } from "./token";
 
 import {
@@ -76,3 +79,12 @@ export function nft_mint(owner_id: AccountId, token_id: TokenId, metadata: Token
 export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {
   internal_nft_transfer(receiver_id, token_id, approval_id, memo);
 }
+
+// View functions
+// export  function nft_token(token_id: TokenId): JsonToken | null {
+//   return internal_nft_token(token_id);
+// }
+
+// export function nft_tokens_for_owner(from_index: string, limit: number): Token[] {
+//   return internal_nft_tokens(from_index, limit)
+// }

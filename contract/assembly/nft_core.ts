@@ -68,19 +68,19 @@ export function internal_nft_transfer(receiver_id: AccountId, token_id: TokenId,
 
 
 // View Functions
-export function nft_total_supply(): i32 {
+export function internal_nft_total_supply(): i32 {
   // self.token_metadata_by_id.len().into()
   return TokenMetadataById.length;
 }
 
 // should return JsonToken.
-export function nft_token(token_id: TokenId): JsonToken | null {
+export function internal_nft_token(token_id: TokenId): JsonToken | null {
   const token: Token | null = TokensById.get(token_id);
-  // if(token) {
+  if(token) {
     const metadata: TokenMetadata | null = TokenMetadataById.get(token_id, null);
-    // const json_token = new JsonToken(token_id, token.owner_id, metadata, token.approved_account_ids);
-    // return json_token;
-  // } 
+    const json_token = new JsonToken(token_id, token.owner_id, metadata, token.approved_account_ids);
+    return json_token;
+  }
   // if let Some(token) = self.tokens_by_id.get(&token_id) {
   //   let metadata = self.token_metadata_by_id.get(&token_id).unwrap();
   //   Some(JsonToken {
@@ -93,6 +93,10 @@ export function nft_token(token_id: TokenId): JsonToken | null {
   //     None
   // }
   return null;
+}
+
+export function internal_nft_tokens_for_owner(account_id: string, from_index: string, limit: number): Token[] {
+  return TokensPerOwner.get(account_id);
 }
 
 // Pending Functions below 

@@ -28,12 +28,12 @@ export class JsonToken {
   token_id: TokenId;
   owner_id: AccountId | null;
   metadata: TokenMetadata | null;
-  approved_account_id: Map<AccountId, u64>;
+  approved_account_id: Map<AccountId, i32>;
   constructor(
     token_id: TokenId,
     owner_id: string,
-    metadata: TokenMetadata,
-    approved_account_id: Map<AccountId, u64>
+    metadata: TokenMetadata | null,
+    approved_account_id: Map<AccountId, i32>
   ) {
     this.token_id = token_id;
     this.owner_id = owner_id;

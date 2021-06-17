@@ -1,12 +1,19 @@
 
 import { storage, Context, VMContext, u128 } from "near-sdk-as";
 
+// import {
+//   init,
+//   nft_mint,
+//   nft_transfer,
+//   OwnerId,
+// } from "../index";
+
 import {
   init,
   nft_mint,
   nft_transfer,
   OwnerId,
-} from "../index";
+} from "../lib";
 
 import {
   NFTMetadata,

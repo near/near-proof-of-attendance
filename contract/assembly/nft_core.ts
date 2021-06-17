@@ -8,7 +8,7 @@ import {
 
 import {
   TokensById,
-} from "./index";
+} from "./lib";
 
 import {
   TokenMetadata,

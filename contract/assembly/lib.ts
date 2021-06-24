@@ -81,9 +81,9 @@ export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval
 }
 
 // View functions
-// export  function nft_token(token_id: TokenId): JsonToken | null {
-//   return internal_nft_token(token_id);
-// }
+export  function nft_token(token_id: TokenId): JsonToken | null {
+  return internal_nft_token(token_id);
+}
 
 // export function nft_tokens_for_owner(from_index: string, limit: number): Token[] {
 //   return internal_nft_tokens(from_index, limit)

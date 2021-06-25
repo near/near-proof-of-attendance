@@ -1,4 +1,7 @@
-node_modules
+node_modules/*
+!node_modules/near-sdk-bindgen/
+node_modules/near-sdk-bindgen/*
+!node_modules/near-sdk-bindgen/*
 build
 package-lock.json
 yarn.lock

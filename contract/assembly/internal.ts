@@ -39,10 +39,14 @@ const STORAGE_PRICE_PER_BYTE: Balance = u128.from(10_000_000_000_000_000_000);
 // Internal functions extracted from "NEAR/core-contracts/nft-simple/src/internal.rs"
 export function internal_add_token_to_owner(account_id: AccountId, token_id: TokenId): void {
   let token_set: PersistentSet<string> | null;
+  // Problem with test: "should return nft tokens for owner by account id" is because onces a user has already 1 nft_token 
+  // and then you want to mint a second token the if statement gets called when it should actually call the else statement again because it is a new nft token data
   if(TokensPerOwner.get(account_id)){
     token_set = TokensPerOwner.get(account_id);
+    // consoleLog("if(TokensPerOwner.get(account_id))")
   } 
   else {
+    // consoleLog("else if(TokensPerOwner.get(account_id))")
     logging.log("else TokensPerOwner.get(account_id)")
     token_set = new PersistentSet<string>("t");
     token_set.add(token_id);
@@ -87,7 +91,7 @@ export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, 
   internal_remove_token_from_owner(token.owner_id, token_id);
   internal_add_token_to_owner(receiver_id, token_id);
   
-  const new_token: Token = new Token(receiver_id, token.approved_account_ids, token.next_approval_id);
+  const new_token: Token = new Token(receiver_id, token.approved_account_ids, token.next_approval_id, token.metadata);
   
   TokensById.set(token_id, new_token);
   if(memo) {

@@ -1,13 +1,4 @@
-
 import { storage, Context, VMContext, u128 } from "near-sdk-as";
-
-// import {
-//   init,
-//   nft_mint,
-//   nft_transfer,
-//   OwnerId,
-// } from "../index";
-
 import {
   init,
   nft_mint,
@@ -21,15 +12,18 @@ import {
 
 } from "../metadata";
 
+import {
+  consoleLog
+} from "../utils";
 
 // const OwnerId: string = "johnq.testnet";
 // In Test suite by default Context.predecessor is "carol". So lets make OwnerId the same as predecessor
 // const OwnerId: string = "carol";
 // In Test suite by default Context.sender is "bod". So lets make SenderId the same as sender
-const TokenId: string = "SomeTokenId";
-const SenderId: string = "bob";
-
-const ReceiverId: string = "johnq.testnet";
+export const TokenId: string = "SomeTokenId";
+export const TokenId2: string = "SomeTokenId2";
+export const SenderId: string = "bob";
+export const ReceiverId: string = "johnq.testnet";
 
 export const test_init = (): void => {
   // Where and What should this be?
@@ -44,7 +38,7 @@ export const test_init = (): void => {
 
 export const test_nft_mint = (): void => {
   // Set more attachedDeposit
-  const attachedDeposit = u128.from(990000);
+  const attachedDeposit = u128.from(1700000);
   // Where and What should these hashes be?
   const media_hash = 123123;
   const copies = 10
@@ -57,6 +51,24 @@ export const test_nft_mint = (): void => {
   VMContext.setAttached_deposit(attachedDeposit);
   VMContext.setPredecessor_account_id(OwnerId);
   nft_mint(ReceiverId, TokenId, token_metadata);
+}
+
+export const test_nft_mint2 = (): void => {
+  test_nft_mint()
+  // Set more attachedDeposit
+  const attachedDeposit = u128.from(1700000);
+  // Where and What should these hashes be?
+  const media_hash = 22213213;
+  const copies = 20
+  const reference_hash = 3333312323;
+  const token_metadata: TokenMetadata = new TokenMetadata(
+    "SomeNFTTitle2", "SomeDescription2", "https://i.imgur.com/uxx7BQz.jpg", media_hash, 
+    copies, "06/20/2021", "06/20/2031", "06/21/2021", 
+    "what is updated_at? 2", "SomeNFTExtra2", "SomeNFTReference2", reference_hash
+  );
+  VMContext.setAttached_deposit(attachedDeposit);
+  VMContext.setPredecessor_account_id(OwnerId);
+  nft_mint(ReceiverId, TokenId2, token_metadata);
 }
 
 export const test_nft_transfer = (): void => {

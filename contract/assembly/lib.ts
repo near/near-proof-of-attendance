@@ -50,7 +50,7 @@ enum StorageKey {
 // "m" --> token_metadata_by_id
 
 // Storage Variables
-export const TokensPerOwner = new PersistentMap<AccountId, PersistentSet<string> | null>("o");
+export const TokensPerOwner = new PersistentMap<AccountId, PersistentSet<TokenId> | null>("o");
 export const TokensById = new PersistentMap<TokenId, Token>("i");
 
 // hardcoded for now ownerId but this should be set upon deployment.
@@ -85,6 +85,9 @@ export  function nft_token(token_id: TokenId): JsonToken | null {
   return internal_nft_token(token_id);
 }
 
-// export function nft_tokens_for_owner(from_index: string, limit: number): Token[] {
-//   return internal_nft_tokens(from_index, limit)
-// }
+// This should return Token[] but TokensPerOwner.get(account_id) returns PersistentSet<TokenId> | null How can PersistentSet become Token[]?
+// missing arguments after owner_id argument are: from_index: string, limit: number
+export function nft_tokens_for_owner(account_id: AccountId): PersistentSet<TokenId> | null {
+  // return internal_nft_tokens_for_owner(owner_id, from_index, limit);
+  return internal_nft_tokens_for_owner(account_id);
+}

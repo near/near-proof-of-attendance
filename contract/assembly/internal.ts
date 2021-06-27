@@ -41,7 +41,7 @@ export function internal_add_token_to_owner(account_id: AccountId, token_id: Tok
   let token_set: PersistentSet<string> | null;
   // Problem with test: "should return nft tokens for owner by account id" is because onces a user has already 1 nft_token 
   // and then you want to mint a second token the if statement gets called when it should actually call the else statement again because it is a new nft token data
-  if(TokensPerOwner.get(account_id)){
+  if(TokensPerOwner.get(account_id)) {
     token_set = TokensPerOwner.get(account_id);
     // consoleLog("if(TokensPerOwner.get(account_id))")
   } 
@@ -51,11 +51,6 @@ export function internal_add_token_to_owner(account_id: AccountId, token_id: Tok
     token_set = new PersistentSet<string>("t");
     token_set.add(token_id);
   }
-  
-  // Force test to pass: Uncomment if statement since its the code from standard. This is not correct the if statement above is neccessary to comply with standard.
-  // logging.log("else TokensPerOwner.get(account_id)")
-  // token_set = new PersistentSet<string>("t");
-  // token_set.add(token_id);
   
   TokensPerOwner.set(account_id, token_set);
 }

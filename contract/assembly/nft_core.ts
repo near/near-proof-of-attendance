@@ -99,7 +99,7 @@ export function internal_nft_token(token_id: TokenId): JsonToken | null {
 
 // This should return Token[] but TokensPerOwner.get(account_id) returns PersistentSet<TokenId> | null How can PersistentSet become Token[]?
 // missing arguments after owner_id argument are: from_index: string, limit: number
-export function internal_nft_tokens_for_owner(account_id: string): PersistentSet<TokenId> | null {
+export function internal_nft_tokens_for_owner(account_id: string): Set<TokenId> | null {
   // Not using from_index and limit for now.
   return TokensPerOwner.get(account_id);
 }

@@ -3,6 +3,7 @@ import { VMContext, u128 } from "near-sdk-as";
 import {
   nft_token,
   nft_tokens_for_owner,
+  TokensPerOwner,
 } from "../lib";
 
 import {
@@ -26,6 +27,7 @@ import {
   consoleLog
 } from "../utils";
 
+const owner_id: string = "johnq.testnet"
 
 export const test_nft_token = (): void => {
   // Init NFT NFTMetadata
@@ -93,7 +95,11 @@ export const test_nft_token2 = (): void => {
 export const test_nft_tokens_for_owner = (): void => {
   // Mint NFT TokenMetadata
   test_nft_mint();
+  consoleLog("1 TokensPerOwner.getSome(account_id).size.toString()");
+  consoleLog(TokensPerOwner.getSome(owner_id).size.toString());
   test_nft_mint2();
+  consoleLog("2 TokensPerOwner.getSome(account_id).size.toString()");
+  consoleLog(TokensPerOwner.getSome(owner_id).size.toString());
   const tokens_for_owner = nft_tokens_for_owner(ReceiverId);
   expect(tokens_for_owner).not.toBe(null);
   if(tokens_for_owner) {

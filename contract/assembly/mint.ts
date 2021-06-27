@@ -46,7 +46,7 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   const emptyMap = new Map<AccountId, i32>()
   
   const token: Token = new Token(owner_id, emptyMap, 0, metadata);
-  const token_by_id = TokensById.get(token_id, null)
+  const token_by_id = TokensById.get(token_id, null);
   assert(
     token_by_id == null,
     "Token already exists"

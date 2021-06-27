@@ -54,13 +54,14 @@ export const test_nft_mint = (): void => {
 }
 
 export const test_nft_mint2 = (): void => {
-  test_nft_mint()
   // Set more attachedDeposit
-  const attachedDeposit = u128.from(1700000);
+  // mint2 function requires more gas cost: 2049948 than the first mint gas cost of: 1292769.
+  // const attachedDeposit = u128.from(1700000);
+  const attachedDeposit = u128.from(2049948);
   // Where and What should these hashes be?
-  const media_hash = 22213213;
+  const media_hash = 123323;
   const copies = 20
-  const reference_hash = 3333312323;
+  const reference_hash = 242323;
   const token_metadata: TokenMetadata = new TokenMetadata(
     "SomeNFTTitle2", "SomeDescription2", "https://i.imgur.com/uxx7BQz.jpg", media_hash, 
     copies, "06/20/2021", "06/20/2031", "06/21/2021", 

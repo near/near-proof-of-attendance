@@ -76,7 +76,7 @@ export const test_nft_token2 = (): void => {
       expect(metadata.title).toBe("SomeNFTTitle2");
       expect(metadata.description).toBe("SomeDescription2");
       expect(metadata.media).toBe("https://i.imgur.com/uxx7BQz.jpg");
-      expect(metadata.media_hash).toBe(22213213);
+      expect(metadata.media_hash).toBe(123323);
       expect(metadata.copies).toBe(20);
       expect(metadata.issued_at).toBe("06/20/2021");
       expect(metadata.expires_at).toBe("06/20/2031");
@@ -84,7 +84,7 @@ export const test_nft_token2 = (): void => {
       expect(metadata.updated_at).toBe("what is updated_at? 2");
       expect(metadata.extra).toBe("SomeNFTExtra2");
       expect(metadata.reference).toBe("SomeNFTReference2");
-      expect(metadata.reference_hash).toBe(3333312323);
+      expect(metadata.reference_hash).toBe(242323);
     }
   }
   

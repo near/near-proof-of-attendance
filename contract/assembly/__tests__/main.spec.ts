@@ -24,6 +24,6 @@ describe("Hello NEP171", () => {
     
     it("should return nft token by token id #2", test_nft_token2);
     
-    // it("should return nft tokens for owner by account id", test_nft_tokens_for_owner);
+    it("should return nft tokens for owner by account id", test_nft_tokens_for_owner);
     
 });

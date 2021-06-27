@@ -51,6 +51,12 @@ export function internal_add_token_to_owner(account_id: AccountId, token_id: Tok
     token_set = new PersistentSet<string>("t");
     token_set.add(token_id);
   }
+  
+  // Force test to pass: Uncomment if statement since its the code from standard. This is not correct the if statement above is neccessary to comply with standard.
+  // logging.log("else TokensPerOwner.get(account_id)")
+  // token_set = new PersistentSet<string>("t");
+  // token_set.add(token_id);
+  
   TokensPerOwner.set(account_id, token_set);
 }
 
@@ -113,7 +119,8 @@ export function refund_deposit(storage_used: u64): void {
   const attached_deposit = Context.attachedDeposit;
   logging.log("attached_deposit");
   logging.log(attached_deposit);
-  assert(required_cost <= attached_deposit, "Must attach" + " " + required_cost.toString() + "yoctoNEAR to cover storage");
+  const message = "Must attach" + " " + required_cost.toString() + " " +"yoctoNEAR to cover storage" + " " + "current storage usage is: " + Context.storageUsage.toString() + " " + "and storage_used is: " + storage_used.toString();
+  assert(required_cost <= attached_deposit, message);
   const refund: u128 = u128.from(u128.sub(attached_deposit, required_cost))
   const recipient = Context.predecessor;
   if(refund > u128.from(1)) {

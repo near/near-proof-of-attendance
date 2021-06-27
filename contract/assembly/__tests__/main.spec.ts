@@ -11,7 +11,7 @@ import {
   test_nft_tokens_for_owner,
 } from "./test-view-functions";
 
-describe("Hello NEP171", () => {
+describe("Tests for NEP171 Contract", () => {
     it("should init contract and set contract NFTMetadata", test_init);
     
     it("should mint nft token metadata", test_nft_mint);

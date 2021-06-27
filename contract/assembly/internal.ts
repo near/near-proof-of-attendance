@@ -27,9 +27,9 @@ import {
   UnorderedSet
 } from "./types";
 
-import {
-  consoleLog
-} from "./utils"
+// import {
+//   consoleLog
+// } from "./utils"
 
 // Storage one letter key Mappings
 // "t" --> token_set
@@ -38,20 +38,9 @@ const STORAGE_PRICE_PER_BYTE: Balance = u128.from(10_000_000_000_000_000_000);
 
 // Internal functions extracted from "NEAR/core-contracts/nft-simple/src/internal.rs"
 export function internal_add_token_to_owner(account_id: AccountId, token_id: TokenId): void {
-  let token_set: PersistentSet<string> | null;
-  // Problem with test: "should return nft tokens for owner by account id" is because onces a user has already 1 nft_token 
-  // and then you want to mint a second token the if statement gets called when it should actually call the else statement again because it is a new nft token data
-  if(TokensPerOwner.get(account_id)) {
-    token_set = TokensPerOwner.get(account_id);
-    // consoleLog("if(TokensPerOwner.get(account_id))")
-  } 
-  else {
-    // consoleLog("else if(TokensPerOwner.get(account_id))")
-    logging.log("else TokensPerOwner.get(account_id)")
-    token_set = new PersistentSet<string>("t");
-    token_set.add(token_id);
-  }
-  
+  const token_set = TokensPerOwner.get(account_id, new Set<string>())!;
+  logging.log("else TokensPerOwner.get(account_id)")
+  token_set.add(token_id);
   TokensPerOwner.set(account_id, token_set);
 }
 
@@ -67,11 +56,6 @@ export function internal_remove_token_from_owner(account_id: AccountId, token_id
 // This functions needs a revision for tests to pass. It has forced typings and return data that omit error.
 export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): Token {
   logging.log("starting internal_transfer");
-  // NOTE
-  // This set avoid "should transfer nft token - unexpected null error", but original code in Rust does not have so I do not know if we need it..
-  // const setToken = new Token("", new Map<string, i32>(),0)
-  // TokensById.set(token_id, setToken) 
-
   const token: Token = TokensById.get(token_id, null)  as Token // as Token avoids 'Token | null' is not assignable to type 'Token'. Type 'null' is not assignable to type 'Token'.
   // NOTE
   // Omitting this plus the above setter forces test to pass.
@@ -145,13 +129,9 @@ export function refund_approved_account_ids_iter(account_id: AccountId, approved
   //         .sum();
   //     Promise::new(account_id).transfer(Balance::from(storage_released) * env::storage_byte_cost())
   
-  // let sum: i32 = 0
   let sum = approved_account_ids.values().reduce((a, b) => a + b, 0 as u64);
   // Question: Where does bytes_for_approved_account_id() come into play in AssemblyScript.
   // Question: How would bytes_for_approved_account_id() look like in AssemblyScript.
-  // approved_account_ids.values().forEach((values: i32) => {
-  //   sum += values
-  // });
   const storage_released: u128 = u128.from(sum);
   const promise: ContractPromiseBatch = ContractPromiseBatch.create(account_id).transfer(u128.mul(storage_released, STORAGE_PRICE_PER_BYTE));
   return promise;
@@ -172,8 +152,6 @@ export function assert_owner(): void {
 }
 
 export function assert_one_yocto(): void {
-  // NOTE
-  // This assertion only works if we use "==" rather than triple "==="
   assert(u128.from(Context.attachedDeposit) == u128.from(1), "Requires attached deposit of exactly 1 yoctoNEAR")
 }
 

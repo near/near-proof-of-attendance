@@ -53,17 +53,18 @@ enum StorageKey {
 export const TokensPerOwner = new PersistentMap<AccountId, Set<TokenId>>("o");
 export const TokensById = new PersistentMap<TokenId, Token>("i");
 
-// hardcoded for now ownerId but this should be set upon deployment.
+// Hardcoded for now ownerId but this should be set upon deployment.
 // This should be a Escrow Account where the Event Manager would use for minting to attendees. TBD with Cameron.
 export const OwnerId: AccountId = "johnq.testnet";
 // For Testing suite use "carol";
 // export const OwnerId: AccountId = "carol";
 
 export const ExtraStorageInBytesPerToken: StorageUsage = 0;
+// Hardcoded Metadata for NFT.
 // export const Metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NF÷TName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", 123123123);
 
 // in "NEAR/core-contracts/nft-simple/src/lib.rs" this function is called "pub fn new(owner_id: ValidAccountId, metadata: NFTMetadata) and it returns this/self"
-// We need to rename it to "init" because "new" is a keyword in AssemblyScript.
+// We had to rename this function it to "init" because "new" is a keyword in AssemblyScript.
 export function init(owner_id: AccountId, metadata: NFTMetadata): void {
   logging.log("I WORK!!!!!");
   logging.log("OwnerID:" + " " + OwnerId);

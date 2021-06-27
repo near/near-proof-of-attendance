@@ -1,5 +1,4 @@
 // All utils should be define here.
-
 declare namespace console {
   @external("console", "log")
   export function log(): void;
@@ -11,5 +10,6 @@ function consoleLog(str: string | null): void {
 }
 
 export { 
- consoleLog
+ consoleLog,
+
 }

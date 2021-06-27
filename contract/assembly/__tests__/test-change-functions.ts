@@ -12,11 +12,10 @@ import {
 
 } from "../metadata";
 
-import {
-  consoleLog
-} from "../utils";
+// import {
+//   consoleLog
+// } from "../utils";
 
-// const OwnerId: string = "johnq.testnet";
 // In Test suite by default Context.predecessor is "carol". So lets make OwnerId the same as predecessor
 // const OwnerId: string = "carol";
 // In Test suite by default Context.sender is "bod". So lets make SenderId the same as sender
@@ -30,9 +29,9 @@ export const test_init = (): void => {
   const reference_hash = 123213123;
   const metadata: NFTMetadata = new NFTMetadata("NFTSpec", "NFTName", "NFTSymbol", "NFTIcon", "NFTBaseURI", "NFTRef", reference_hash);
   init(OwnerId, metadata);
-  const metadata_in_storage: string | null = storage.get("n", '')
+  const metadata_in_storage: string | null = storage.get("n", '');
   const metadata_in_storage_should_be = 
-  `{\"spec\":\"NFTSpec\",\"name\":\"NFTName\",\"symbol\":\"NFTSymbol\",\"icon\":\"NFTIcon\",\"base_uri\":\"NFTBaseURI\",\"reference\":\"NFTRef\",\"reference_hash\":\"123213123\"}`
+  `{\"spec\":\"NFTSpec\",\"name\":\"NFTName\",\"symbol\":\"NFTSymbol\",\"icon\":\"NFTIcon\",\"base_uri\":\"NFTBaseURI\",\"reference\":\"NFTRef\",\"reference_hash\":\"123213123\"}`;
   expect(metadata_in_storage).toBe(metadata_in_storage_should_be);
 }
 
@@ -55,9 +54,7 @@ export const test_nft_mint = (): void => {
 
 export const test_nft_mint2 = (): void => {
   // Set more attachedDeposit
-  // mint2 function requires more gas cost: 2049948 than the first mint gas cost of: 1292769.
-  // const attachedDeposit = u128.from(1700000);
-  const attachedDeposit = u128.from(2049948);
+  const attachedDeposit = u128.from(1700000);
   // Where and What should these hashes be?
   const media_hash = 123323;
   const copies = 20

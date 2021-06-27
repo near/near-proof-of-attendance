@@ -5,7 +5,7 @@ import {
 import {
   TokenId,
   AccountId,
-} from "./types"
+} from "./types";
 
 
 @nearBindgen
@@ -14,11 +14,13 @@ export class Token {
   approved_account_ids: Map<AccountId, i32>;
   next_approval_id: i64;
   metadata: TokenMetadata | null;
+  
   constructor(
     owner_id: AccountId,
     approved_account_ids: Map<AccountId, i32>,
     next_approval_id: i64,
-    metadata: TokenMetadata | null) {
+    metadata: TokenMetadata | null
+  ) {
       this.owner_id = owner_id;
       this.approved_account_ids = approved_account_ids;
       this.next_approval_id = next_approval_id;
@@ -32,6 +34,7 @@ export class JsonToken {
   owner_id: AccountId | null;
   metadata: TokenMetadata | null;
   approved_account_id: Map<AccountId, i32>;
+  
   constructor(
     token_id: TokenId | null,
     owner_id: AccountId | null,

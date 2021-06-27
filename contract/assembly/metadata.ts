@@ -1,7 +1,8 @@
 import { PersistentMap, PersistentUnorderedMap } from "near-sdk-as";
 import {
   TokenId
-} from "./types"
+} from "./types";
+
 // Storage one letter key Mappings
 // "m" --> token_metadata_by_id
 
@@ -17,7 +18,12 @@ export class NFTMetadata {
    base_uri: string; // Centralized gateway known to have reliable access to decentralized storage assets referenced by `reference` or `media` URLs
    reference: string; // URL to a JSON file with more info
    reference_hash: u64; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
-   constructor(spec: string, name: string, symbol: string, icon: string, base_uri: string, reference: string, reference_hash: u64) {
+   
+   constructor(
+     spec: string, name: string, symbol: string, 
+     icon: string, base_uri: string, 
+     reference: string, reference_hash: u64
+   ) {
      this.spec = spec;
      this.name = name;
      this.symbol = symbol;
@@ -42,10 +48,12 @@ export class TokenMetadata {
    extra: string; // anything extra the NFT wants to store on-chain. Can be stringified JSON.
    reference: string; // URL to an off-chain JSON file with more info.
    reference_hash: u64; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
+   
    constructor(
      title: string, description: string, media: string,  
      media_hash: u64, copies: u64, issued_at: string, 
-     expires_at: string, starts_at: string, updated_at: string, extra: string, reference: string, reference_hash: u64
+     expires_at: string, starts_at: string, updated_at: string, 
+     extra: string, reference: string, reference_hash: u64
    ) {
      this.title = title;
      this.description = description;

@@ -10,7 +10,7 @@ import {
 import {
   TokensById,
   TokensPerOwner,
-} from "./lib";
+} from "./index";
 
 import {
   TokenMetadata,

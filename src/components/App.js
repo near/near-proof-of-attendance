@@ -6,7 +6,7 @@ import Notification from "./Notification";
 
 import { login, logout } from '../utils'
 
-
+import { test_nft_mint } from "../nft";
 
 import getConfig from '../config'
 
@@ -24,15 +24,7 @@ export default function App() {
   const [showNotification, setShowNotification] = useState(false)
   
   const componentDidMount = () => {
-    // in this case, we only care to query the contract when signed in
-    if (window.walletConnection.isSignedIn()) {
-      
-      // window.contract is set by initContract in index.js
-      // window.contract.getGreeting({ accountId: window.accountId })
-      //   .then(greetingFromContract => {
-      //     setGreeting(greetingFromContract)
-      //   })
-    }
+
   }
 
   // The useEffect hook can be used to fire side-effects during render
@@ -88,15 +80,32 @@ export default function App() {
   const onChange = (event) => {
     setButtonDisabled(event.target.value === greeting)
   }
+  
+  const nft_token = {
+    "owner_id": "johnq.testnet", 
+    "token_id": `ajd6rl`, 
+    "metadata": { 
+      "title": "SomeNFTTitle", 
+      "description": "SomeNFTDesci", 
+      "media": "https://i.imgur.com/ardmpqm.png",  
+      "media_hash": "what is media_hash?", 
+      "copies": "3", 
+      "issued_at": "05/28/2021", 
+      "expires_at": "05/28/2031", 
+      "starts_at": "05/28/2021", 
+      "updated_at": "what is updated_at?", 
+      "extra": "SomeNFTExtra", 
+      "reference": "SomeNFTReference", 
+      "reference_hash": "SomeNFTReferenceHash" 
+    }
+  }
+  
   const onInit = async (event) => {
     event.preventDefault();
     try {
-      const metadata = {
-        
-      }
       await window.contract.init({
         owner_id: "johnq",
-        metadata,
+        metadata: nft_token.metadata
       })
     } catch (e) {
       alert(
@@ -110,6 +119,25 @@ export default function App() {
   
   if (!window.walletConnection.isSignedIn()) {
     return <Home />
+  }
+  
+  const nft_mint = async (event) => {
+    event.preventDefault();
+    try {
+      // make an update call to the smart contract
+      await test_nft_mint()
+      console.log('i work in UI')
+    } catch (e) {
+      console.log('e',e)
+      alert(
+        'Something went wrong! with nft_mint'
+      )
+      throw e
+    } finally {
+      // re-enable the form, whether the call succeeded or failed
+      // fieldset.disabled = false
+      console.log("finally")
+    }
   }
   
   return (
@@ -161,6 +189,7 @@ export default function App() {
               <button onClick={onInit}>
                 Init
               </button>
+              <button onClick={nft_mint}>NFT_MINT</button>
             </div>
           </fieldset>
         </form>

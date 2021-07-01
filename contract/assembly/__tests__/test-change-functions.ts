@@ -4,7 +4,7 @@ import {
   nft_mint,
   nft_transfer,
   OwnerId,
-} from "../lib";
+} from "../index";
 
 import {
   NFTMetadata,

@@ -1,8 +1,8 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'proof-of-attendance'
+const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1620252450193-6591749'
 
 function getConfig(env) {
+  env = "testnet"
   switch (env) {
-
   case 'production':
   case 'mainnet':
     return {
@@ -18,7 +18,8 @@ function getConfig(env) {
     return {
       networkId: 'testnet',
       nodeUrl: 'https://rpc.testnet.near.org',
-      contractName: CONTRACT_NAME,
+      // contractName: CONTRACT_NAME,
+      contractName: "proofofattedanceplayground.testnet",
       walletUrl: 'https://wallet.testnet.near.org',
       helperUrl: 'https://helper.testnet.near.org',
       explorerUrl: 'https://explorer.testnet.near.org',

@@ -7,7 +7,7 @@ import {
   TokensById,
   OwnerId,
   ExtraStorageInBytesPerToken,
-} from "./lib";
+} from "./index";
 
 import {
   TokenMetadata,

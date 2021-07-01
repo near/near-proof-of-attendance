@@ -4,7 +4,7 @@ import {
   nft_token,
   nft_tokens_for_owner,
   TokensPerOwner,
-} from "../lib";
+} from "../index";
 
 import {
   test_init,

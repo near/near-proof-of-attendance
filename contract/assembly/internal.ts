@@ -12,7 +12,7 @@ import {
   TokensPerOwner,
   TokensById,
   OwnerId,
-} from "./lib"; // index.ts is acting as lib.rs in "NEAR/core-contracts/nft-simple/src/internal.rs"
+} from "./index"; // index.ts is acting as lib.rs in "NEAR/core-contracts/nft-simple/src/internal.rs"
 
 import {
   Token,

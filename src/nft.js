@@ -1,6 +1,6 @@
-import { connect, Contract, keyStores, WalletConnection } from 'near-api-js'
+import { connect, Contract, keyStores, WalletConnection, utils } from 'near-api-js'
 import BN from "bn.js"
-
+utils.format.parseNearAmount
 import getConfig from './config'
 
 const nearConfig = getConfig(process.env.NODE_ENV || 'development')
@@ -64,12 +64,17 @@ export async function test_nft_mint() {
   const nft_mint_arguments = {
     owner_id: "johnq.testnet.near", 
     token_id: nft_token.token_id, 
-    metadata: nft_token.metadata
+    metadata: nft_token.metadata,
+    // gas: 300000000000000, 
+    // amount: 11000000000000000000000000
+    gas: utils.format.parseNearAmount("33914902"),
+    amount: utils.format.parseNearAmount("33914902")
   }
   window.contract.nft_mint(
     nft_mint_arguments,
+    
     //  Extracted from https://github.com/near/near-api-js/blob/master/examples/quick-reference.md 
-    300000000000000, // attached GAS (optional)
-    1000000000000000000000000 // attached deposit in yoctoNEAR (optional)
+    // 300000000000000, // attached GAS (optional)
+    // 1000000000000000000000000 // attached deposit in yoctoNEAR (optional)
   )
 }

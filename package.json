@@ -45,10 +45,16 @@
     "shelljs": "~0.8.4"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.4",
+    "antd": "^4.16.6",
     "near-api-js": "~0.36.3",
-    "react": "~17.0.1",
-    "react-dom": "~17.0.1",
-    "regenerator-runtime": "~0.13.5"
+    "react": ">=16.9.0",
+    "react-dom": ">=16.9.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "regenerator-runtime": "~0.13.5",
+    "services": "^0.0.3",
+    "utils": "^0.3.1"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"

@@ -4,7 +4,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "compile": "yarn build:contract",
-    "build": "npm run build:contract && npm run build:web",
+    "build": "yarn build:web",
+    "build:all": "npm run build:contract && npm run build:web",
     "build:contract": "node contract/compile.js",
     "build:deploy": "yarn build:contract && yarn deploy:contract",
     "dev:build:deploy": "yarn build:contract && yarn dev:deploy:contract",

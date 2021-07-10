@@ -11,12 +11,12 @@ import {
   BadgesHome,
   CreateNewBadges,
   BadgesList,
-
+  
 } from "./";
 
 import {
   Notification,
-
+  AppHeader,
 } from "../components";
 
 import {
@@ -47,6 +47,7 @@ export default function AppRouter() {
   
   return (
     <Router>
+      { window.walletConnection.isSignedIn() ? (<AppHeader />) : null }
       <Switch>
         <Route path={"/"} exact>
           <BadgesHome />

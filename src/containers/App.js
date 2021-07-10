@@ -14,9 +14,7 @@ export default function App() {
   
   return (
     <>
-      { window.walletConnection.isSignedIn() ? (<AppHeader />) : null }
       <AppRouter />
-      
     </>
   )
 }

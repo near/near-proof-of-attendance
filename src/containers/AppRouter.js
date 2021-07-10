@@ -9,6 +9,8 @@ import {
 import {
   Home,
   BadgesHome,
+  CreateNewBadges,
+  BadgesList,
 
 } from "./";
 
@@ -23,19 +25,18 @@ import {
 } from "../nft"
 
 export default function AppRouter() {
-  const [_, showNotification] = useState(false);
-  const [notificationMessage, setNotificationMessage] = useState("")
+  const [notification, showNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
+  
   const componentDidMount = () => {
-  if(window.walletConnection.isSignedIn()) {
-    showNotification(true);
+    if(window.walletConnection.isSignedIn()) {
+      showNotification(true);
       setNotificationMessage("You are logged ");
       
       setTimeout(() => {
-        console.log('asdas');
         showNotification(false);
-      }, 500)
+      }, 1000)
     }
-    
   }
   
   useEffect(componentDidMount, []);
@@ -47,12 +48,18 @@ export default function AppRouter() {
   return (
     <Router>
       <Switch>
-        <Route path={"/"}>
-        <BadgesHome />
+        <Route path={"/"} exact>
+          <BadgesHome />
+        </Route>
+        <Route path={"/new"}>
+          <CreateNewBadges />
+        </Route>
+        <Route path={"/badges/:account"}>
+          <BadgesList />
         </Route>
       </Switch>
         { 
-          showNotification && ( <Notification message={notificationMessage} networkId={networkId} /> ) 
+          notification && ( <Notification message={notificationMessage} networkId={networkId} /> ) 
         }
     </Router>
   )

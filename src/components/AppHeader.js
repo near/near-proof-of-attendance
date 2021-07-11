@@ -12,12 +12,7 @@ import getConfig from '../config'
 
 const { networkId } = getConfig(process.env.NODE_ENV || 'development')
 
-const styles = {
-  display: "flex",
-  flexDirection: "row",
-  float: "right",
-
-}
+const styles = {}
 
 export default function AppHeader() {
   

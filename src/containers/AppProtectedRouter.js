@@ -15,8 +15,8 @@ export const ProtectedRoute = ({
     (async () => {
       try {
         if (shouldRedirect) {
-          if (redirectUrl === "/depositCalculator" && true) {
-            history.replace("/loan");
+          if (redirectUrl === "/" && true) {
+            history.replace("/");
           } else {
             history.replace(redirectUrl);
           }
@@ -52,7 +52,7 @@ export const LoggedComponent = (props) => {
       try {
         setLogged(true);
         if (true) {
-          history.push("/deposit");
+          history.push("/");
         }
       } catch (error) {
         console.log(error);

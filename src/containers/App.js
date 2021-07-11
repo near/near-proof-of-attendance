@@ -1,4 +1,10 @@
-import React from 'react'
+import React from "react"
+
+import { 
+  Container, 
+  CssBaseline,
+
+} from "@material-ui/core";
 
 import { 
   AppRouter,
@@ -13,8 +19,9 @@ import {
 export default function App() {
   
   return (
-    <>
+    <Container >
       <AppRouter />
-    </>
+      <CssBaseline />
+    </Container>
   )
 }

@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 
 export default function BadgesHome() {
   const account = "proofofattedanceplayground.testnet.near"
+  const onKeyDown = (event) => {
+    console.log(event)
+    event.key === "Enter" ? console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`) : console.log("not enter")
+  }
   return (
     <>
       <h2>Verify attendance with Event Cred</h2>
       <br />
-      <input type="text" placeholder="NEAR Account Name" /> 
+      <input type="text" placeholder="NEAR Account Name" onKeyDown={onKeyDown}/> 
       {/* 2 column grid */}
       
       <Link to="/new">

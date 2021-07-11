@@ -1,21 +1,35 @@
 import React from "react";
+import {
+  Box,
+  Typography,
+  Button,
+} from "@material-ui/core";
 
-import { login } from '../utils';
+import { makeStyles } from '@material-ui/core/styles'
 
-const styles = {
-  textAlign: "center", 
-  marginTop: "2.5em",
 
-}
+import { 
+  login,
+
+} from '../utils';
+
+const useStyles = makeStyles(theme => ({}))
+
 
 function Home() {
+  const classes = useStyles();
   return (
-    <main>
-      <h1>Welcome to Event Cred</h1>
-      <p style={styles}>
-        <button onClick={login}>Sign in</button>
-      </p>
-    </main>
+    <Box>
+      <Box>
+        <Typography variant="h1" component="span" color="primary">
+          Welcome to Event Cred
+        </Typography>
+      </Box>
+      
+      <Box>
+        <Button onClick={login} color="primary" variant="outlined">Sign in</Button>
+      </Box>        
+    </Box>
   )
 }
 

@@ -1,35 +1,53 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
 
-import Notification from "./Notification";
+} from "@material-ui/core";
+import {
+  makeStyles,
 
-import { login, logout } from '../utils'
+} from "@material-ui/core/styles"
+
+import { Notification } from "./";
+
+import { login, logout } from "../utils";
 
 import { test_nft_mint } from "../nft";
 
-import getConfig from '../config'
+import getConfig from "../config";
 
+const { networkId } = getConfig(process.env.NODE_ENV || "development");
 
-const { networkId } = getConfig(process.env.NODE_ENV || 'development')
-
-const styles = {}
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-around",
+  }
+}));
 
 export default function AppHeader() {
-  
+  const classes = useStyles();
   return (
-    // use React Fragment, <>, to avoid wrapping elements in unnecessary divs
-    <>
-      <header style={styles}>
+    <AppBar>
+      <Toolbar className={classes.toolbar}>
         <Link to="/">
-          <p>Home</p>
+          <Typography variant="h6">
+            Home
+          </Typography>
         </Link>
-        <p>Network ID: { networkId } </p>
-        <button className="link" onClick={logout}>
+        <Typography variant="h6">
+          Network ID: { networkId }
+        </Typography>
+        <Link to="">
+        <Typography variant="h6" onClick={logout}>
           Sign out
-        </button>
-      </header>
-    </>
+        </Typography>
+        </Link>
+      </Toolbar>
+    </AppBar>
   )
 }
-
-

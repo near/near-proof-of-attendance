@@ -1,4 +1,7 @@
-import React from "react";
+import React, {
+  useState,
+  useRef,
+} from "react";
 import {
   Box,
   Grid,
@@ -11,7 +14,6 @@ import {
   TableBody,
   TableCell, 
   TableRow,
-  Divider,
 
 } from "@material-ui/core";
 
@@ -19,6 +21,14 @@ import {
   makeStyles,
 
 } from "@material-ui/core/styles";
+
+import {
+  importCSV
+} from "../utils/csv";
+import {
+  checkAccountIds
+} from "../utils/wallet"
+
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -30,22 +40,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 650,
   },
 }));
-
-function createAttendee(name, walletId, attended, attendedTime) {
-  const attendee = {
-    name, 
-    walletId, 
-    attended, 
-    attendedTime: attendedTime >= 30,
-  }
-  return attendee;
-}
-
-const attendeesList = [
-  createAttendee("Tony", "stark.near", true, 34),
-  createAttendee("Thor", "asgard.near", true, 29),
-  createAttendee("Steve", "captainrogers.near", true, 40),
-];
 
 const renderAttendee = (attendee, index) => {
   return (
@@ -72,6 +66,8 @@ const renderAttendee = (attendee, index) => {
 
 function AttendeesTable(props) {
   const classes = useStyles();
+  const { attendees } = props;
+
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
@@ -84,8 +80,12 @@ function AttendeesTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {
-            attendeesList.map(renderAttendee)
+          { 
+            attendees.length > 0 ? attendees.map(renderAttendee) : (
+                <TableRow>
+                  <TableCell>No attendees uploaded</TableCell>
+                </TableRow>
+              )
           }
         </TableBody>
       </Table>
@@ -95,6 +95,26 @@ function AttendeesTable(props) {
 
 export default function CreateNewBadges() {
   const classes = useStyles();
+  const [attendees, setAttendees] = useState([]);
+  const [accountsNotExist, setAccountsNotExist] = useState([]);
+  const inputFile = useRef(null);
+
+  const csvUpload = () => {
+    inputFile.current.click();
+  }
+
+  const onCSVUpload = (event) => {
+    const csv = importCSV(event, setAttendees);
+  }
+  
+  const validateNEARAccounts = () => {
+    // const walletIds = []
+    // attendees.map((attendee) => {
+    //   walletIds.push(attendee.walletId);
+    // });
+    checkAccountIds(attendees, setAccountsNotExist)
+  }
+
   return (
     <Box>
       <Typography variant="h2">
@@ -130,12 +150,30 @@ export default function CreateNewBadges() {
         {/* column 2 */}
         <Grid item xs={6}>
           <Grid item xs={12}>
-            <AttendeesTable />
+            <AttendeesTable attendees={attendees} />
           </Grid>
           <Grid item xs={12}>
-            <Button>
+            <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={onCSVUpload}/>
+            <Button onClick={csvUpload}>
               CSV Upload
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={onCSVUpload}/>
+            <Button onClick={validateNEARAccounts}>
+              Validate NEAR Accounts
+            </Button>
+          </Grid>
+          <Grid item xs={12}>
+            {
+              accountsNotExist.length > 0 && (
+                <>
+                This Wallet ID's do not exist
+                <AttendeesTable attendees={accountsNotExist} />
+                </>
+              )
+            }
+            
           </Grid>
         </Grid>
       </Grid>

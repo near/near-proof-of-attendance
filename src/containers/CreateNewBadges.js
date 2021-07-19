@@ -1,6 +1,8 @@
 import React, {
   useState,
   useRef,
+  useEffect,
+
 } from "react";
 import {
   Box,
@@ -8,12 +10,6 @@ import {
   Typography,
   Button,
   Paper,
-  TableContainer,
-  Table, 
-  TableHead, 
-  TableBody,
-  TableCell, 
-  TableRow,
 
 } from "@material-ui/core";
 
@@ -23,8 +19,14 @@ import {
 } from "@material-ui/core/styles";
 
 import {
+  AttendeesTable,
+
+} from "../components";
+
+import {
   importCSV
 } from "../utils/csv";
+
 import {
   checkAccountIds
 } from "../utils/wallet"
@@ -35,63 +37,8 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-  },
-  table: {
-    minWidth: 650,
-  },
+  }
 }));
-
-const renderAttendee = (attendee, index) => {
-  return (
-    <TableRow key={index}>
-      <TableCell>
-        { attendee.name }
-      </TableCell>
-      
-      <TableCell>
-        { attendee.walletId }
-      </TableCell>
-      
-      <TableCell>
-        { attendee.attended ? 'true' : 'false' }
-      </TableCell>
-      
-      <TableCell>
-        { attendee.attendedTime ? 'true' : 'false'}
-      </TableCell>
-      
-    </TableRow>
-  )
-}
-
-function AttendeesTable(props) {
-  const classes = useStyles();
-  const { attendees } = props;
-
-  return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell component="th" scope="row">Name</TableCell>
-            <TableCell>Wallet ID</TableCell>
-            <TableCell>Attended</TableCell>
-            <TableCell> Attended &#62; than 30 Minutes</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          { 
-            attendees.length > 0 ? attendees.map(renderAttendee) : (
-                <TableRow>
-                  <TableCell>No attendees uploaded</TableCell>
-                </TableRow>
-              )
-          }
-        </TableBody>
-      </Table>
-    </TableContainer>
-  )
-}
 
 export default function CreateNewBadges() {
   const classes = useStyles();
@@ -108,12 +55,18 @@ export default function CreateNewBadges() {
   }
   
   const validateNEARAccounts = () => {
-    // const walletIds = []
-    // attendees.map((attendee) => {
-    //   walletIds.push(attendee.walletId);
-    // });
-    checkAccountIds(attendees, setAccountsNotExist)
+    checkAccountIds(attendees, setAttendees, setAccountsNotExist)
   }
+  
+  const uploadJPG = () => {
+    
+  }
+  
+  const mintNFTs = () => {
+    console.log('attendees', attendees);
+    console.log('accountsNotExist', accountsNotExist);
+  }
+
 
   return (
     <Box>
@@ -121,9 +74,7 @@ export default function CreateNewBadges() {
         Create New Badges
       </Typography>
       <Grid container spacing={3}>
-        {/* 2 column grid */}
-        
-        {/* column 1 */}
+
         <Grid item xs={6}>
           <Grid item xs={12}>
             <Grid item xs={6}>
@@ -134,14 +85,14 @@ export default function CreateNewBadges() {
               </Paper>
             </Grid>
             <Grid item xs={6}>
-              <Button>
+              <Button onClick={uploadJPG}>
                 Upload JPEG/NFT
               </Button>
             </Grid>
           </Grid>
           
           <Grid item xs={12}>
-            <Button>
+            <Button onClick={mintNFTs}>
               Mint
             </Button>
           </Grid>
@@ -159,21 +110,24 @@ export default function CreateNewBadges() {
             </Button>
           </Grid>
           <Grid item xs={12}>
-            <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={onCSVUpload}/>
-            <Button onClick={validateNEARAccounts}>
-              Validate NEAR Accounts
-            </Button>
+            {
+              attendees.length > 0 && (
+                <Button onClick={validateNEARAccounts}>
+                  Validate NEAR Accounts
+                </Button>
+              )
+            }
           </Grid>
           <Grid item xs={12}>
             {
+              // For some weird reason we need to call setAccountsNotExist even though we are not rendering the below table.
               accountsNotExist.length > 0 && (
                 <>
-                This Wallet ID's do not exist
-                <AttendeesTable attendees={accountsNotExist} />
+                  These Wallet ID's do not exist
+                  <AttendeesTable attendees={accountsNotExist} />
                 </>
               )
             }
-            
           </Grid>
         </Grid>
       </Grid>

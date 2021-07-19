@@ -10,24 +10,21 @@ const config = {
 };
 const nearConnectConfig = Object.assign(config, nearConfig);
 
-export const checkAccountIds = async (accounts, callback) => {
+export const checkAccountIds = async (accounts, callback, callback2) => {
   const near = await connect(nearConnectConfig);
   const accountErrors = []
+  const accountsNoErrors = []
   accounts.map(async account => {
     try {
       await near.account(account.walletId)
-      console.log('account', account);
+      accountsNoErrors.push(account);
     } catch (error) {
-      console.dir('error', error)
-      console.log('account error', account);
       accountErrors.push(error);
-      // return account
-      // console.log(accountsNotExist)
     } finally {
-      console.dir(accountErrors)
-      const accountsNotExist = accounts.filter(account => accountErrors.find( error => error.message.includes(account.walletId)))
-      console.dir(accountsNotExist)
-      callback(accountsNotExist)
+      const accountsNotExist = accounts.filter(account => accountErrors.find( error => error.message.includes(account.walletId)));
+      callback(accountsNoErrors);
+      // For some weird reason we need to call setAccountsNotExist. In order to filter the attendees list with validateNEARAccounts.
+      callback2(accountsNotExist)
     }
   });
 

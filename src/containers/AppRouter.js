@@ -8,7 +8,8 @@ import {
 
 import {
   Home,
-  BadgesHome,
+  Landing,
+  // BadgesHome,
   CreateNewBadges,
   BadgesList,
   
@@ -23,7 +24,7 @@ import {
 import {
   networkId, 
   
-} from "../nft"
+} from "../utils/nft"
 
 export default function AppRouter() {
   const [notification, showNotification] = useState(false);
@@ -58,7 +59,7 @@ export default function AppRouter() {
         { window.walletConnection.isSignedIn() && (<AppHeader />)  }
         <Switch>
           <Route path={"/"} exact>
-              <BadgesHome />
+              <Home />
               <RenderNotification />
           </Route>
           
@@ -82,7 +83,7 @@ export default function AppRouter() {
             <RenderRouter />
           ) :  
           (
-            <Home />
+            <Landing />
           )
         }
       </>

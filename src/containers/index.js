@@ -2,7 +2,7 @@ import App from "./App";
 import AppRouter from "./AppRouter";
 import { ProtectedRoute, LoggedComponent } from "./AppProtectedRouter";
 import Home from "./Home";
-import BadgesHome from "./BadgesHome";
+import Landing from "./Landing"
 import CreateNewBadges from "./CreateNewBadges";
 import BadgesList from "./BadgesList";
 
@@ -11,8 +11,8 @@ export {
   AppRouter,
   ProtectedRoute, 
   LoggedComponent,
+  Landing,
   Home,
-  BadgesHome,
   CreateNewBadges,
   BadgesList,
 

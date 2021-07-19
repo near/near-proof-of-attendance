@@ -34,7 +34,6 @@ export const importCSV = (event, callback) => {
           encoding: fileEncoding,
         }),
       )
-      // setAttendees(csvData.data);
       const data = csvData.data;
       callback(csvData.data);
     }

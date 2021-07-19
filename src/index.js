@@ -7,7 +7,7 @@ import {
 
 } from "./containers";
 
-import { initContract } from "./nft";
+import { initContract } from "./utils/nft";
 
 import "./global.css"
 

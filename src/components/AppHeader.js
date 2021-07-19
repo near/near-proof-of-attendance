@@ -14,9 +14,9 @@ import {
 
 import { Notification } from "./";
 
-import { login, logout } from "../utils";
+import { login, logout } from "../utils/auth";
 
-import { test_nft_mint } from "../nft";
+// import { test_nft_mint } from "../utils/nft";
 
 import getConfig from "../config";
 

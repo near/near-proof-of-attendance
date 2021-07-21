@@ -2,6 +2,10 @@
 # Developer note: near.gitignore will be renamed to .gitignore upon project creation
 # dependencies
 node_modules/*
+node_modules/*
+!node_modules/near-api-js/
+node_modules/near-api-js/*
+!node_modules/near-api-js/*
 /.pnp
 .pnp.js
 /out

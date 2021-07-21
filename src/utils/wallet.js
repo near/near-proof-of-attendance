@@ -14,6 +14,12 @@ export const checkAccountIds = async (accounts, callback, callback2) => {
   const near = await connect(nearConnectConfig);
   const accountErrors = []
   const accountsNoErrors = []
+  // print nonexisting account
+  // console.log('await near.account(accounts[3].walletId)', await near.account(accounts[3].walletId));
+  // accounts[3].walletId = a non existing testaccount https://explorer.testnet.near.org/accounts/captainrogers.testnet
+  // const nonexisting = await near.account(accounts[3].walletId);
+  // const ready = await nonexisting.ready;
+  // console.log("Ready?", ready);
   accounts.map(async account => {
     try {
       await near.account(account.walletId)

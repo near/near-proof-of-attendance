@@ -58,6 +58,10 @@ export default function CreateNewBadges() {
     checkAccountIds(attendees, setAttendees, setAccountsNotExist)
   }
   
+  const initStorageSession = () => {
+    
+  }
+  
   const uploadJPG = () => {
     
   }
@@ -94,6 +98,12 @@ export default function CreateNewBadges() {
           <Grid item xs={12}>
             <Button onClick={mintNFTs}>
               Mint
+            </Button>
+          </Grid>
+          
+          <Grid item xs={12}>
+            <Button onClick={initStorageSession}>
+              Init Storage Session
             </Button>
           </Grid>
         </Grid>

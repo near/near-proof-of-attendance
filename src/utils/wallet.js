@@ -1,4 +1,4 @@
-import { Account, connect, keyStores } from "near-api-js";
+import { Account, connect, keyStores, providers } from "near-api-js";
 
 import getConfig from "../config";
 
@@ -10,19 +10,15 @@ const config = {
 };
 const nearConnectConfig = Object.assign(config, nearConfig);
 
+const provider = new providers.JsonRpcProvider(nearConfig.nodeUrl);
+
 export const checkAccountIds = async (accounts, callback, callback2) => {
   const near = await connect(nearConnectConfig);
   const accountErrors = []
   const accountsNoErrors = []
-  // print nonexisting account
-  // console.log('await near.account(accounts[3].walletId)', await near.account(accounts[3].walletId));
-  // accounts[3].walletId = a non existing testaccount https://explorer.testnet.near.org/accounts/captainrogers.testnet
-  // const nonexisting = await near.account(accounts[3].walletId);
-  // const ready = await nonexisting.ready;
-  // console.log("Ready?", ready);
-  accounts.map(async account => {
+  const accountChecks = accounts.map(async account => {
     try {
-      await near.account(account.walletId)
+      const queryAccount = await provider.query(`account/${account.walletId}`, "")
       accountsNoErrors.push(account);
     } catch (error) {
       accountErrors.push(error);
@@ -33,5 +29,4 @@ export const checkAccountIds = async (accounts, callback, callback2) => {
       callback2(accountsNotExist)
     }
   });
-
 }

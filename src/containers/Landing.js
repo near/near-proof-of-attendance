@@ -10,7 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 import { 
   login,
-
+  login2
 } from '../utils/auth';
 
 const useStyles = makeStyles(theme => ({}))
@@ -21,14 +21,14 @@ function Home() {
   return (
     <Box>
       <Box>
-        <Typography variant="h1" component="span" color="primary">
+        <Typography variant="h3" component="span" color="primary">
           Welcome to Event Cred
         </Typography>
       </Box>
-      
+      <br />
       <Box>
         <Button onClick={login} color="primary" variant="outlined">Sign in</Button>
-      </Box>        
+      </Box>     
     </Box>
   )
 }

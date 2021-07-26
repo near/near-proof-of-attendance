@@ -29,6 +29,12 @@ import {
 } from "../utils/csv";
 
 import {
+  importImage,
+  storeImage,
+  storeImageFirebase,
+} from "../utils/image";
+
+import {
   checkAccountIds,
 
 } from "../utils/wallet"
@@ -42,28 +48,44 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+// Dirty solution :/
+// hasDeposit is define outside of CreateNewBadges Hook in order to avoid "calling a setDeposit = setState() inside of a useEffect" warning.
+// hasDeposit is set true by default so it does not show up when redirect from Depositing NEAR Wallet Page back to the dApp.
+let hasDeposit = true;
+// let hasDeposit;
+
 export default function CreateNewBadges() {
   const classes = useStyles();
   const [attendees, setAttendees] = useState([]);
   const [accountsNotExist, setAccountsNotExist] = useState([]);
-  const inputFile = useRef(null);
-  const [hasDeposit, setDeposit] = useState(false);
-  
+  const [nftImage, setNFTImage] = useState(null);
+  const [imageFile, setImageFile] = useState('null');
+  const inputCSVFile = useRef(null);
+  const inputImageFile = useRef(null);
+
+  // const [hasDeposit, setDeposit] = useState(false);
+  const imageAlt = "image not successfully uploaded"
+
   const componentDidMount = () => {
-    // checkHasDeposit()
+    console.log('didMount hasDeposit', hasDeposit);
+    checkHasDeposit()
   }
   
   useEffect(componentDidMount, []);
   
   const checkHasDeposit = async () => {
-    const hasDeposit = await window.api.hasDeposit();
-    if(hasDeposit) {
-      setDeposit(true)
+    const deposit = await window.api.hasDeposit();
+    if(deposit) {
+      console.log('if deposit', deposit);
+      console.log('if hasDeposit', hasDeposit);
+      hasDeposit = true;
+      // the below line is commentted to avoid calling setState inside of a hook 
+      // setDeposit(deposit)
     }
   }
   
   const csvUpload = () => {
-    inputFile.current.click();
+    inputCSVFile.current.click();
   }
 
   const onCSVUpload = (event) => {
@@ -73,37 +95,44 @@ export default function CreateNewBadges() {
   const validateNEARAccounts = () => {
     checkAccountIds(attendees, setAttendees, setAccountsNotExist)
   }
-  
-  const initStorageSession = () => {
-    
-  }
 
   const addDeposit = async () => {
     try {
-      console.log('1');
       const deposit = await window.api.addDeposit();
-      console.log('2');
       setDeposit(true)
     } catch (error) {
       console.log('error in add deposit');
     }
   }
   
-  const uploadJPG = async () => {
-    const obj = {hello: 'world2'};
-    const blob = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
-      try {
-        const file = blob;
-        const store = await window.api.store(file)
-        console.log('store', store)
-      } catch (error) {
-        console.log('error in store', error);
-      }
+  const uploadImage = (image) => {
+    // console.log('setImage', image);
+    setNFTImage(image)
+  }
+  
+  const onChangeImageUpload = async (event) => {
+    const image = await importImage(event, uploadImage, setImageFile);
+  }
+  
+  const onClickStoreImage = () => {
+    // console.log('onClickStoreImage nftImage', nftImage);
+    // store(nftImage);
+    storeImage(nftImage);
+  }
+  
+  const onClickStoreImageFirebase = () => {
+    // console.log('nftImage', nftImage);
+    storeImageFirebase(imageFile, nftImage);
+  }
+    
+  const onClickUploadImage = () => {
+    inputImageFile.current.click();
   }
   
   const mintNFTs = () => {
     console.log('attendees', attendees);
     console.log('accountsNotExist', accountsNotExist);
+    console.log('nftImage', nftImage);
   }
   
   return (
@@ -119,17 +148,23 @@ export default function CreateNewBadges() {
             <Grid item xs={12}>
               <Paper className={classes.paper}>
                 <Box>
-                  Here we display how the NFT media looks like
+                  {
+                    nftImage ? (
+                      <img src={nftImage} alt={imageAlt}/>
+                    ) : (
+                      "Here we display how the NFT media looks like"
+                    )
+                  }
                 </Box>  
               </Paper>
             </Grid>
             
-            <br/>
-            <br/>
-            <br/>
-            
             {
               !hasDeposit && (
+                <>
+                <br/>
+                <br/>
+                <br/>
                 <Grid item xs={12}>  
                   <Grid item xs={12}>
                     <Typography variant="subtitle2">
@@ -143,26 +178,40 @@ export default function CreateNewBadges() {
                     </Button>
                   </Grid>
                 </Grid>
+                </>
               )
             }
             
             <br />
             <Grid item xs={12}>
-              <Button variant="contained" onClick={uploadJPG}>
+              <input type="file" ref={inputImageFile} style={{display: "none" }} onChange={onChangeImageUpload}/>
+              <Button variant="contained" onClick={onClickUploadImage}>
                 Upload JPEG/NFT
               </Button>
             </Grid>
+            
             <br />
+            <Grid item xs={12}>
+              <Button variant="contained" onClick={onClickStoreImageFirebase}>
+                Upload Firebase
+              </Button>
+            </Grid>
+            <br/>{
+              nftImage && (
+                <>
+                  <Grid item xs={12}>
+                    <Button variant="contained" onClick={onClickStoreImage}>
+                      Store NFT Image
+                    </Button>
+                  </Grid>
+                  <br />
+                </>
+              )
+            }
+
             <Grid item xs={12}>
               <Button variant="contained" onClick={mintNFTs}>
                 Mint NFT
-              </Button>
-            </Grid>
-          
-            <br />
-            <Grid item xs={12}>
-              <Button variant="contained" onClick={initStorageSession}>
-                Init Storage Session
               </Button>
             </Grid>
             
@@ -176,7 +225,7 @@ export default function CreateNewBadges() {
           </Grid>
           <br />
           <Grid item xs={12}>
-            <input type='file' id='file' ref={inputFile} style={{display: 'none'}} onChange={onCSVUpload}/>
+            <input type="file" ref={inputCSVFile} style={{display: "none"}} onChange={onCSVUpload}/>
             <Button variant="contained" onClick={csvUpload}>
               CSV Upload
             </Button>

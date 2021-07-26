@@ -20,8 +20,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const badgesList = [
-  { name: "Michael Jordan", media: "http://i.imgur.com/uxx7BQz.jpg" },
-  { name: "Kobe & Gianna Bryant", media: "http://i.imgur.com/ardmpqm.png" },
+  // { name: "Michael Jordan", media: "http://i.imgur.com/uxx7BQz.jpg" },
+  // { name: "Kobe & Gianna Bryant", media: "http://i.imgur.com/ardmpqm.png" },
+  { name: "Michael Jordan", media: "https://firebasestorage.googleapis.com/v0/b/proof-of-attendance.appspot.com/o/uxx7BQz.jpeg?alt=media" },
+  { name: "Kobe & Gianna Bryant", media: "https://firebasestorage.googleapis.com/v0/b/proof-of-attendance.appspot.com/o/ardmpqm.png?alt=media" },
 ];
 
 export default function BadgesList() {

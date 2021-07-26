@@ -31,6 +31,7 @@
     "dev:contract": "nodemon --watch contract -e ts",
     "test": "npm run build:contract:debug && cd contract && npm run test && cd .. && jest test --runInBand",
     "test:contract": "cd contract && yarn test",
+    "test:client": "jest ./src --runInBand",
     "heroku": "yarn dev:push:heroku",
     "dev:push:heroku": "git push heroku develop:master"
   },
@@ -50,8 +51,10 @@
     "shelljs": "~0.8.4"
   },
   "dependencies": {
+    "@filecoin-shipyard/lotus-client-schema": "^3.0.1",
     "@material-ui/core": "^4.12.1",
     "@textile/near-storage": "^6.0.2",
+    "firebase": "^8.8.0",
     "near-api-js": "0.42.0",
     "papaparse": "^5.3.1",
     "react": ">=16.9.0",

@@ -1,10 +1,12 @@
+import fleekStorage from "@fleekhq/fleek-storage-js";
 import PapaParse from "papaparse";
 
 import { FirebaseStorage } from "../config/firebase";
 
 export const importImage = async (event, callback, callback2) => {
+  // console.log('importImage');
   const files = event.target.files;
-  console.log('files', files);
+  // console.log('files', files);
   let reader = new FileReader();
 
   const onError = (error) => { 
@@ -38,7 +40,9 @@ export const importImage = async (event, callback, callback2) => {
         }),
       )
       const data = imageData.data;
+      // console.log('imageData', imageData);
       // console.log('data', data);
+      // console.log('files', files);
       const imageByteData = data[0][1];
       callback(imageByteData);
       callback2(files[0])
@@ -75,4 +79,31 @@ export const storeImageFirebase = async (filename, image) => {
     console.log('Uploaded a blob or file!');
   });
 
+}
+
+export const uploadToFleek = async (filename, data) => {
+  console.log('uploadToFleek');
+  const fleekStorageConfig = {
+      apiKey: "8vnmVUngN7iQXkMKtYsL5g==",
+      apiSecret: "fNRoSbOlCfGtPEqFgwkuOLUUAtUzZRyVgwwv4EeuoEE=",
+      bucket: "mrrobot16-team-bucket",
+      key: `proof-of-attendance/${filename}`,
+      data,
+  }
+  console.log('fleekStorageConfig', fleekStorageConfig);
+
+  const uploadedFile = await fleekStorage.upload(fleekStorageConfig);
+  console.log('uploadedFile', uploadedFile);
+  // const getFileConfig = {
+  //   ...fleekStorageConfig,
+  //   getOptions: [
+  //     'data',
+  //     'bucket',
+  //     'key',
+  //     'hash',
+  //     'publicUrl'
+  //   ]
+  // }
+  // const getFile = await fleekStorage.get(getFileConfig);
+  // console.log('getFile', getFile);
 }

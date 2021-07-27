@@ -51,6 +51,35 @@ export const importImage = async (event, callback, callback2) => {
   }
 }
 
+// filename: string
+// data: Blob coming from above function.
+export const uploadToFleek = async (filename, data) => {
+  console.log('uploadToFleek');
+  const fleekStorageConfig = {
+      apiKey: "8vnmVUngN7iQXkMKtYsL5g==",
+      apiSecret: process.env.REACT_APP_FLEEK_SECRET,
+      bucket: "mrrobot16-team-bucket",
+      key: `proof-of-attendance/${filename}`,
+      data,
+  }
+  console.log('fleekStorageConfig', fleekStorageConfig);
+
+  const uploadedFile = await fleekStorage.upload(fleekStorageConfig);
+  console.log('uploadedFile', uploadedFile);
+  // const getFileConfig = {
+  //   ...fleekStorageConfig,
+  //   getOptions: [
+  //     'data',
+  //     'bucket',
+  //     'key',
+  //     'hash',
+  //     'publicUrl'
+  //   ]
+  // }
+  // const getFile = await fleekStorage.get(getFileConfig);
+  // console.log('getFile', getFile);
+}
+
 export const storeImage = async (image) => {
   console.log('store image utils', image);
   const obj =  {hello123123: 'world2' };
@@ -81,29 +110,4 @@ export const storeImageFirebase = async (filename, image) => {
 
 }
 
-export const uploadToFleek = async (filename, data) => {
-  console.log('uploadToFleek');
-  const fleekStorageConfig = {
-      apiKey: "8vnmVUngN7iQXkMKtYsL5g==",
-      apiSecret: "fNRoSbOlCfGtPEqFgwkuOLUUAtUzZRyVgwwv4EeuoEE=",
-      bucket: "mrrobot16-team-bucket",
-      key: `proof-of-attendance/${filename}`,
-      data,
-  }
-  console.log('fleekStorageConfig', fleekStorageConfig);
 
-  const uploadedFile = await fleekStorage.upload(fleekStorageConfig);
-  console.log('uploadedFile', uploadedFile);
-  // const getFileConfig = {
-  //   ...fleekStorageConfig,
-  //   getOptions: [
-  //     'data',
-  //     'bucket',
-  //     'key',
-  //     'hash',
-  //     'publicUrl'
-  //   ]
-  // }
-  // const getFile = await fleekStorage.get(getFileConfig);
-  // console.log('getFile', getFile);
-}

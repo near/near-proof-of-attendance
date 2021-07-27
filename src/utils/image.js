@@ -52,7 +52,7 @@ export const importImage = async (event, callback, callback2) => {
 }
 
 // filename: string
-// data: Blob coming from above function.
+// data: Blob coming from line 46 in the above function importImage.
 export const uploadToFleek = async (filename, data) => {
   console.log('uploadToFleek');
   const fleekStorageConfig = {

@@ -51,7 +51,7 @@
     "shelljs": "~0.8.4"
   },
   "dependencies": {
-    "@filecoin-shipyard/lotus-client-schema": "^3.0.1",
+    "@fleekhq/fleek-storage-js": "^1.0.17",
     "@material-ui/core": "^4.12.1",
     "@textile/near-storage": "^6.0.2",
     "firebase": "^8.8.0",

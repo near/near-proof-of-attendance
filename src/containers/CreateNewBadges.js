@@ -5,7 +5,7 @@ import React, {
   useCallback
 } from "react";
 
-import fleekStorage from '@fleekhq/fleek-storage-js'
+import fleekStorage from "@fleekhq/fleek-storage-js";
 
 import {
   Box,
@@ -33,7 +33,7 @@ import {
 
 import {
   importImage,
-  storeImage,
+  storeImageTextile,
   storeImageFirebase,
   uploadToFleek,
 } from "../utils/image";
@@ -47,24 +47,31 @@ import {
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
     color: theme.palette.text.secondary,
+  },
+  button: {
+    marginRight: 20,
+  },
+  step: {
+    marginBottom: 5
   }
+  
 }));
 
 // Dirty solution :/
 // hasDeposit is define outside of CreateNewBadges Hook in order to avoid "calling a setDeposit = setState() inside of a useEffect" warning.
 // hasDeposit is set true by default so it does not show up when redirect from Depositing NEAR Wallet Page back to the dApp.
-let hasDeposit = false;
-// let hasDeposit;
+let hasDeposit = true;
 
 export default function CreateNewBadges() {
+  console.log('call me once?');
   const classes = useStyles();
   const [attendees, setAttendees] = useState([]);
   const [accountsNotExist, setAccountsNotExist] = useState([]);
   const [nftImage, setNFTImage] = useState(null);
   const [filePath, setFilePath] = useState("/Users/jedi/dOrg/NEAR/proof-of-attendance/src/constants/kobe-gianna.png");
-  const [imageFile, setImageFile] = useState('null');
+  const [imageFile, setImageFile] = useState(null);
   const inputCSVFile = useRef(null);
   const inputImageFile = useRef(null);
 
@@ -72,8 +79,7 @@ export default function CreateNewBadges() {
   const imageAlt = "image not successfully uploaded"
 
   const componentDidMount = () => {
-    // console.log('didMount hasDeposit', hasDeposit);
-    // checkHasDeposit()
+    checkHasDeposit()
   }
   
   useEffect(componentDidMount, []);
@@ -81,11 +87,15 @@ export default function CreateNewBadges() {
   const checkHasDeposit = async () => {
     const deposit = await window.api.hasDeposit();
     if(deposit) {
-      console.log('if deposit', deposit);
-      console.log('if hasDeposit', hasDeposit);
+      console.log("if deposit", deposit);
+      console.log("if hasDeposit", hasDeposit);
       hasDeposit = true;
       // the below line is commentted to avoid calling setState inside of a hook 
       // setDeposit(deposit)
+    }
+    else {
+      console.log("else deposit", deposit);
+      hasDeposit = false;
     }
   }
   
@@ -104,35 +114,29 @@ export default function CreateNewBadges() {
   const addDeposit = async () => {
     try {
       const deposit = await window.api.addDeposit();
-      setDeposit(true)
+      checkHasDeposit()
     } catch (error) {
       console.log('error in add deposit');
     }
   }
   
   const uploadImage = (image) => {
-    // console.log('setImage', image);
     setNFTImage(image)
-    // setFilePath("/Users/jedi/dOrg/NEAR/proof-of-attendance/src/constants/kobe-gianna.png")
   }
   
   const onChangeImageUpload = async (event) => {
     const image = await importImage(event, uploadImage, setImageFile);
   }
   
-  const onClickStoreImage = () => {
-    // console.log('onClickStoreImage nftImage', nftImage);
-    // store(nftImage);
-    storeImage(nftImage);
+  const onClickStoreImageTextile = () => {
+    storeImageTextile(nftImage);
   }
   
   const onClickStoreImageFirebase = () => {
-    // console.log('nftImage', nftImage);
     storeImageFirebase(imageFile, nftImage);
   }
   
   const onClickFleekUpload = () => {
-    console.log('onClickFleekUpload');
     uploadToFleek(imageFile.name, nftImage);
   }
     
@@ -141,6 +145,7 @@ export default function CreateNewBadges() {
   }
   
   const mintNFTs = () => {
+    console.log("here we all data(csv of attendees & nft image) gathered from UI and its sent to our server for it to be mint to all corresponding account id's")
     console.log('attendees', attendees);
     console.log('accountsNotExist', accountsNotExist);
     console.log('nftImage', nftImage);
@@ -148,7 +153,7 @@ export default function CreateNewBadges() {
   
   return (
     <Box>
-      <Typography variant="h2">
+      <Typography variant="subtitle1">
         Create New Badges
       </Typography>
       <br />
@@ -161,7 +166,7 @@ export default function CreateNewBadges() {
                 <Box>
                   {
                     nftImage ? (
-                      <img src={nftImage} alt={imageAlt}/>
+                      <img src={nftImage} alt={imageAlt} width={100}/>
                     ) : (
                       "Here we display how the NFT media looks like"
                     )
@@ -172,7 +177,7 @@ export default function CreateNewBadges() {
             
             <br />
             <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 1:</Typography>
+              <Typography variant="subtitle2" className={classes.step}>STEP 1:</Typography>
               <input type="file" ref={inputCSVFile} style={{display: "none"}} onChange={onCSVUpload}/>
               <Button variant="contained" onClick={csvUpload}>
                 CSV Upload
@@ -181,34 +186,32 @@ export default function CreateNewBadges() {
             
             <br />
             <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 2:</Typography>
+              <Typography variant="subtitle2" className={classes.step}>STEP 2:</Typography>
               <Button variant="contained" onClick={validateNEARAccounts}>
                 Validate NEAR Accounts
               </Button>
             </Grid>
-            
-            <br/>
-            
-            <Grid item xs={12}>  
-              
-              {/*
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">
-                  Before uploading NFT first deposit NEAR
-                </Typography>
-              </Grid> 
-              */}  
-              <Grid item xs={12}>
-                <Typography variant="subtitle2">STEP 2:</Typography>
-                <Button variant="contained" onClick={addDeposit}>
-                  Add Deposit
-                </Button>
-              </Grid>
-            </Grid>
-
+          
+            {
+              !hasDeposit && (
+                <>
+                  <br/>
+                  <Grid item xs={12}>  
+                    <Grid item xs={12}>
+                      <Typography variant="subtitle2" className={classes.step}>
+                        Before uploading NFT first deposit NEAR
+                      </Typography>
+                      <Button variant="contained" onClick={addDeposit}>
+                        Add Deposit
+                      </Button>
+                    </Grid> 
+                  </Grid>
+                </>
+              )
+            }
             <br />
             <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 3:</Typography>
+              <Typography variant="subtitle2" className={classes.step}>STEP 3:</Typography>
               <input type="file" ref={inputImageFile} style={{display: "none" }} onChange={onChangeImageUpload}/>
               <Button variant="contained" onClick={onClickUploadImage}>
                 Upload JPEG/NFT
@@ -217,31 +220,24 @@ export default function CreateNewBadges() {
             
             <br />
             <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 4:</Typography>
-              <Button variant="contained" onClick={onClickStoreImageFirebase}>
-                Upload Fleek
-              </Button>
+                <Typography variant="subtitle2" className={classes.step}>STEP 4:</Typography>
+                <Button variant="contained" className={classes.button} onClick={onClickFleekUpload}>
+                  Store Fleek
+                </Button>                
+
+                <Button variant="contained" className={classes.button} onClick={onClickStoreImageFirebase}>
+                  Store Firebase
+                </Button>                
+
+                <Button variant="contained" className={classes.button} onClick={onClickStoreImageTextile}>
+                  Store Textile
+                </Button>             
             </Grid>
             
             <br />
+
             <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 4:</Typography>
-              <Button variant="contained" onClick={onClickStoreImageFirebase}>
-                Upload Firebase
-              </Button>
-            </Grid>
-            
-            <br/>
-            <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 4:</Typography>
-              <Button variant="contained" onClick={onClickStoreImage}>
-                Store NFT Image
-              </Button>
-            </Grid>
-            
-            <br />
-            <Grid item xs={12}>
-              <Typography variant="subtitle2">STEP 5:</Typography>
+              <Typography variant="subtitle2" className={classes.step}>STEP 5:</Typography>
               <Button variant="contained" onClick={mintNFTs}>
                 Mint NFT
               </Button>

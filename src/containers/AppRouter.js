@@ -24,7 +24,7 @@ import {
 import {
   networkId, 
   
-} from "../utils/nft"
+} from "../utils/auth"
 
 export default function AppRouter() {
   const [notification, showNotification] = useState(false);

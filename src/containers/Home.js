@@ -15,6 +15,9 @@ import {
 
 } from "@material-ui/core/styles"
 
+// This function is made to test nft_mint contract function.
+// import { test_nft_mint } from "../utils/test";
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
@@ -48,7 +51,7 @@ export default function Home() {
           </Paper>
         </Grid>
         
-        {/* 2 column grid */}
+        {/* Below is two column grid */}
         
         {/* column 1 */}
         <Grid item xs={6}>

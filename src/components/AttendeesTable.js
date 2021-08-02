@@ -39,11 +39,11 @@ const renderAttendee = (attendee, index) => {
       </TableCell>
       
       <TableCell>
-        { attendee.attended ? 'true' : 'false' }
+        { attendee.attended ? "true" : "false" }
       </TableCell>
       
       <TableCell>
-        { attendee.attendedTime ? 'true' : 'false'}
+        { attendee.attendedTime ? "true" : "false"}
       </TableCell>
       
     </TableRow>

@@ -5,13 +5,11 @@ import {
   Button,
 } from "@material-ui/core";
 
-import { makeStyles } from '@material-ui/core/styles'
-
+import { makeStyles } from "@material-ui/core/styles";
 
 import { 
   login,
-  login2
-} from '../utils/auth';
+} from "../utils/auth";
 
 const useStyles = makeStyles(theme => ({}))
 
@@ -21,13 +19,13 @@ function Home() {
   return (
     <Box>
       <Box>
-        <Typography variant="h3" component="span" color="primary">
+        <Typography variant="h2">
           Welcome to Event Cred
         </Typography>
       </Box>
       <br />
       <Box>
-        <Button onClick={login} color="primary" variant="outlined">Sign in</Button>
+        <Button onClick={login} variant="outlined">Sign in</Button>
       </Box>     
     </Box>
   )

@@ -10,7 +10,5 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-// console.log('firebase', firebase);
 // Get a reference to the storage service, which is used to create references in your storage bucket
 export const FirebaseStorage = firebase.storage();
-// console.log('FirebaseStorage', FirebaseStorage);

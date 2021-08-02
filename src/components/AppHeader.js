@@ -16,8 +16,6 @@ import { Notification } from "./";
 
 import { login, logout } from "../utils/auth";
 
-// import { test_nft_mint } from "../utils/nft";
-
 import getConfig from "../config";
 
 const { networkId } = getConfig(process.env.NODE_ENV || "development");
@@ -43,9 +41,9 @@ export default function AppHeader() {
           Network ID: { networkId }
         </Typography>
         <Link to="">
-        <Typography variant="h6" onClick={logout}>
-          Sign out
-        </Typography>
+          <Typography variant="h6" onClick={logout}>
+            Sign out
+          </Typography>
         </Link>
       </Toolbar>
     </AppBar>

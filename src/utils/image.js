@@ -27,7 +27,7 @@ export const importImage = async (event, uploadImage, setImageFile) => {
 }
 
 // filename: string
-// data: Blob coming from above function.
+// data: Blob coming from line 46 in the above function importImage.
 export const uploadToFleek = async (filename, data) => {
   const fleekStorageConfig = {
       apiKey: process.env.REACT_APP_FLEEK_KEY,

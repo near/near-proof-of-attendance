@@ -1,6 +1,16 @@
 import firebase from "firebase";
 
+
 const firebaseConfig = {
+  apiKey: "AIzaSyCLdq4y99kNogzy3SCSTSd_5OikIrmYUzk",
+  authDomain: "proof-of-attendance.firebaseapp.com",
+  projectId: "proof-of-attendance",
+  storageBucket: "proof-of-attendance.appspot.com",
+  messagingSenderId: "137177721599",
+  appId: "1:137177721599:web:8ff8987a60a0dcee2b7aca"
+};
+
+const firebaseConfigENV = {
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: process.env.FIREBASE_AUTH_DOMAIN,
   projectId: process.env.FIREBASE_PROJECT_ID,

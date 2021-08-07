@@ -4,25 +4,16 @@ import { FirebaseStorage } from "../config/firebase";
 export const importImage = async (event, uploadImage, setImageFile) => {
   const files = event.target.files;
   let reader = new FileReader();
-
-  const onError = (error) => { 
-    console.log("error", error) 
-  }
-
-  if (files.length > 0) {
-    const fileInfo = {
-      name: files[0].name,
-      size: files[0].size,
-      type: files[0].type,
-    }
-    
-    const fileEncoding = "UTF-8"
-    console.log('files[0]', files[0]);
-    reader.onload = (event) => {
-      uploadImage(reader.result);
-      setImageFile(files[0]);
-    }
-    reader.readAsDataURL(files[0], fileEncoding);
+  const file = files[0];
+  if(file.type.substr(0, 5) === "image") {
+      const fileEncoding = "UTF-8";
+      reader.onloadend = (event) => {
+        uploadImage(reader.result); // uploadImage function comes from CreateNewBadges.js line 124.
+        setImageFile(file); // this for setting a filename. setImageFile(useState Setter) function is being passed from CreateNewBadges.js line 129.
+      }
+      reader.readAsDataURL(file, fileEncoding);
+  } else {
+    console.log("this is not an image you are trying to upload");
   }
 }
 
@@ -32,10 +23,10 @@ export const uploadToFleek = async (filename, data) => {
   const fleekStorageConfig = {
       apiKey: process.env.REACT_APP_FLEEK_KEY,
       apiSecret: process.env.REACT_APP_FLEEK_SECRET,
-      ContentType: 'image/png',
+      ContentType: 'image/png', // I tried doing this but it is irrelevant.
       bucket: "mrrobot16-team-bucket",
       key: `proof-of-attendance/${filename}`,
-      data,
+      data, // this comes from CreateNewBadges.js line 141
   }
   console.log('fleekStorageConfig', fleekStorageConfig);
 

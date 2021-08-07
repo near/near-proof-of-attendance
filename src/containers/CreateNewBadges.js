@@ -7,6 +7,8 @@ import React, {
 
 import fleekStorage from "@fleekhq/fleek-storage-js";
 
+import { SkynetClient } from "skynet-js";
+
 import {
   Box,
   Grid,
@@ -65,7 +67,6 @@ const useStyles = makeStyles((theme) => ({
 let hasDeposit = true;
 
 export default function CreateNewBadges() {
-  console.log('call me once?');
   const classes = useStyles();
   const [attendees, setAttendees] = useState([]);
   const [accountsNotExist, setAccountsNotExist] = useState([]);
@@ -121,7 +122,7 @@ export default function CreateNewBadges() {
   }
   
   const uploadImage = (image) => {
-    setNFTImage(image)
+    setNFTImage(image) // this comes from image.js line 11.
   }
   
   const onChangeImageUpload = async (event) => {
@@ -144,7 +145,31 @@ export default function CreateNewBadges() {
     inputImageFile.current.click();
   }
   
+  const onClickSkynet = async () => {
+    const file = "somefile"
+    const customOptions = {
+      portalFileFieldname: "filename",
+
+    }
+    try {
+      const customOptions = {
+        portalFileFieldname: "filename",
+
+      }
+      const client = new SkynetClient(customOptions);
+
+      console.log('clinet', client);
+      // const { skylink } = await client.uploadFile(file, customOptions);
+      console.log('await client.upload(file);', await client.uploadFile(client, file, customOptions));
+      // console.log('skylink', skylink);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   const mintNFTs = () => {
+    console.log('process.env', process.env);
+    console.log('process.env.REACT_APP_FLEEK_KEY', process.env.REACT_APP_FLEEK_KEY);
     console.log("here we all data(csv of attendees & nft image) gathered from UI and its sent to our server for it to be mint to all corresponding account id's")
     console.log('attendees', attendees);
     console.log('accountsNotExist', accountsNotExist);
@@ -212,12 +237,11 @@ export default function CreateNewBadges() {
             <br />
             <Grid item xs={12}>
               <Typography variant="subtitle2" className={classes.step}>STEP 3:</Typography>
-              <input type="file" ref={inputImageFile} style={{display: "none" }} onChange={onChangeImageUpload}/>
+              <input type="file" ref={inputImageFile} accept="image/*" style={{display: "none" }} onChange={onChangeImageUpload}/>
               <Button variant="contained" onClick={onClickUploadImage}>
                 Upload JPEG/NFT
               </Button>
             </Grid>
-            
             <br />
             <Grid item xs={12}>
                 <Typography variant="subtitle2" className={classes.step}>STEP 4:</Typography>
@@ -231,6 +255,10 @@ export default function CreateNewBadges() {
 
                 <Button variant="contained" className={classes.button} onClick={onClickStoreImageTextile}>
                   Store Textile
+                </Button>
+                
+                <Button variant="contained" onClick={onClickSkynet}>
+                  Store Skynet
                 </Button>             
             </Grid>
             

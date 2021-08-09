@@ -62,7 +62,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "regenerator-runtime": "~0.13.5",
-    "serve": "^12.0.0"
+    "serve": "^12.0.0",
+    "skynet-js": "^3.0.2"
   },
   "resolutions": {
     "@babel/preset-env": "7.13.8"

@@ -1,4 +1,5 @@
 import fleekStorage from "@fleekhq/fleek-storage-js";
+
 import { FirebaseStorage } from "../config/firebase";
 
 export const importImage = async (event, uploadImage, setImageFile) => {
@@ -8,8 +9,8 @@ export const importImage = async (event, uploadImage, setImageFile) => {
   if(file.type.substr(0, 5) === "image") {
       const fileEncoding = "UTF-8";
       reader.onloadend = (event) => {
-        uploadImage(reader.result); // uploadImage function comes from CreateNewBadges.js line 124.
-        setImageFile(file); // this for setting a filename. setImageFile(useState Setter) function is being passed from CreateNewBadges.js line 129.
+        uploadImage(reader.result);
+        setImageFile(file);
       }
       reader.readAsDataURL(file, fileEncoding);
   } else {
@@ -17,35 +18,38 @@ export const importImage = async (event, uploadImage, setImageFile) => {
   }
 }
 
-// filename: string
-// data: Blob coming from line 46 in the above function importImage.
-export const uploadToFleek = async (filename, data) => {
-  const fleekStorageConfig = {
+export const storeImageFleek = async (filename, data, setFleekUrl) => {
+  const config = {
       apiKey: process.env.REACT_APP_FLEEK_KEY,
       apiSecret: process.env.REACT_APP_FLEEK_SECRET,
-      ContentType: 'image/png', // I tried doing this but it is irrelevant.
       bucket: "mrrobot16-team-bucket",
       key: `proof-of-attendance/${filename}`,
-      data, // this comes from CreateNewBadges.js line 141
+      data,
   }
-  console.log('fleekStorageConfig', fleekStorageConfig);
 
-  const uploadedFile = await fleekStorage.upload(fleekStorageConfig);
-  console.log('uploadedFile', uploadedFile);
+  const uploadedFile = await fleekStorage.upload(config);
+  const url = `https://ipfs.fleek.co/ipfs/${uploadedFile.hash}`
+  window.open(url);
+  setFleekUrl(url)
 }
 
-// Calling this function requires making a deposit. 
-// Store an image image using "@textile/near-storage"
-export const storeImageTextile = async (image) => {
-  console.log('store image utils', image);
-  const obj =  {hello123123: 'world2' };
-  const blob = new Blob([JSON.stringify(obj, null, 2)], {type : 'application/json'});
+// For future storing alternative.
+export const storeImageTextile = async (image, filename, setNFTHash, checkHasDeposit) => {
     try {
+      const raw = {
+        image
+      }
+      const blob = new Blob([JSON.stringify(raw, null, 2)], { type: "application/json"});
       const file = blob;
-      const store = await window.api.store(file)
-      console.log('store', store)
+      const store = await window.api.store(file);
+      // console.log('store', store);
+      const url = `https://ipfs.io/ipfs/${store.cid["/"]}`;
+      window.open(url);
+      setNFTHash(url);
     } catch (error) {
       console.log('error in store', error);
+      checkHasDeposit();
+      alert("Before storing data using textile first make a deposit");    
     }
 }
 

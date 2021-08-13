@@ -20,6 +20,7 @@
     "dev:call:init": "node contract/scripts/init.js",
     "dev:call:nft_mint": "node contract/scripts/nft_mint.js",
     "dev:call:nft_transfer": "node contract/scripts/nft_transfer.js",
+    "dev:server": "cd server && yarn dev",
     "deploy:contract": "near deploy",
     "deploy:pages": "gh-pages -d dist/",
     "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",

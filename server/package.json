@@ -1,0 +1,26 @@
+{
+  "name": "proof-attendance-api",
+  "version": "1.0.0",
+  "description": "REST API for Proof of Attendance",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc -p .",
+    "prestart": "npm run build"
+  },
+  "dependencies": {
+    "@fleekhq/fleek-storage-js": "^1.0.17",
+    "@types/morgan": "^1.9.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "typescript": "^3.9.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.7",
+    "@types/express": "^4.17.7",
+    "nodemon": "^2.0.4",
+    "ts-node": "^8.10.2"
+  }
+}

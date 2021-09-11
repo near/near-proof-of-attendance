@@ -18,19 +18,21 @@ export const importImage = async (event, uploadImage, setImageFile) => {
   }
 }
 
-export const storeImageFleek = async (filename, data, setFleekUrl) => {
-  const config = {
-      apiKey: process.env.REACT_APP_FLEEK_KEY,
-      apiSecret: process.env.REACT_APP_FLEEK_SECRET,
-      bucket: "mrrobot16-team-bucket",
-      key: `proof-of-attendance/${filename}`,
-      data,
-  }
+export const storeImageFleek = async (file = [], setFleekUrl) => {
+  const form = new FormData();
+  const blob = new Blob([file]);
+  form.append("binary_data", blob);
+  form.append("filename", file.name);
 
-  const uploadedFile = await fleekStorage.upload(config);
-  const url = `https://ipfs.fleek.co/ipfs/${uploadedFile.hash}`
+  const response = await fetch('http://localhost:3000/fleek/upload', {
+    method: "POST",
+    body: form,
+  });
+  // const json = await response.json()
+  const { url } = await response.json()
+  console.log('url', url);
   window.open(url);
-  setFleekUrl(url)
+  setFleekUrl(url);
 }
 
 // For future storing alternative.

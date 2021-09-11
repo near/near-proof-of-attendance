@@ -35,5 +35,3 @@ yarn-debug.log*
 yarn-error.log*
 .cache
 dist
-server_examples
-express

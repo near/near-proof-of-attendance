@@ -39,7 +39,12 @@ import {
   storeImageFirebase,
   storeImageFleek,
 
-} from "../utils/image";
+} from "../utils/store";
+
+import {
+  mint,
+  
+} from "../utils/mint";
 
 import {
   checkAccountIds,
@@ -144,9 +149,7 @@ export default function CreateNewBadges() {
   }
 
   const onClickStoreImageFleek = async () => {
-    const filename = imageFile.name;
-    const data = await imageFile.arrayBuffer();
-    storeImageFleek(filename, data, setFleekUrl);
+    storeImageFleek(imageFile, setFleekUrl);
   }
 
   const onClickUploadImage = () => {
@@ -176,23 +179,9 @@ export default function CreateNewBadges() {
   }
   
   const onClickMintNFTs = () => {
-    // console.log('process.env', process.env);
-    // console.log('process.env.REACT_APP_FLEEK_KEY', process.env.REACT_APP_FLEEK_KEY);
-    console.log("here we all data(csv of attendees & nft image) gathered from UI and its sent to our server for it to be mint to all corresponding account id's")
-    console.log('attendees', attendees);
-    console.log('accountsNotExist', accountsNotExist);
-    // console.log('nftImage', nftImage.slice(0, 10));
-    console.log('fleekUrl', fleekUrl);
+    mint(attendees, fleekUrl);
   }
 
-  // Test if ipfs has url are working.
-  const onClickFetchNFT = async () => {
-    const ipfs = await fetch("https://ipfs.io/ipfs/QmTZnGUDrhjys8pG2xSbGYjnfnarQAvpoM9pzZKciYpkPw");
-    const json = await ipfs.json();
-    const image = json.image;
-    console.log("image", image.slice(0, 10));
-  }
-  
   return (
     <Box>
       <Typography variant="subtitle1">

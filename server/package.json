@@ -12,9 +12,12 @@
   "dependencies": {
     "@fleekhq/fleek-storage-js": "^1.0.17",
     "@types/morgan": "^1.9.3",
+    "@types/multer": "^1.4.7",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
+    "multer": "^1.4.3",
     "typescript": "^3.9.7"
   },
   "devDependencies": {

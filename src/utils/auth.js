@@ -22,11 +22,6 @@ export async function initContract() {
   const walletConnection = new WalletConnection(near)
   window.walletConnection = walletConnection;
 
-  // init filecoin bridge testnet for @textile/near-storage module
-  const filecoinConfig = {
-    contractId: 'filecoin-bridge.testnet',
-  }
-  window.api = await init(window.walletConnection.account(), filecoinConfig);
 
   // Getting the Account ID. If still unauthorized, it's just empty string
   window.accountId = window.walletConnection.getAccountId()

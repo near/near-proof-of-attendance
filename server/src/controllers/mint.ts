@@ -1,21 +1,51 @@
 import { Router, Request, Response } from "express";
-import {  } from "near-api-js"
+
+import { getEnvVariables } from "../utils/environment";
+import { NEAR } from "../services/near";
+import { Attendees } from "../types";
  
 const router = Router();
 
 const mint = async (request: Request, response: Response) => {
+  // In this object we call the NEAR 
+  const near = await NEAR.getInstance();
+  // console.log('near', near);
+  // In this endpoint we call the nft_mint method of our contract for each attendee. Through a loop.
   try {
     const { 
       body
     } = request as any
+    
     console.log('body', body);
-    const mint = { 
-      mint_property: 'some_mint_property' 
+    
+    const { attendees, url } = body;
+    
+    const token_metadata = {
+      "title": "SomeNFTTitle", 
+      "description": "SomeNFTDesci", 
+      "media": url,  
+      "media_hash": "what is media_hash?", 
+      "copies": attendees.length,
+      "issued_at": "05/28/2021", 
+      "expires_at": "05/28/2031", 
+      "starts_at": "05/28/2021", 
+      "updated_at": "what is updated_at?", 
+      "extra": "SomeNFTExtra", 
+      "reference": "SomeNFTReference", 
+      "reference_hash": "SomeNFTReferenceHash" 
     }
-    
-    // In this endpoint we call the nft_mint method of our contract for each attendee. Through a loop.
-    
-    response.status(200).json({ success: 'OK', mint });
+
+    // console.log('attendees', attendees);
+    // console.log("token_metadata", token_metadata);
+    attendees.map((attendee: Attendees) => {
+      // console.log("attendee", attendee)
+      // loop through all attendees and mint token for each near_account address
+    });
+    const data = {
+      attendees, 
+      token_metadata
+    }
+    response.status(200).json({ success: 'OK', data, near });
   } catch (error) {
     console.log("Error in mint", error);
     response.status(500).json({ error: true });

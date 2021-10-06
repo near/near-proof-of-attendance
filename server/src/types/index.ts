@@ -14,7 +14,8 @@ export interface NFTMetadata {
    icon: string; // Data URL
    base_uri: string; // Centralized gateway known to have reliable access to decentralized storage assets referenced by `reference` or `media` URLs
    reference: string; // URL to a JSON file with more info
-   reference_hash: u64; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
+   // reference_hash: u64; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
+   reference_hash: number; // Base64-encoded sha256 hash of JSON from reference field. Required if `reference` is included.
 }
 
 export interface ContractConfig {

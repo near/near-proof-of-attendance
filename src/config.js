@@ -1,4 +1,5 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1620252450193-6591749'
+// const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1620252450193-6591749'
+const CONTRACT_NAME = "proofofattedanceplayground.testnet"
 
 function getConfig(env) {
   env = "testnet"

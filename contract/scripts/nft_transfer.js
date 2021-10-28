@@ -30,7 +30,9 @@ const debug = process.argv.pop() === '--debug'
 //   ? 'npm run build:debug'
 //   : 'npm run build'
 
-const account_id = "johnq.testnet"
+// const account_id = "johnq.testnet"
+const account_id = "proofofattedanceplayground.testnet"
+const deposit_amount = "1";
 
 // this changes everytime we call nft_mint be sure to change after calling command nft_mint
 const token_id = random_token_id.token_id;
@@ -41,8 +43,10 @@ const token_transfer = {
   "memo": "someMemo" 
 }
 
+const contract = "proofofattedanceplayground.testnet"
 
-const nft_transfer_command = `near call dev-1620252450193-6591749 nft_transfer '${JSON.stringify(token_transfer)}' --accountId=${account_id}`
+// const nft_transfer_command = `near call dev-1620252450193-6591749 nft_transfer '${JSON.stringify(token_transfer)}' --accountId=${account_id}`
+const nft_transfer_command = `near call ${contract} nft_transfer '${JSON.stringify(token_transfer)}' --accountId ${account_id} --depositYocto 1`
 
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(nft_transfer_command)

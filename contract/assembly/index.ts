@@ -4,6 +4,7 @@ import {
   logging,
   storage,
   PersistentSet,
+  Context,
 } from "near-sdk-as";
 
 import {
@@ -56,7 +57,8 @@ export const TokensById = new PersistentMap<TokenId, Token>("i");
 // Hardcoded for now ownerId but this should be set upon deployment.
 // This should be a Escrow Account where the Event Manager would use for minting to attendees. TBD with Cameron.
 // export const OwnerId: AccountId = "johnq.testnet";
-export const OwnerId: AccountId = "proofofattedanceplayground.testnet"
+// export const OwnerId: AccountId = "proofofattedanceplayground.testnet"
+export const OwnerId: AccountId = Context.contractName;
 // For Testing suite use "carol";
 // export const OwnerId: AccountId = "carol";
 

@@ -29,7 +29,8 @@ const debug = process.argv.pop() === '--debug';
 //   ? 'npm run build:debug'
 //   : 'npm run build'
 
-const owner_id = "johnq.testnet";
+// const owner_id = "johnq.testnet";
+const owner_id = "proofofattedanceplayground.testnet";
 
 const init = {
   "owner_id": `${owner_id}`, 
@@ -44,9 +45,11 @@ const init = {
   }
 }
 
-const init_command = `
-near call dev-1620252450193-6591749 init '${JSON.stringify(init)}' --accountId=${owner_id}
-`;
+// const init_command = `
+// near call dev-1620252450193-6591749 init '${JSON.stringify(init)}' --accountId=${owner_id}
+// `;
+// const init_command = `near call dev-1634086167283-66501405407076 init '${JSON.stringify(init)}' --accountId=${owner_id}`
+const init_command = `near call proofofattedanceplayground.testnet init '${JSON.stringify(init)}' --accountId=${owner_id}`
 
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(init_command);

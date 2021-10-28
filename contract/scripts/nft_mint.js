@@ -50,7 +50,7 @@ const nft_token = {
   "metadata": { 
     "title": "SomeNFTTitle", 
     "description": "SomeNFTDesci", 
-    "media": "https://i.imgur.com/ardmpqm.png",  
+    "media": "https://ipfs.fleek.co/ipfs/bafybeiacydivfg63rxg7idoe6xamjcvwaf4ob47kii2sgxn5hkh2pupjga",  
     "media_hash": "what is media_hash?", 
     "copies": "3", 
     "issued_at": "05/28/2021", 
@@ -63,8 +63,11 @@ const nft_token = {
   }
 }
 
-const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '${JSON.stringify(nft_token)}' --accountId=johnq.testnet --amount=${deposit_amount}`;
+const contract = "proofofattedanceplayground.testnet"
 
+// const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '${JSON.stringify(nft_token)}' --accountId=johnq.testnet --amount=${deposit_amount}`;
+// const nft_mint_command = `near call dev-1634086167283-66501405407076 nft_mint '${JSON.stringify(nft_token)}' --accountId=proofofattedanceplayground.testnet --amount=${deposit_amount}`;
+const nft_mint_command = `near call ${contract} nft_mint '${JSON.stringify(nft_token)}' --accountId=proofofattedanceplayground.testnet --amount=${deposit_amount}`;
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(nft_mint_command);
 

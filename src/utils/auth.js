@@ -29,7 +29,7 @@ export async function initContract() {
   // Initializing our contract APIs by contract name and configuration
   const contractMethods = {
     // View methods are read only. They don't modify the state, but usually return some value.
-    viewMethods: [],
+    viewMethods: ["nft_tokens_for_owner", "nft_token"],
     // Change methods can modify the state. But you don't receive the returned value when called.
     // changeMethods: ['setGreeting', 'init'],
     changeMethods: ["init",'nft_mint'],
@@ -58,10 +58,10 @@ export function login() {
   // the private key in localStorage.
   
   // Old login logic below without @textile/near-storage module
-  // window.walletConnection.requestSignIn(nearConfig.contractName)
+  window.walletConnection.requestSignIn(nearConfig.contractName)
   
   // login logic with @textile/near-storage module. This will be remove if we end not using @textile/near-storage module
-  requestSignIn(window.walletConnection, {});
+  // requestSignIn(window.walletConnection, {});
 }
 
 

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { Link } from "react-router-dom";
 import {
   Box,
@@ -31,10 +31,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const account = "proofofattedanceplayground.testnet.near";
+  const [account, setAccount] = useState("proofofattedanceplayground.testnet.near");
+  // const account = "proofofattedanceplayground.testnet.near";
   
   const onKeyDown = (event) => {
-    console.log(event)
+    console.log(event.target.value)
+    setAccount(event.target.value)
     event.key === "Enter" ? console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`) : console.log("not enter")
   }
 

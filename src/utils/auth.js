@@ -1,4 +1,4 @@
-import { connect, Contract, keyStores, WalletConnection } from "near-api-js"
+import { connect, Contract, keyStores, WalletConnection, utils } from "near-api-js"
 import { init, requestSignIn } from "@textile/near-storage"
 
 import getConfig from "../config"
@@ -15,11 +15,13 @@ export async function initContract() {
   }
 
   const near = await connect(nearConnectConfig);
+  // console.log('near', near);
 
   // Needed to access wallet
   // Initializing Wallet based Account. It can work with NEAR testnet wallet that
   // is hosted at https://wallet.testnet.near.org
   const walletConnection = new WalletConnection(near)
+  // console.log('walletConnection', walletConnection);
   window.walletConnection = walletConnection;
 
 
@@ -43,6 +45,28 @@ export async function initContract() {
       balance: (await walletConnection.account().state()).amount
     };
   }
+  
+  // const nearConfig = getConfig(NODE_ENV || "development");
+  // const privateKey = '31gkNPyXuFm7FnsceP6QXSAov1NjGwV4Zy1PXX934B97Z36vd9w1jrQQExtsHwA5cKCuyVVvXRdnkCHHeCES1qdU';
+  // const keyPair = utils.KeyPair.fromString(privateKey); 
+  // const keyStore = new keyStores.InMemoryKeyStore();
+  // 
+  // keyStore.setKey('testnet', "proofofattedanceplayground.testnet", keyPair);
+  // // 
+  // const deps = {
+  //   keyStore
+  // }
+  // 
+  // const nearConnectConfig2 = {
+  //   deps,
+  //   ...nearConfig
+  // }
+  // const near_private_key = await connect(nearConnectConfig2);
+  // console.log('near_private_key', near_private_key);
+  // const CONTRACT_NAME = "proofofattedanceplayground.testnet";
+  // const account = await near_private_key.account(CONTRACT_NAME);
+  // // this.account = account;
+  // console.log('account', account);
 }
 
 export function logout() {

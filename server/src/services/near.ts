@@ -1,4 +1,4 @@
-import { connect, Contract, keyStores, WalletConnection, utils, transactions, Account } from "near-api-js";
+import { connect, Contract, keyStores, WalletConnection, utils, transactions, Account, providers } from "near-api-js";
 import BN from "bn.js";
 
 import { getConfig } from "../config/contract";
@@ -8,6 +8,10 @@ import { TokenId, AccountId, NFTMetadata, TokenMetadata } from "../types";
 // const CONTRACT_NAME = "proofofattedanceplayground.testnet";
 // const CONTRACT_OWNER = "proofofattedanceplayground.testnet"
 const { NODE_ENV, CONTRACT_OWNER_PRIVATE_KEY, PLAYGROUND, CONTRACT_NAME, CONTRACT_OWNER } = getEnvVariables();
+
+const provider = new providers.JsonRpcProvider(
+  "https://rpc.testnet.near.org"
+);
 
 export class NEAR {
   public accountId: AccountId | null = null;
@@ -53,6 +57,58 @@ export class NEAR {
       this._instance = instance;
     }
     return this._instance;
+  }
+  
+  public async getState(query?: any) {
+    
+    //  query = {
+    //   request_type: "call_function",
+    //   account_id: "guest-book.testnet",
+    //   method_name: "getMessages",
+    //   args_base64: "e30=",
+    //   finality: "optimistic",
+    // }  
+    // 
+    // query = {
+    //   request_type: "call_function",
+    //   account_id: CONTRACT_NAME,
+    //   method_name: "nft_tokens_for_owner",
+    //   args_base64: "e30=",
+    //   finality: "optimistic",
+    // }
+    // 
+    // const query2 = {
+    //   request_type: "call_function",
+    //   account_id: CONTRACT_NAME,
+    //   method_name: "nft_token",
+    //   args_base64: "e30=",
+    //   finality: "optimistic",
+    // }
+    
+    // const rawResult = await provider.query(query);
+    // const rawResult2 = await provider.query(query2);
+    // format result
+    // console.log("rawResult", rawResult);
+    // console.log("rawResult2", rawResult2);
+    // const res = JSON.parse(Buffer.from(rawResult.result).toString());
+    // const res = JSON.parse(Buffer.from((rawResult as any).result).toString())
+    // console.log('res', res);
+    // return 'res'
+    // this.account
+  }
+  
+  public async instanciateContract() {
+    // this.connection = near;
+    // const walletConnection = new WalletConnection(near)
+    // // Initializing our contract APIs by contract name and configuration
+    // const contractMethods = {
+    //   // View methods are read only. They don't modify the state, but usually return some value.
+    //   viewMethods: ["nft_tokens_for_owner", "nft_token"],
+    //   // Change methods can modify the state. But you don't receive the returned value when called.
+    //   // changeMethods: ['setGreeting', 'init'],
+    //   changeMethods: ["init",'nft_mint'],
+    // }
+    // this.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, contractMethods);
   }
 
   public async mint(owner_id?: AccountId, token_id?: TokenId, metadata?: TokenMetadata) {
@@ -107,22 +163,36 @@ export class NEAR {
   
   public async tokens_for_owner(accountId: string) {
     const args = {
-      // owner_id: "johnq.testnet",
       account_id: accountId ? accountId : "johnq.testnet",
-      // token_id: random_token_id,
     }
-    const contractId = "proofofattedanceplayground.testnet"
-    const methodName = "nft_tokens_for_owner"
-    const functionCallData = {
-      contractId,
-      methodName,
-      args,
-      // gas: this.attachedDeposit,
-      attachedDeposit: this.attachedDeposit,
-    }
-    const result = await this.account.functionCall(functionCallData);
-    console.log('result', result);
+    let methodName = "nft_tokens_for_owner"
+    const result = await this.account.viewFunction(CONTRACT_NAME, methodName, args);
+    return result
   }
+  
+  public async nft_token_per_owner(accountId: string) {
+    const token_ids = await this.tokens_for_owner(accountId);
+    const methodName = "nft_token";
+    // console.log(Promise)
+    // console.log('token_ids', token_ids);
+    const tokens = token_ids.map(async (token_id: string, index: number) => {
+      // if(index == 0 ) {
+        const args = {
+          token_id,
+        }
+        // console.log('this.account', this.account)
+        const result = await this.account.viewFunction(CONTRACT_NAME, methodName, args);
+        // console.log('result', result);
+        return result;
+      // }
+      // return;
+    });
+    const nfts = Promise.all(tokens);
+    return await nfts
+    // console.log('tokens', tokens)
+    // return tokens
+  }
+
 }
 
 

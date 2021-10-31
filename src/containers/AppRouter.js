@@ -52,43 +52,30 @@ export default function AppRouter() {
   const RenderAppHeader = () => {
     return window.walletConnection.isSignedIn() && (<AppHeader />) 
   }
-
-  const RenderRouter = () => {
-    return (
-      <Router> 
-        { window.walletConnection.isSignedIn() && (<AppHeader />)  }
-        <Switch>
-          <Route path={"/"} exact>
+  
+  return (
+    <>
+      {isSignedIn ? (
+        <Router>
+          {window.walletConnection.isSignedIn() && <AppHeader />}
+          <Switch>
+            <Route path={"/"} exact>
               <Home />
               <RenderNotification />
-          </Route>
-          
-          <Route path={"/new"}>
-           <CreateNewBadges />
-          </Route>
-          
-          <Route path={"/badges/:account"}>
-           <BadgesList />
-          </Route>
-        </Switch>
-      </Router>
-    )
-  }
+            </Route>
 
-  const RenderAppRouter = () => {
-    return (
-      <>
-        {
-          isSignedIn ? (
-            <RenderRouter />
-          ) :  
-          (
-            <Landing />
-          )
-        }
-      </>
-    )
-  }
+            <Route path={"/new"}>
+              <CreateNewBadges />
+            </Route>
 
-  return <RenderAppRouter />
+            <Route path={"/badges/:account"}>
+              <BadgesList />
+            </Route>
+          </Switch>
+        </Router>
+      ) : (
+        <Landing />
+      )}
+    </>
+  )
 }

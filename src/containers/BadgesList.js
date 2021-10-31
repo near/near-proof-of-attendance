@@ -33,14 +33,13 @@ const badgesList = [
 export default function BadgesList() {
   const classes = useStyles();
   const params = useParams();
-  const [badges, setBadges] = useState(badgesList);
+  const [badges, setBadges] = useState([]);
 
   const getBadges = async () => {
     const badges = await query(params.account, setBadges);
-    if(badges.error) {
-      return;
-    }
-    setBadges(badges.data)
+    if(!badges.error) {
+      setBadges(badges.data.tokens_for_owner);
+    }    
   }
 
   const componentDidMount = () => {
@@ -64,7 +63,7 @@ export default function BadgesList() {
   
   const mapBadgeItems = (badge, index) => {
     return (
-      <BadgeItem key={index} name={badge.name} title={badge.title} media={badge.media}/>
+      badge.metadata ? <BadgeItem key={index} name={badge.metadata.title} title={badge.metadata.title} media={badge.metadata.media}/> : <></>
     )
   }
   
@@ -83,11 +82,11 @@ export default function BadgesList() {
       <Typography variant="h2">
         Attendance Badge List
       </Typography>
-      <Grid item xs={12}>
+      {/*<Grid item xs={12}>
         <Button variant="contained" onClick={getBadges}>
           Get Badges
         </Button>
-      </Grid>
+      </Grid>*/}
       <BadgesList />
     </Box>
   )

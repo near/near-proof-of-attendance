@@ -17,13 +17,20 @@ const bagdesByWalletId = async (request: Request, response: Response) => {
       params
     } = request as any;
     // await near.tokens_for_owner(params.walletId);
-    console.log('walletId', params.walletId);
-    const tokens_for_owner = await near.tokens_for_owner(params.walletId);
+    // console.log('walletId', params.walletId);
+    const query = {
+      walletId: params.walletId,
+  
+    }
+
+    // const tokens_for_owner = await near.tokens_for_owner(params.walletId);
+    const tokens_for_owner = await near.nft_token_per_owner(params.walletId);
+    // const tokens_for_owner = await near.getState()
     // console.log('tokens_for_owner', tokens_for_owner)
     // const tokens_for_owner = {}
     response.status(200).json({ success: 'OK', tokens_for_owner });
   } catch (error) {
-    console.log("Error in mint", error);
+    console.log("Error in bagdesByWalletId", error);
     response.status(500).json({ error: true });
   }
   

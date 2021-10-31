@@ -15,7 +15,6 @@ export async function initContract() {
   }
 
   const near = await connect(nearConnectConfig);
-  // console.log('near', near);
 
   // Needed to access wallet
   // Initializing Wallet based Account. It can work with NEAR testnet wallet that
@@ -23,7 +22,6 @@ export async function initContract() {
   const walletConnection = new WalletConnection(near)
   // console.log('walletConnection', walletConnection);
   window.walletConnection = walletConnection;
-
 
   // Getting the Account ID. If still unauthorized, it's just empty string
   window.accountId = window.walletConnection.getAccountId()
@@ -33,8 +31,8 @@ export async function initContract() {
     // View methods are read only. They don't modify the state, but usually return some value.
     viewMethods: ["nft_tokens_for_owner", "nft_token"],
     // Change methods can modify the state. But you don't receive the returned value when called.
-    // changeMethods: ['setGreeting', 'init'],
-    changeMethods: ["init",'nft_mint'],
+    changeMethods: [],
+    // changeMethods: ["init", "nft_mint"],
   }
   
   window.contract = await new Contract(window.walletConnection.account(), nearConfig.contractName, contractMethods);
@@ -45,28 +43,6 @@ export async function initContract() {
       balance: (await walletConnection.account().state()).amount
     };
   }
-  
-  // const nearConfig = getConfig(NODE_ENV || "development");
-  // const privateKey = '31gkNPyXuFm7FnsceP6QXSAov1NjGwV4Zy1PXX934B97Z36vd9w1jrQQExtsHwA5cKCuyVVvXRdnkCHHeCES1qdU';
-  // const keyPair = utils.KeyPair.fromString(privateKey); 
-  // const keyStore = new keyStores.InMemoryKeyStore();
-  // 
-  // keyStore.setKey('testnet', "proofofattedanceplayground.testnet", keyPair);
-  // // 
-  // const deps = {
-  //   keyStore
-  // }
-  // 
-  // const nearConnectConfig2 = {
-  //   deps,
-  //   ...nearConfig
-  // }
-  // const near_private_key = await connect(nearConnectConfig2);
-  // console.log('near_private_key', near_private_key);
-  // const CONTRACT_NAME = "proofofattedanceplayground.testnet";
-  // const account = await near_private_key.account(CONTRACT_NAME);
-  // // this.account = account;
-  // console.log('account', account);
 }
 
 export function logout() {

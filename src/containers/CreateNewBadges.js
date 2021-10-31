@@ -179,7 +179,7 @@ export default function CreateNewBadges() {
   }
   
   const onClickMintNFTs = () => {
-    mint(attendees, fleekUrl);
+    mint(attendees, fleekUrl, imageFile.name);
   }
 
   return (

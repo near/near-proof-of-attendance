@@ -63,7 +63,7 @@ export default function BadgesList() {
   
   const mapBadgeItems = (badge, index) => {
     return (
-      badge.metadata ? <BadgeItem key={index} name={badge.metadata.title} title={badge.metadata.title} media={badge.metadata.media}/> : <></>
+      badge.metadata && <BadgeItem key={index} name={badge.metadata.title} title={badge.metadata.title} media={badge.metadata.media} />
     )
   }
   

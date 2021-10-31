@@ -1,5 +1,3 @@
-
-
 const postData = async (url = '', data = {}) => {
   const config = {
       method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -23,8 +21,8 @@ const postData = async (url = '', data = {}) => {
   }
 }
 
-export const mint = async (attendees = [], url) => {
+export const mint = async (attendees = [], url, filename) => {
   const endpoint = "http://localhost:3000/mint"
-  const json = await postData(endpoint, { attendees, url })
+  const json = await postData(endpoint, { attendees, url, filename })
   console.log('json', json);
 }

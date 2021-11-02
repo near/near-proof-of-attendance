@@ -2,7 +2,6 @@ import { Router, Request, Response } from "express";
 
 import { getEnvVariables } from "../utils/environment";
 import { NEAR } from "../services/near";
-import { Attendees } from "../types";
  
 const router = Router();
 

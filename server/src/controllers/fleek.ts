@@ -1,7 +1,6 @@
 import { Router, Request, Response } from "express";
 import fleek from "@fleekhq/fleek-storage-js";
 import multer from "multer";
-import { readFile } from "node:fs"
 
 import { getEnvVariables } from "../utils/environment";
 

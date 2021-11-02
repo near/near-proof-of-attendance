@@ -33,7 +33,7 @@ export const upload = async (request: Request, response: Response) => {
     response.status(200).json({ success: 'OK', url });
   } catch (error) {
     console.log("Error in upload", error);
-    response.status(500).json({ error: true });
+    response.status(500).json({ error: true, message: error });
   }
 };
 

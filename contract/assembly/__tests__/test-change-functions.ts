@@ -3,6 +3,7 @@ import {
   init,
   nft_mint,
   nft_transfer,
+  nft_mint_batch,
   OwnerId,
 } from "../index";
 
@@ -11,6 +12,12 @@ import {
   TokenMetadata,
 
 } from "../metadata";
+
+import {
+  attendees,
+  attendees_long,
+
+} from "../attendees";
 
 // import {
 //   consoleLog
@@ -82,4 +89,24 @@ export const test_nft_transfer = (): void => {
   VMContext.setAttached_deposit(attachedDepositTransfer);
   VMContext.setPredecessor_account_id(OwnerId);
   nft_transfer(new_receiver_id, TokenId, approval_id, memo);
+}
+
+export const test_nft_mint_batch = (): void => {
+  test_init(); 
+  const attachedDeposit = u128.from(90000000);
+  const accountBalance =  u128.from(90000000000);
+  // Where and What should these hashes be?
+  const media_hash = 123123;
+  const copies = 10
+  const reference_hash = 232323;
+  const token_metadata: TokenMetadata = new TokenMetadata(
+    "SomeNFTTitleasdasdasd", "SomeDescription", "https://i.imgur.com/ardmpqm.png", media_hash, 
+    copies, "05/28/2021", "05/28/2031", "05/28/2021", 
+    "what is updated_at?", "SomeNFTExtra", "SomeNFTReference", reference_hash
+  );
+  VMContext.setAccount_balance(accountBalance)
+  VMContext.setAttached_deposit(attachedDeposit);
+  VMContext.setPredecessor_account_id(OwnerId);
+  // nft_mint_batch(attendees, token_metadata);
+  nft_mint_batch(attendees_long, token_metadata);
 }

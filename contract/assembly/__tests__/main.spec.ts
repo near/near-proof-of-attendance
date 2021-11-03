@@ -3,6 +3,7 @@ import {
   test_nft_mint,
   test_nft_mint2,
   test_nft_transfer,
+  test_nft_mint_batch,
 } from "./test-change-functions";
 
 import {
@@ -15,6 +16,8 @@ describe("Tests for NEP171 Contract", () => {
     it("should init contract and set contract NFTMetadata", test_init);
     
     it("should mint nft token metadata", test_nft_mint);
+    
+    // it("should mint nft token metadata in batch", test_nft_mint_batch);
     
     it("should mint another nft token metadata for same above owner", test_nft_mint2);
     

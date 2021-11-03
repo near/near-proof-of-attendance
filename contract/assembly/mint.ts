@@ -32,9 +32,9 @@ import {
   AccountId,
 } from "./types";
 
-// import {
-//   consoleLog
-// } from "./utils";
+import {
+  consoleLog
+} from "./utils";
 
 // renaming this to internal for now. But should find a way to make this specific function public. In theory this function should be called "nft_mint";
 export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
@@ -61,3 +61,14 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   // logging.log("after refund_deposit()");
   // logging.log("I WORK!");
 }
+
+export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
+  for (let index = 0; index < owner_ids.length; ++index) {
+    consoleLog("index");
+    consoleLog(index.toString());
+    const random = (Math.random() * 10).toString().slice(0,10);
+    const random_token_id: string = owner_ids[index] + '.' + random + '.token_id';
+    internal_nft_mint(owner_ids[index], random_token_id, metadata);  
+  }
+}
+

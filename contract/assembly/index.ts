@@ -14,6 +14,7 @@ import {
 
 import {
   internal_nft_mint,
+  internal_nft_mint_batch,
 } from "./mint";
 
 import {
@@ -78,6 +79,10 @@ export function init(owner_id: AccountId, metadata: NFTMetadata): void {
 
 export function nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
   internal_nft_mint(owner_id, token_id, metadata);
+}
+
+export function nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
+  internal_nft_mint_batch(owner_ids, metadata);
 }
 
 export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval_id: u64, memo: string): void {

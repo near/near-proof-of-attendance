@@ -94,7 +94,7 @@ export const test_nft_transfer = (): void => {
 export const test_nft_mint_batch = (): void => {
   test_init(); 
   const attachedDeposit = u128.from(90000000);
-  const accountBalance =  u128.from(90000000000);
+  const accountBalance =  u128.from(9000000000);
   // Where and What should these hashes be?
   const media_hash = 123123;
   const copies = 10

@@ -41,7 +41,7 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   const initial_storage_usage = Context.storageUsage;
   const initial_attached_deposit = Context.attachedDeposit
   assert_owner();
-  logging.log("after assert_owner()");
+  // logging.log("after assert_owner()");
   const emptyMap = new Map<AccountId, i32>();
   
   const token: Token = new Token(owner_id, emptyMap, 0, metadata);
@@ -54,19 +54,20 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   TokenMetadataById.set(token_id, metadata);
   
   internal_add_token_to_owner(token.owner_id, token_id);
-  logging.log("after internal_add_token_to_owner()");
+  // logging.log("after internal_add_token_to_owner()");
   const new_token_size_in_bytes = Context.storageUsage - initial_storage_usage;
   const required_storage_in_bytes = ExtraStorageInBytesPerToken + new_token_size_in_bytes;
   refund_deposit(required_storage_in_bytes);
   // logging.log("after refund_deposit()");
-  // logging.log("I WORK!");
+  logging.log("I WORK!");
+  consoleLog('I WORK!');
 }
 
 export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
   for (let index = 0; index < owner_ids.length; ++index) {
-    consoleLog("index");
-    consoleLog(index.toString());
-    const random = (Math.random() * 10).toString().slice(0,10);
+    // consoleLog("index");
+    // consoleLog(index.toString());
+    const random = (Math.random() * 10).toString().slice(0, 5);
     const random_token_id: string = owner_ids[index] + '.' + random + '.token_id';
     internal_nft_mint(owner_ids[index], random_token_id, metadata);  
   }

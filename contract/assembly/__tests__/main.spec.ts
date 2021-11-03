@@ -17,7 +17,7 @@ describe("Tests for NEP171 Contract", () => {
     
     it("should mint nft token metadata", test_nft_mint);
     
-    // it("should mint nft token metadata in batch", test_nft_mint_batch);
+    it("should mint nft token metadata in batch", test_nft_mint_batch);
     
     it("should mint another nft token metadata for same above owner", test_nft_mint2);
     

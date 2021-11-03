@@ -29,10 +29,11 @@ export const storeImageFleek = async (file = [], setFleekUrl) => {
     body: form,
   });
   // const json = await response.json()
-  const { url } = await response.json()
-  console.log('url', url);
-  window.open(url);
-  setFleekUrl(url);
+  const { url } = await response.json();
+  if(url) {
+    window.open(url);
+    setFleekUrl(url);
+  }
 }
 
 // For future storing alternative.

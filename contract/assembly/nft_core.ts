@@ -68,9 +68,9 @@ export function internal_nft_total_supply(): i32 {
 
 // should return JsonToken.
 export function internal_nft_token(token_id: TokenId): JsonToken | null {
-  const token: Token | null = TokensById.get(token_id);
+  const token = TokensById.get(token_id);
   if(token) {
-    const metadata: TokenMetadata | null = TokenMetadataById.get(token_id, null);
+    const metadata = TokenMetadataById.get(token_id, null);
     const json_token = new JsonToken(token_id, token.owner_id, metadata, token.approved_account_ids);
     return json_token;
   }

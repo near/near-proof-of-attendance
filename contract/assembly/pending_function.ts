@@ -2,7 +2,7 @@ import {
   u128,
   Context,
   storage,
-  logging,,
+  logging,
 } from "near-sdk-as";
 
 import {

@@ -1,6 +1,8 @@
 import {
   Context,
   logging,
+  math,
+  base64,
 } from "near-sdk-as";
 
 import {
@@ -58,18 +60,20 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   const new_token_size_in_bytes = Context.storageUsage - initial_storage_usage;
   const required_storage_in_bytes = ExtraStorageInBytesPerToken + new_token_size_in_bytes;
   refund_deposit(required_storage_in_bytes);
-  // logging.log("after refund_deposit()");
-  logging.log("I WORK!");
-  consoleLog('I WORK!');
+  logging.log("I WORK after refund_deposit()");
 }
 
 export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
   for (let index = 0; index < owner_ids.length; ++index) {
     // consoleLog("index");
     // consoleLog(index.toString());
-    const random = (Math.random() * 10).toString().slice(0, 5);
-    const random_token_id: string = owner_ids[index] + '.' + random + '.token_id';
-    internal_nft_mint(owner_ids[index], random_token_id, metadata);  
+    const random: Uint8Array = math.randomBuffer(4);
+    let encoded_random_token_id:string = base64.encode(random).slice(0, 4);
+    const random_token_id: string = owner_ids[index] + '.' + encoded_random_token_id + '.token_id';
+    // consoleLog(random_token_id);
+    logging.log(random_token_id);
+    // This computation is very expensive.
+    internal_nft_mint(owner_ids[index], random_token_id.toString(), metadata);  
   }
 }
 

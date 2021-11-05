@@ -6,7 +6,7 @@ declare namespace console {
 
 function consoleLog(str: string | null): void { 
   // Uncomment this line for running tests only. Else it wont build the contracts.
-  // log(str);
+  log(str);
 }
 
 export { 

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import fleek from "@fleekhq/fleek-storage-js";
 import multer from "multer";
+import Joi from "joi";
 
 import { getEnvVariables } from "../utils/environment";
 
@@ -11,19 +12,21 @@ const { FLEEK_KEY, FLEEK_SECRET } = getEnvVariables();
 
 export const upload = async (request: Request, response: Response) => {
   try {
-    const { 
+    const {
       files, 
-      body: { filename } 
+      body: { filename },
     } = request as any
+
+    Joi.assert(filename, Joi.string());
 
     const { buffer: data } = files[0];
 
     const config = {
-        apiKey: FLEEK_KEY,
-        apiSecret: FLEEK_SECRET,
-        bucket: "mrrobot16-team-bucket",
-        key: `proof-of-attendance/${filename}`,
-        data
+      apiKey: FLEEK_KEY,
+      apiSecret: FLEEK_SECRET,
+      data,
+      key: `proof-of-attendance/${filename}`,
+      bucket: "mrrobot16-team-bucket",
     }
     
     const uploaded = await fleek.upload(config as any);

@@ -1,9 +1,13 @@
 import { ContractConfig } from "../types";
+import { getEnvVariables } from "../utils/environment"
 
-export const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1620252450193-6591749'
+
+const { CONTRACT_NAME } = getEnvVariables();
+// const CONTRACT_NAME = "proofofattedanceplayground.testnet";
 
 export const getConfig = (env: string): ContractConfig | any => {
-  env = "testnet"
+  // this will be commented/remove as for production we need to make this dynamic value.
+  // env = "testnet"
   switch (env) {
   case 'production':
   case 'mainnet':
@@ -20,8 +24,8 @@ export const getConfig = (env: string): ContractConfig | any => {
     return {
       networkId: 'testnet',
       nodeUrl: 'https://rpc.testnet.near.org',
-      // contractName: CONTRACT_NAME,
-      contractName: "proofofattedanceplayground.testnet",
+      contractName: CONTRACT_NAME,
+      // contractName: "proofofattedanceplayground.testnet",
       walletUrl: 'https://wallet.testnet.near.org',
       helperUrl: 'https://helper.testnet.near.org',
       explorerUrl: 'https://explorer.testnet.near.org',

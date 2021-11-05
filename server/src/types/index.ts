@@ -1,4 +1,4 @@
-export interface Attendees {
+export interface Attendee {
   attended: boolean;
   attendedTime: number;
   name: string;

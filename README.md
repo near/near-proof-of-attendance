@@ -76,6 +76,10 @@ Modify the line in `src/config.js` that sets the account name of the contract. S
 Step 3: deploy!
 ---------------
 
+Environment Variables
+Deploy to testnet: `set NEAR_ENV=testnet`
+Deploy to mainnet: `set NEAR_ENV=mainnet`
+
 One command:
 
     yarn deploy

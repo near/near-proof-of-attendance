@@ -45,8 +45,6 @@ writeFileSync("./random-token-id.json", fileObject);
 const deposit_amount = 1;
 // Set Gas amount
 const gas = 100000000000000
-// const gas = 200000000000000
-// const gas = 100000000000000
 
 const nft_token = {
   "owner_id": "johnq.testnet", 

@@ -1,5 +1,4 @@
-import { connect, Contract, keyStores, WalletConnection, utils } from "near-api-js"
-import { init, requestSignIn } from "@textile/near-storage"
+import { connect, Contract, keyStores, WalletConnection } from "near-api-js"
 
 import getConfig from "../config"
 
@@ -56,12 +55,8 @@ export function login() {
   // user's behalf.
   // This works by creating a new access key for the user's account and storing
   // the private key in localStorage.
-  
   // Old login logic below without @textile/near-storage module
   window.walletConnection.requestSignIn(nearConfig.contractName)
-  
-  // login logic with @textile/near-storage module. This will be remove if we end not using @textile/near-storage module
-  // requestSignIn(window.walletConnection, {});
 }
 
 

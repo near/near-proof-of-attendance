@@ -25,4 +25,5 @@ export const mint = async (attendees = [], url, filename) => {
   const endpoint = "http://localhost:3000/mint"
   const json = await postData(endpoint, { attendees, url, filename })
   console.log('json', json);
+  return json;
 }

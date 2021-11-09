@@ -1,7 +1,5 @@
 import fleekStorage from "@fleekhq/fleek-storage-js";
 
-import { FirebaseStorage } from "../config/firebase";
-
 export const importImage = async (event, uploadImage, setImageFile) => {
   const files = event.target.files;
   let reader = new FileReader();
@@ -34,36 +32,4 @@ export const storeImageFleek = async (file = [], setFleekUrl) => {
     window.open(url);
     setFleekUrl(url);
   }
-}
-
-// For future storing alternative.
-export const storeImageTextile = async (image, filename, setNFTHash, checkHasDeposit) => {
-    try {
-      const raw = {
-        image
-      }
-      const blob = new Blob([JSON.stringify(raw, null, 2)], { type: "application/json"});
-      const file = blob;
-      const store = await window.api.store(file);
-      // console.log('store', store);
-      const url = `https://ipfs.io/ipfs/${store.cid["/"]}`;
-      window.open(url);
-      setNFTHash(url);
-    } catch (error) {
-      console.log('error in store', error);
-      checkHasDeposit();
-      alert("Before storing data using textile first make a deposit");    
-    }
-}
-
-export const storeImageFirebase = async (filename, image) => {
-  const file = image;
-  let metadata = {
-    contentType: 'image/jpeg',
-  };
-
-  FirebaseStorage.ref().child(filename.name).put(file, metadata).then((snapshot) => {
-    console.log('snapshot', snapshot);
-    console.log('Uploaded a blob or file!');
-  });
 }

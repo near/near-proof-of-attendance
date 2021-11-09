@@ -2,12 +2,7 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback
 } from "react";
-
-import fleekStorage from "@fleekhq/fleek-storage-js";
-
-import { SkynetClient } from "skynet-js";
 
 import {
   Box,
@@ -15,7 +10,6 @@ import {
   Typography,
   Button,
   Paper,
-  Divider,
 
 } from "@material-ui/core";
 
@@ -35,8 +29,6 @@ import {
 
 import {
   importImage,
-  storeImageTextile,
-  storeImageFirebase,
   storeImageFleek,
 
 } from "../utils/store";
@@ -66,11 +58,6 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-// Dirty solution for using Textile as Storage :/
-// hasDeposit is define outside of CreateNewBadges Hook in order to avoid "calling a setDeposit = setState() inside of a useEffect" warning.
-// hasDeposit is set true by default so it does not show up when redirect from Depositing NEAR Wallet Page back to the dApp.
-// let hasDeposit = true;
-
 export default function CreateNewBadges() {
   const classes = useStyles();
 
@@ -90,26 +77,10 @@ export default function CreateNewBadges() {
   const imageAlt = "image not successfully uploaded";
 
   const componentDidMount = () => {
-    // checkHasDeposit()
+    // This Effect can be needed.
   }
 
   useEffect(componentDidMount, []);
-
-  const checkHasDeposit = async () => {
-    const deposit = await window.api.hasDeposit();
-    if(deposit) {
-      console.log("if deposit", deposit);
-      console.log("if hasDeposit", hasDeposit);
-      // hasDeposit = true;
-      // the below line is commentted to avoid calling setState inside of a hook 
-      setDeposit(deposit)
-    }
-    else {
-      console.log("else deposit", deposit);
-      // hasDeposit = false;
-      setDeposit(false)
-    }
-  }
 
   const csvUpload = () => {
     inputCSVFile.current.click();
@@ -123,29 +94,12 @@ export default function CreateNewBadges() {
     checkAccountIds(attendees, setAttendees, setAccountsNotExist)
   }
 
-  const addDeposit = async () => {
-    try {
-      const deposit = await window.api.addDeposit();
-      checkHasDeposit()
-    } catch (error) {
-      console.log('error in add deposit');
-    }
-  }
-
   const uploadImage = (image) => {
     setNFTImage(image) // this comes from image.js line 11.
   }
 
   const onChangeImageUpload = async (event) => {
     const image = await importImage(event, uploadImage, setImageFile);
-  }
-
-  const onClickStoreImageTextile = () => {
-    storeImageTextile(nftImage, imageFile.name, setNFTHash, checkHasDeposit);
-  }
-
-  const onClickStoreImageFirebase = () => {
-    storeImageFirebase(imageFile, nftImage);
   }
 
   const onClickStoreImageFleek = async () => {
@@ -156,30 +110,11 @@ export default function CreateNewBadges() {
     inputImageFile.current.click();
   }
 
-  const onClickSkynet = async () => {
-    const file = "somefile"
-    const customOptions = {
-      portalFileFieldname: "filename",
-
-    }
-    try {
-      const customOptions = {
-        portalFileFieldname: "filename",
-
-      }
-      const client = new SkynetClient(customOptions);
-
-      console.log('clinet', client);
-      // const { skylink } = await client.uploadFile(file, customOptions);
-      console.log('await client.upload(file);', await client.uploadFile(client, file, customOptions));
-      // console.log('skylink', skylink);
-    } catch (error) {
-      console.log(error);
-    }
-  }
   
-  const onClickMintNFTs = () => {
-    mint(attendees, fleekUrl, imageFile.name);
+  const onClickMintNFTs = async () => {
+    const mint_res = await mint(attendees, fleekUrl, imageFile.name);
+    mint_res.error && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.error.transaction_outcome.id}`);
+    mint_res.transaction && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.transaction.hash}`);
   }
 
   return (
@@ -223,26 +158,6 @@ export default function CreateNewBadges() {
               </Button>
             </Grid>
             <br />
-            {/*
-              {
-              !hasDeposit && (
-                <>
-                  <br/>
-                  <Grid item xs={12}>  
-                    <Grid item xs={12}>
-                      <Typography variant="subtitle2" className={classes.step}>
-                        Before uploading NFT first deposit NEAR
-                      </Typography>
-                      <Button variant="contained" onClick={addDeposit}>
-                        Add Deposit
-                      </Button>
-                    </Grid> 
-                  </Grid>
-                </>
-              )
-            }
-
-            */}
 
             <Grid item xs={12}>
               <Typography variant="subtitle2" className={classes.step}>STEP 3:</Typography>
@@ -258,18 +173,6 @@ export default function CreateNewBadges() {
                 <Button variant="contained" className={classes.button} onClick={onClickStoreImageFleek}>
                   Store Fleek
                 </Button>                
-
-                {/*<Button variant="contained" className={classes.button} onClick={onClickStoreImageFirebase}>
-                  Store Firebase
-                </Button>*/}           
-
-                {/*<Button variant="contained" className={classes.button} onClick={onClickStoreImageTextile}>
-                  Store Textile
-                </Button>*/}
-                
-                {/*<Button variant="contained" onClick={onClickSkynet}>
-                  Store Skynet
-                </Button>*/}
             </Grid>
             <br />
 

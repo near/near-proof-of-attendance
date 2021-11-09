@@ -4,10 +4,15 @@ import BN from "bn.js";
 import { getConfig } from "../config/contract";
 import { nft_mint } from "../config/constants";
 import { getEnvVariables } from "../utils/environment";
+import sleep from "../utils/sleep";
+import { chunk } from "../utils/array";
+
 import { TokenId, AccountId, NFTMetadata, TokenMetadata, Attendee } from "../types";
 
 // const CONTRACT_NAME = "proofofattedanceplayground.testnet";
 // const CONTRACT_OWNER = "proofofattedanceplayground.testnet"
+const DEFAULT_GAS = '300000000000000';
+const DEFAULT_DEPOSIT = '300000000000000';
 const { NODE_ENV, CONTRACT_OWNER_PRIVATE_KEY, CONTRACT_NAME, CONTRACT_OWNER } = getEnvVariables();
 
 export class NEAR {
@@ -15,6 +20,7 @@ export class NEAR {
   public account: Account | any;
   public connection: any;
   public attachedDeposit: BN | any;
+  public gas: BN | any;
   private contract: any;
   private methods: any;
   private static _instance: NEAR;
@@ -44,14 +50,10 @@ export class NEAR {
 
     const account = await near.account(CONTRACT_NAME as string);
     this.account = account;
-    
-    const attachedDeposit = new BN('40840562200000');
-    // const attachedDeposit = new BN('199999999');
-    // const attachedDeposit = new BN('308405622');
-    // const attachedDeposit = new BN('408405622');
-    // const attachedDeposit = new BN('508405622');
-    // const attachedDeposit = new BN('608405622');
+    const attachedDeposit = new BN(DEFAULT_DEPOSIT);
+    const gas = new BN(DEFAULT_GAS);
     this.attachedDeposit = attachedDeposit;
+    this.gas = gas;
   }
   
   public static async get_instance() {
@@ -79,7 +81,7 @@ export class NEAR {
         contractId,
         methodName,
         args,
-        // gas: this.attachedDeposit,
+        gas: this.gas,
         attachedDeposit: this.attachedDeposit,
       }
       const result = await this.account.functionCall(functionCallData);
@@ -93,24 +95,31 @@ export class NEAR {
   }
   
   public async mint_batch(accountIds: AccountId[], metadata: TokenMetadata) {
+    const contractId = "proofofattedanceplayground.testnet"
+    const methodName = "nft_mint_batch"
     try {
-      const random_string = Math.random().toString(36).substring(7);
-      const random_token_id = random_string + ".token_id";
-      const args = {
-        owner_ids: accountIds,
-        metadata: metadata
+      // Convert 1 huge array of accountIds in to an array of arrays containing 5 elements of the original array.
+      const results: any[] = []
+      const chunked_accountIds = chunk(accountIds, 4);
+      const chunked_accountIds_iter = async (accountIdsGroup: string[]) => {
+        const args = {
+          owner_ids: accountIdsGroup,
+          metadata: metadata,
+        }
+        const functionCallData = {
+          contractId,
+          methodName,
+          args,
+          gas: this.gas,
+          attachedDeposit: this.attachedDeposit,
+        }
+        const result = await this.account.functionCall(functionCallData);
+        console.log('result', result);
+        results.push(result);
       }
-      const contractId = "proofofattedanceplayground.testnet"
-      const methodName = "nft_mint_batch"
-      const functionCallData = {
-        contractId,
-        methodName,
-        args,
-        gas: this.attachedDeposit,
-        attachedDeposit: this.attachedDeposit,
-      }
-      const result = await this.account.functionCall(functionCallData);
-      console.log('result', result);
+      // To implement chunked batch minting uncomment below line.
+      chunked_accountIds.map(chunked_accountIds_iter);
+      return { results };
     } catch (error) {
       console.log('error in near service mint_batch', error);
       return {
@@ -118,14 +127,18 @@ export class NEAR {
       }
     }
   }
-
-  public async batch_mint(accountIds: Attendee[], metadata: TokenMetadata) {
+  // Offchain nft_mint_batch // No longer/not really needed.
+  public async batch_mint(accountIds: AccountId[], metadata: TokenMetadata) {
+    // Hard coded Testing how many accounts can we mint to.
+    // accountIds = accountIds.slice(0, 6)
     try {
+      console.log("Total Accounts to loop:", accountIds.length);
       const batch_mint_iter = async (account: any, index: number) => {
-        console.log('account index', index);
+        await sleep(5000);
         const random_string = Math.random().toString(36).substring(7);
-        const random_token_id = account.walletId + "."+random_string + ".token_id";
-        await this.mint(account.walletId, random_token_id, metadata);
+        const random_token_id = account + "."+random_string + ".token_id";
+        console.log('account', account, 'random_token_id', random_token_id);
+        await this.mint(account, random_token_id, metadata);
       }
       accountIds.map(batch_mint_iter);
     } catch (error) {
@@ -156,8 +169,8 @@ export class NEAR {
       return result;
     }
     const tokens = token_ids.map(tokens_iterator);
-    const nfts = await Promise.all(tokens);
-    return nfts
+    const tokens_for_owner = await Promise.all(tokens);
+    return tokens_for_owner
   }
 
 }

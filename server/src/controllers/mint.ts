@@ -4,7 +4,8 @@ import Joi from "joi";
 import { getEnvVariables } from "../utils/environment";
 import { NEAR } from "../services/near";
 import { AccountId, Attendee } from "../types"; 
- 
+import { mock_attendees } from "../constants/attendees";
+
 const router = Router();
 
 const mint = async (request: Request, response: Response) => {
@@ -17,7 +18,7 @@ const mint = async (request: Request, response: Response) => {
       body
     } = request as any;
 
-    const { attendees, url, token_metadata, filename } = body;
+    const { owner_id, attendees, url, token_metadata: metadata, filename } = body;
     // console.log('attendees, url, token_metadata', 'filename', attendees, url, token_metadata, filename);
     // console.log('attendees.length', attendees.length);
     Joi.assert(url, Joi.string());
@@ -29,7 +30,9 @@ const mint = async (request: Request, response: Response) => {
     const now_utc = new Date(now).toUTCString();
     const nft_mint = {
       owner_id: "johnq.testnet", 
+      // owner_id,
       // token_metadata coming from UI.
+      // metadata,
       metadata: {
         "title": filename, 
         "description": "", 
@@ -46,15 +49,21 @@ const mint = async (request: Request, response: Response) => {
         "reference_hash": "" 
       }
     }
-    const walletIds: AccountId[] = attendees.map((attendee: Attendee) =>{
+
+    const walletIds: AccountId[] = attendees.map((attendee: Attendee) => {
       return attendee.walletId;
     });
-    // Offchain mint_batch
-    // await near.batch_mint(attendees, nft_mint.metadata);
-    
     // Onchain mint_batch
-    await near.mint_batch(walletIds, nft_mint.metadata);
-    response.status(200).json({ success: 'OK' });
+    const mint = await near.mint_batch(walletIds, nft_mint.metadata);
+    // Onchain test mock_mint_batch
+    // const mint = await near.mint_batch(mock_attendees, nft_mint.metadata);
+    // console.log('mint', mint);
+
+    // Offchain mint_batch
+    // const mint = await near.batch_mint(walletIds, nft_mint.metadata);
+
+    const response_object = { success: 'OK', ...mint }
+    response.status(200).json(response_object);
   } catch (error) {
     console.log("Error in mint", error);
     response.status(500).json({ error: true, message: error });

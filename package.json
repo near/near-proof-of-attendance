@@ -34,7 +34,8 @@
     "test:contract": "cd contract && yarn test",
     "test:client": "jest ./src --runInBand",
     "heroku": "yarn dev:push:heroku",
-    "dev:push:heroku": "git push heroku develop:master"
+    "dev:push:heroku": "git push heroku develop:master",
+    "dev:gas": "http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=gas_price params:='[\"2xrjKpmhM8ned6hXWNSPAgV6PpYbqd57ANxaB9Nu88VA\"]'"
   },
   "devDependencies": {
     "@babel/core": "~7.14.0",
@@ -56,7 +57,7 @@
     "@material-ui/core": "^4.12.1",
     "@textile/near-storage": "^6.0.2",
     "firebase": "^8.8.0",
-    "near-api-js": "0.42.0",
+    "near-api-js": "0.43.1",
     "papaparse": "^5.3.1",
     "react": ">=16.9.0",
     "react-dom": ">=16.9.0",

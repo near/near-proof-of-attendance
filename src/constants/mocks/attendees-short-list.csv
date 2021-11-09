@@ -1,0 +1,4 @@
+name,walletId,attended,attendedTime
+johnq,johnq.testnet,true,34
+Tony,stark.testnet,true,34
+Steve,captainrogers.testnet,true,40

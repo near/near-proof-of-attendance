@@ -52,6 +52,7 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
     token_by_id == null,
     "Token already exists"
   );
+  // The below computation is expensive for batch minting.
   TokensById.set(token_id, token);
   TokenMetadataById.set(token_id, metadata);
   
@@ -64,14 +65,16 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
 }
 
 export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
-  for (let index = 0; index < owner_ids.length; ++index) {
+  for (let index = 0; index < owner_ids.length; index++) {
     // consoleLog("index");
     // consoleLog(index.toString());
     const random: Uint8Array = math.randomBuffer(4);
     let encoded_random_token_id:string = base64.encode(random).slice(0, 4);
     const random_token_id: string = owner_ids[index] + '.' + encoded_random_token_id + '.token_id';
-    // consoleLog(random_token_id);
-    logging.log(random_token_id);
+    // We need to comment out logging.log() for testing to avoid Error: (NumberOfLogsExceeded { limit: 100 })
+    const message:string = "index"+": "+ index.toString() + " random_token_id:" + " " + random_token_id
+    logging.log(message);
+    // consoleLog(message);
     // This computation is very expensive.
     internal_nft_mint(owner_ids[index], random_token_id.toString(), metadata);  
   }

@@ -43,6 +43,10 @@ writeFileSync("./random-token-id.json", fileObject);
 
 // Set Deposit amount 
 const deposit_amount = 1;
+// Set Gas amount
+const gas = 100000000000000
+// const gas = 200000000000000
+// const gas = 100000000000000
 
 const nft_token = {
   "owner_id": "johnq.testnet", 
@@ -67,7 +71,7 @@ const contract = "proofofattedanceplayground.testnet"
 
 // const nft_mint_command = `near call dev-1620252450193-6591749 nft_mint '${JSON.stringify(nft_token)}' --accountId=johnq.testnet --amount=${deposit_amount}`;
 // const nft_mint_command = `near call dev-1634086167283-66501405407076 nft_mint '${JSON.stringify(nft_token)}' --accountId=proofofattedanceplayground.testnet --amount=${deposit_amount}`;
-const nft_mint_command = `near call ${contract} nft_mint '${JSON.stringify(nft_token)}' --accountId=proofofattedanceplayground.testnet --amount=${deposit_amount}`;
+const nft_mint_command = `near call ${contract} nft_mint '${JSON.stringify(nft_token)}' --accountId=proofofattedanceplayground.testnet --amount=${deposit_amount} --gas=${gas}`;
 // Execute the build command, storing exit code for later use
 const { code } = sh.exec(nft_mint_command);
 

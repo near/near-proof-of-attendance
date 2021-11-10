@@ -2,10 +2,12 @@ import { connect, Contract, keyStores, WalletConnection } from "near-api-js"
 
 import getConfig from "../config"
 
-// Initialize contract & set global variables
+// Initialize NEAR config.
+const nearConfig = getConfig(process.env.NODE_ENV || "development");
+
 export async function initContract() {
+  // Initialize contract & set global variables
   // Initialize connection to the NEAR testnet
-  const nearConfig = getConfig(process.env.NODE_ENV || "development");
   const nearConnectConfig = {
     deps: {
       keyStore: new keyStores.BrowserLocalStorageKeyStore() 
@@ -55,7 +57,6 @@ export function login() {
   // user's behalf.
   // This works by creating a new access key for the user's account and storing
   // the private key in localStorage.
-  // Old login logic below without @textile/near-storage module
   window.walletConnection.requestSignIn(nearConfig.contractName)
 }
 

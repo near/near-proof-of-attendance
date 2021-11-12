@@ -13,7 +13,7 @@ import {
 
 import { 
   AppRouter,
-  
+  Log,
 } from "./";
 
 import { theme } from "../theme";
@@ -30,6 +30,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <Container className={classes.root}>
+        <Log/>
         <AppRouter />
         <CssBaseline />
       </Container>

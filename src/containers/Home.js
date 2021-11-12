@@ -15,9 +15,13 @@ import {
 
 } from "@material-ui/core/styles"
 
+import { NODE_ENV } from "../utils/environment";
+
 // This function is made to test nft_mint contract function.
 // import { test_nft_mint } from "../utils/test";
 
+const DEFAULT_ACCOUNT = NODE_ENV == "development" ? "johnq.testnet" : "johnq.near"
+  
 const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
@@ -31,13 +35,21 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
-  const [account, setAccount] = useState("proofofattedanceplayground.testnet.near");
+  const [account, setAccount] = useState("");
+  // const [account, setAccount] = useState("proofofattedanceplayground.testnet.near");
   // const account = "proofofattedanceplayground.testnet.near";
   
   const onKeyDown = (event) => {
-    console.log(event.target.value)
-    setAccount(event.target.value)
-    event.key === "Enter" ? console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`) : console.log("not enter")
+    const value = event.target.value.length ? event.target.value : DEFAULT_ACCOUNT;
+    console.log('value', value);
+    setAccount(value);
+    // TODO: Need to find a way to setAccount when user uses browser prefill.
+    if(event.key === "Enter") {
+      console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`)
+    }
+    if(event.key === "Unidentified") {
+      console.log("Prefill happening");
+    }
   }
 
   return (
@@ -68,7 +80,7 @@ export default function Home() {
         <Grid item xs={6}>
          <Paper className={classes.paper}>
            <Link to={`/badges/${account}`}>
-             <Button>View Your Badges</Button>
+             <Button disabled={!(account.length)}>View Your Badges</Button>
            </Link>
          </Paper>
         </Grid>

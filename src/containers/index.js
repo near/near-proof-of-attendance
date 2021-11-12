@@ -5,6 +5,7 @@ import Home from "./Home";
 import Landing from "./Landing"
 import CreateNewBadges from "./CreateNewBadges";
 import BadgesList from "./BadgesList";
+import Log from "./Log";
 
 export {
   App,
@@ -15,5 +16,5 @@ export {
   Home,
   CreateNewBadges,
   BadgesList,
-
+  Log,
 }

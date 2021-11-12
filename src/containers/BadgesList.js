@@ -39,7 +39,7 @@ export default function BadgesList() {
     const badges = await query(params.account, setBadges);
     if(!badges.error) {
       setBadges(badges.data.tokens_for_owner);
-    }    
+    }
   }
 
   const componentDidMount = () => {
@@ -87,7 +87,16 @@ export default function BadgesList() {
           Get Badges
         </Button>
       </Grid>*/}
-      <BadgesList />
+      
+      {
+        badges.length > 0 ? (
+          <BadgesList />
+        ) : (
+          <Typography variant="body1">
+            No badges found for account.
+          </Typography>
+        )
+      }
     </Box>
   )
 }

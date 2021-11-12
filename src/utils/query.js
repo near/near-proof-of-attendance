@@ -1,3 +1,5 @@
+import { BASE_URL } from "./endpoints";
+
 const getData = async (url = '') => {
   const config = {
       method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -11,7 +13,7 @@ const getData = async (url = '') => {
       referrerPolicy: 'no-referrer'
   }
   
-  try { 
+  try {
     const response = await fetch(url);
     return response.json(); 
   } catch (e) {
@@ -21,7 +23,8 @@ const getData = async (url = '') => {
 
 export const query = async (account_id) => {
   // Server side query logic
-  const endpoint = "http://localhost:3000/badges/" + account_id
+  // const endpoint = "http://localhost:3000/badges/" + account_id
+  const endpoint = `${BASE_URL}/badges/${account_id}`
   const json = await getData(endpoint);
   // console.log('json', json);
   let data, error;

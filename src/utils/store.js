@@ -1,4 +1,5 @@
 import fleekStorage from "@fleekhq/fleek-storage-js";
+import { BASE_URL } from "./endpoints";
 
 export const importImage = async (event, uploadImage, setImageFile) => {
   const files = event.target.files;
@@ -21,8 +22,9 @@ export const storeImageFleek = async (file = [], setFleekUrl) => {
   const blob = new Blob([file]);
   form.append("binary_data", blob);
   form.append("filename", file.name);
-
-  const response = await fetch('http://localhost:3000/fleek/upload', {
+  const endpoint = `${BASE_URL}/fleek/upload`;
+  
+  const response = await fetch(endpoint, {
     method: "POST",
     body: form,
   });

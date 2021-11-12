@@ -1,4 +1,18 @@
 walletId,name,attended,attendedTime
+johnq.testnet,Johnq,true,34
+stark.testnet,Tony,true,34
+asgard.testnet,Thor,true,29
+captainrogers.testnet,Steve,true,40
+spiderman.testnet,Peter,false,0
+captainrogers2.testnet,Steve2,true,40
+vision.testnet,Vision,true,20
+wakanda.testnet,Wakanda,true,50
+tchalla.testnet,T'challa,true,35
+blackpanther.testnet,Black Panther,true,35
+tonystark.testnet,Tony Stark,true,45
+johnq.testnet,Johnq,true,34
+stark.testnet,Tony,true,34
+asgard.testnet,Thor,true,29
 0zh6krjohnq.testnet,johnq,true,34
 kh1xtmstark.testnet,johnq,true,34
 12um1uasgard.testnet,johnq,true,34
@@ -208,4 +222,4 @@ b9jqg5hspiderman.testnet,johnq,true,34
 64kakwakanda.testnet,johnq,true,34
 46ps7mtchalla.testnet,johnq,true,34
 bq0apyblackpanther.testnet,johnq,true,34
-mo7i1tonystark.testnet,johnq,true,34
+mo7i1tonystark.testnet

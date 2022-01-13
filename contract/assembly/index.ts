@@ -70,9 +70,9 @@ export const ExtraStorageInBytesPerToken: StorageUsage = 0;
 // in "NEAR/core-contracts/nft-simple/src/lib.rs" this function is called "pub fn new(owner_id: ValidAccountId, metadata: NFTMetadata) and it returns this/self"
 // We had to rename this function it to "init" because "new" is a keyword in AssemblyScript.
 export function init(owner_id: AccountId, metadata: NFTMetadata): void {
-  logging.log("I WORK!!!!!");
-  logging.log("OwnerID:" + " " + OwnerId);
-  logging.log("owner_id:" + " " + owner_id);
+  // logging.log("I WORK!!!!!");
+  // logging.log("OwnerID:" + " " + OwnerId);
+  // logging.log("owner_id:" + " " + owner_id);
   const Metadata: NFTMetadata = new NFTMetadata(metadata.spec, metadata.name, metadata.symbol, metadata.icon, metadata.base_uri, metadata.reference, metadata.reference_hash);
   storage.set("n", Metadata);
 }
@@ -90,13 +90,17 @@ export function nft_transfer(receiver_id: AccountId, token_id: TokenId, approval
 }
 
 // View functions
-export  function nft_token(token_id: TokenId): JsonToken | null {
+export function nft_token(token_id: TokenId): JsonToken | null {
   return internal_nft_token(token_id);
 }
 
 // This should return Token[] but TokensPerOwner.get(account_id) returns PersistentSet<TokenId> | null How can PersistentSet become Token[]?
 // missing arguments after owner_id argument are: from_index: string, limit: number
-export function nft_tokens_for_owner(account_id: AccountId): Set<TokenId> | null {
+export function nft_tokens_for_owner(account_id: AccountId): Token[] | null {
   // return internal_nft_tokens_for_owner(owner_id, from_index, limit);
   return internal_nft_tokens_for_owner(account_id);
+}
+
+export function nft_metadata(): NFTMetadata | null {
+  return storage.get<NFTMetadata>("n");
 }

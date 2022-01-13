@@ -37,6 +37,7 @@ import {
 import {
   consoleLog
 } from "./utils";
+import { nft_mint_event } from "./event_log";
 
 // renaming this to internal for now. But should find a way to make this specific function public. In theory this function should be called "nft_mint";
 export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metadata: TokenMetadata): void {
@@ -61,7 +62,7 @@ export function internal_nft_mint(owner_id: AccountId, token_id: TokenId, metada
   const new_token_size_in_bytes = Context.storageUsage - initial_storage_usage;
   const required_storage_in_bytes = ExtraStorageInBytesPerToken + new_token_size_in_bytes;
   refund_deposit(required_storage_in_bytes);
-  logging.log("I WORK after refund_deposit()");
+  // logging.log("I WORK after refund_deposit()");
 }
 
 export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenMetadata): void {
@@ -73,10 +74,11 @@ export function internal_nft_mint_batch(owner_ids: AccountId[], metadata: TokenM
     const random_token_id: string = owner_ids[index] + '.' + encoded_random_token_id + '.token_id';
     // We need to comment out logging.log() for testing to avoid Error: (NumberOfLogsExceeded { limit: 100 })
     const message:string = "index"+": "+ index.toString() + " random_token_id:" + " " + random_token_id
-    logging.log(message);
+    // logging.log(message);
     // consoleLog(message);
     // This computation is very expensive.
     internal_nft_mint(owner_ids[index], random_token_id.toString(), metadata);  
+    nft_mint_event(owner_ids[index], random_token_id);
   }
 }
 

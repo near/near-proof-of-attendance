@@ -81,7 +81,7 @@ export function internal_transfer(sender_id: AccountId, receiver_id: AccountId, 
   TokensById.set(token_id, new_token);
   if(memo) {
     const memoMessage = "Memo:" + " " + memo
-    logging.log(memoMessage)
+    // logging.log(memoMessage)
   }
   // NOTE:
   // Adding "as Token" avoids Type 'Token | null' is not assignable to type 'Token'. Type 'null' is not assignable to type 'Token'.ts(2322) error.

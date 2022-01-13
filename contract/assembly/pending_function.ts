@@ -75,9 +75,9 @@ export function nft_on_transfer(sender_id: AccountId, previous_owner_id: Account
   // return new Promise()
   assert(msg, "msg parameter expects JSON in string form with one key: 'should_succeed' where the value is a boolean.");
   if(msg) {
-    logging.log("Transferred correctly.");
+    // logging.log("Transferred correctly.");
   } else {
-    logging.log("Did not transfer correctly, returning NFT.");
+    // logging.log("Did not transfer correctly, returning NFT.");
   }
   // let msg_obj: NFTTransferMsg = serde_json::from_str(msg.as_str()).expect("msg parameter expects JSON in string form with one key: 'should_succeed' where the value is a boolean.");
   // match msg_obj.should_succeed {

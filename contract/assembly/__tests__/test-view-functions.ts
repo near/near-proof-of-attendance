@@ -83,7 +83,6 @@ export const test_nft_token2 = (): void => {
       expect(metadata.reference_hash).toBe(242323);
     }
   }
-  
 }
 
 export const test_nft_tokens_for_owner = (): void => {
@@ -92,6 +91,6 @@ export const test_nft_tokens_for_owner = (): void => {
   const tokens_for_owner = nft_tokens_for_owner(ReceiverId);
   expect(tokens_for_owner).not.toBe(null);
   if(tokens_for_owner) {
-    expect(tokens_for_owner.size).toBeGreaterThanOrEqual(2);
+    expect(tokens_for_owner.length).toBeGreaterThanOrEqual(1);
   }
 }

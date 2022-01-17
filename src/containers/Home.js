@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { Link, useLocation } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -38,19 +38,24 @@ export default function Home() {
   const [account, setAccount] = useState("");
   // const [account, setAccount] = useState("proofofattedanceplayground.testnet.near");
   // const account = "proofofattedanceplayground.testnet.near";
-  
-  const onKeyDown = (event) => {
-    const value = event.target.value.length ? event.target.value : DEFAULT_ACCOUNT;
-    console.log('value', value);
-    setAccount(value);
-    // TODO: Need to find a way to setAccount when user uses browser prefill.
-    if(event.key === "Enter") {
-      console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`)
-    }
-    if(event.key === "Unidentified") {
-      console.log("Prefill happening");
-    }
-  }
+  const location = useLocation(); 
+  // const onKeyDown = (event) => {
+  //   const value = event.target.value.length ? event.target.value : DEFAULT_ACCOUNT;
+  //   console.log('value', value);
+  //   setAccount(value);
+  //   // TODO: Need to find a way to setAccount when user uses browser prefill.
+  //   if(event.key === "Enter") {
+  //     console.log(`Hitting Enter navigate to BadgesList with corresponding Account Name from input text${event.target.value}`)
+  //   }
+  //   if(event.key === "Unidentified") {
+  //     console.log("Prefill happening");
+  //   }
+  // }
+
+  // Cleans up the the input field when navigating out of /home
+  useEffect(() => {
+     setAccount("") 
+  }, [location])
 
   return (
     <Box className={classes.root}>
@@ -61,7 +66,9 @@ export default function Home() {
         
         <Grid item xs={12}>
           <Paper className={classes.paper}>
-            <TextField id="standard-basic" label="NEAR Account Name" onKeyDown={onKeyDown}/>
+            <TextField id="standard-basic" label="NEAR Account Name" onChange={(event)=> setAccount(event.target.value)} 
+            // onKeyDown={onKeyDown}
+            />
           </Paper>
         </Grid>
         

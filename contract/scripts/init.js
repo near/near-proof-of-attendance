@@ -36,7 +36,7 @@ const init = {
   "owner_id": `${owner_id}`, 
   "metadata": { 
     "spec": "SomeSpec", 
-    "name": "SomeName", 
+    "name": "Proof of Attendance", 
     "symbol":"SomeSymbol", 
     "icon": "SomeIcon", 
     "base_uri": "SomeBaseUri", 

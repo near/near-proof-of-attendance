@@ -10,6 +10,7 @@ import {
   Typography,
   Button,
   Paper,
+  Snackbar,
 
 } from "@material-ui/core";
 
@@ -57,6 +58,8 @@ const useStyles = makeStyles((theme) => ({
   }
 
 }));
+import Alert from '@mui/material/Alert';
+import { Stack } from "@mui/material";
 
 export default function CreateNewBadges() {
   const classes = useStyles();
@@ -75,6 +78,9 @@ export default function CreateNewBadges() {
   const inputImageFile = useRef(null);
 
   const imageAlt = "image not successfully uploaded";
+  const [open, setOpen] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [isSuccessful, setIsSuccessfull] = useState(false)
 
   const componentDidMount = () => {
     // This Effect can be needed.
@@ -82,6 +88,27 @@ export default function CreateNewBadges() {
 
   useEffect(componentDidMount, []);
 
+  useEffect(() => {
+    if(fleekUrl === "error") {
+      setSnackMessage("Error on uploading image"); 
+      setIsSuccessfull(false);
+      setOpen(true);
+    }
+    if(fleekUrl !== "error" && fleekUrl !== null) {
+      setSnackMessage("Image correctly uploaded to IPFS")
+      setIsSuccessfull(true)
+      setOpen(true);
+    }
+  }, [fleekUrl]);
+
+  function handleClose(event, reason) {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+    setSnackMessage("")
+  }
+  
   const csvUpload = () => {
     inputCSVFile.current.click();
   }
@@ -107,7 +134,7 @@ export default function CreateNewBadges() {
   }
 
   const onClickUploadImage = () => {
-    inputImageFile.current.click();
+     inputImageFile.current.click();
   }
 
   
@@ -115,9 +142,20 @@ export default function CreateNewBadges() {
     const mint_res = await mint(attendees, fleekUrl, imageFile.name);
     mint_res.error && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.error.transaction_outcome.id}`);
     mint_res.transaction && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.transaction.hash}`);
+    if(mint_res) {
+      setSnackMessage("Badge correctly minted")
+      setIsSuccessfull(true)
+      setOpen(true);
+    }
+    if(mint_res.error){
+      setSnackMessage("There was an error while minting the badge")
+      setIsSuccessfull(true)
+      setOpen(true);
+    }
   }
 
   return (
+    <>
     <Box>
       <Typography variant="subtitle1">
         Create New Badges
@@ -209,5 +247,12 @@ export default function CreateNewBadges() {
         </Grid>
       </Grid>
     </Box>
+
+    <Snackbar autoHideDuration={6000} open={open} onClose={handleClose}>
+       <Alert onClose={handleClose} severity={isSuccessful ? "success" : "error"} sx={{ width: '100%' }}>
+        {snackMessage} 
+       </Alert>
+    </Snackbar>
+    </>
   )
 }

@@ -33,5 +33,7 @@ export const storeImageFleek = async (file = [], setFleekUrl) => {
   if(url) {
     window.open(url);
     setFleekUrl(url);
+  } else {
+    setFleekUrl("error")
   }
 }

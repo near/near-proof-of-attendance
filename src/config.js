@@ -1,7 +1,9 @@
 // const CONTRACT_NAME = process.env.CONTRACT_NAME ||'dev-1620252450193-6591749'
+//TODO: change for new contract
 const CONTRACT_NAME = "proofofattedanceplayground.testnet"
 
 function getConfig(env) {
+  // TODO: delete to change to mainnet
   env = "testnet"
   switch (env) {
   case 'production':

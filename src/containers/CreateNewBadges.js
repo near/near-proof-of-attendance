@@ -60,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 import Alert from '@mui/material/Alert';
 import { Stack } from "@mui/material";
+import getConfig from "../config";
 
 export default function CreateNewBadges() {
   const classes = useStyles();
@@ -136,12 +137,13 @@ export default function CreateNewBadges() {
   const onClickUploadImage = () => {
      inputImageFile.current.click();
   }
+ 
+  const { explorerUrl } = getConfig(process.env.NODE_ENV || "development");
 
-  
   const onClickMintNFTs = async () => {
     const mint_res = await mint(attendees, fleekUrl, imageFile.name);
-    mint_res.error && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.error.transaction_outcome.id}`);
-    mint_res.transaction && window.open(`https://explorer.testnet.near.org/transactions/${mint_res.transaction.hash}`);
+    mint_res.error && window.open(`${explorerUrl}/transactions/${mint_res.error.transaction_outcome.id}`);
+    mint_res.transaction && window.open(`${explorerUrl}/transactions/${mint_res.transaction.hash}`);
     if(mint_res) {
       setSnackMessage("Badge correctly minted")
       setIsSuccessfull(true)
@@ -149,7 +151,7 @@ export default function CreateNewBadges() {
     }
     if(mint_res.error){
       setSnackMessage("There was an error while minting the badge")
-      setIsSuccessfull(true)
+      setIsSuccessfull(false)
       setOpen(true);
     }
   }

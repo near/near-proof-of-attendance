@@ -2,8 +2,10 @@ import { connect, Contract, keyStores, WalletConnection } from "near-api-js"
 
 import getConfig from "../config"
 
+// FIXME: The ui is not correctly fetching the envs so we hardcode it here
 // Initialize NEAR config.
-const nearConfig = getConfig(process.env.NODE_ENV || "development");
+// const nearConfig = getConfig("mainnet");
+const nearConfig = getConfig("development");
 
 export async function initContract() {
   // Initialize contract & set global variables
@@ -59,6 +61,3 @@ export function login() {
   // the private key in localStorage.
   window.walletConnection.requestSignIn(nearConfig.contractName)
 }
-
-
-

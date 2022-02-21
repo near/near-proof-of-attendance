@@ -1,0 +1,102 @@
+{
+  "name": "proof-of-attendance",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "scripts": {
+    "compile": "yarn build:contract",
+    "build": "yarn build:web",
+    "build:all": "npm run build:contract && npm run build:web",
+    "build:contract": "node contract/compile.js",
+    "build:deploy": "yarn build:contract && yarn deploy:contract",
+    "dev:build:deploy": "yarn build:contract && yarn dev:deploy:contract",
+    "build:contract:debug": "node contract/compile.js --debug",
+    "build:web": "parcel build src/index.html --public-url ./ && yarn build:404",
+    "build:404": "cp dist/index.html dist/404.html",
+    "dev:create-account": "near create-account proof-of-attendance-testing.johnq.testnet --masterAccount johnq.testnet",
+    "client": "env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
+    "dev:client": "parcel src/index.html --open",
+    "dev:deploy:contract": "near dev-deploy",
+    "dev:call:init:nft_mint": "yarn dev:call:init && yarn dev:call:nft_mint",
+    "dev:deploy:call:init:nft_mint": "yarn dev:deploy:contract && yarn dev:call:init:nft_mint",
+    "dev:call:init": "node contract/scripts/init.js",
+    "dev:call:nft_mint": "node contract/scripts/nft_mint.js",
+    "dev:call:nft_transfer": "node contract/scripts/nft_transfer.js",
+    "dev:server": "cd server && yarn dev",
+    "deploy:contract": "near deploy",
+    "deploy:pages": "gh-pages -d dist/",
+    "deploy": "npm run build && npm run deploy:contract && npm run deploy:pages",
+    "prestart": "",
+    "prestart:dev": "npm run build:contract:debug && npm run dev:deploy:contract",
+    "start": "echo The app is starting! It will automatically open in your browser when ready && env-cmd -f ./neardev/dev-account.env parcel src/index.html --open",
+    "start:prod": "serve dist/",
+    "dev": "nodemon --watch contract -e ts --exec \"npm run start\"",
+    "dev:contract": "nodemon --watch contract -e ts",
+    "test": "npm run build:contract:debug && cd contract && npm run test && cd .. && jest test --runInBand",
+    "test:contract": "cd contract && yarn test",
+    "test:client": "jest ./src --runInBand",
+    "heroku": "yarn dev:push:heroku",
+    "dev:push:heroku": "git push heroku develop:master",
+    "dev:gas": "http post https://rpc.testnet.near.org jsonrpc=2.0 id=dontcare method=gas_price params:='[\"2xrjKpmhM8ned6hXWNSPAgV6PpYbqd57ANxaB9Nu88VA\"]'"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.14.0",
+    "@babel/preset-env": "~7.14.0",
+    "@babel/preset-react": "~7.13.13",
+    "babel-jest": "~26.6.2",
+    "env-cmd": "~10.1.0",
+    "gh-pages": "~3.1.0",
+    "jest": "~26.6.2",
+    "jest-environment-node": "~26.6.2",
+    "near-cli": "~1.6.0",
+    "nodemon": "~2.0.3",
+    "parcel-bundler": "~1.12.4",
+    "react-test-renderer": "~17.0.1",
+    "shelljs": "~0.8.4"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
+    "@fleekhq/fleek-storage-js": "^1.0.17",
+    "@material-ui/core": "^4.12.1",
+    "@mui/material": "^5.3.0",
+    "@types/react": "^16.8.6 || ^17.0.0",
+    "near-api-js": "0.43.1",
+    "papaparse": "^5.3.1",
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "regenerator-runtime": "~0.13.5",
+    "serve": "^12.0.0",
+    "utils": "^0.3.1"
+  },
+  "resolutions": {
+    "@babel/preset-env": "7.13.8"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.js",
+      "\\.(css|less)$": "<rootDir>/src/__mocks__/fileMock.js"
+    },
+    "setupFiles": [
+      "<rootDir>/src/jest.init.js"
+    ],
+    "testEnvironment": "near-cli/test_environment",
+    "testPathIgnorePatterns": [
+      "<rootDir>/contract/",
+      "<rootDir>/node_modules/"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

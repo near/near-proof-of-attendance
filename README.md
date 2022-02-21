@@ -10,15 +10,13 @@ Quick Start
 To run this project locally:
 
 1. Prerequisites: Make sure you've installed [Node.js] ≥ 16
-2. Install dependencies: `yarn install`
-3. Run the UI: `yarn dev:client` (see `package.json` for a
+2. Be sure to set up your envs, see the envs. example file in the root of the project.
+3. Install dependencies: `yarn install`
+4. Run the UI: `yarn dev:client` (see `package.json` for a
    full list of `scripts` you can run with `yarn`)
-4. Run the local development server in charge serving the on-chain request (link to the repo would be here)
-
-Now you'll have a local development environment backed by the NEAR TestNet!
+5. Run the local development server in charge serving the on-chain request (link to the repo would be here)
 
 Go ahead and play with the app and the code. As you make code changes, the app will automatically reload.
-
 
 Exploring The Code
 ==================

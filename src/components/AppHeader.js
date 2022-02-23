@@ -10,8 +10,8 @@ import { login, logout } from "../utils/auth";
 import getConfig from "../config";
 
 // FIXME: The ui is not correctly fetching the envs so we hardcode it here
-// const { networkId } = getConfig("mainnet");
-const { networkId } = getConfig("development");
+const { networkId } = getConfig("mainnet");
+// const { networkId } = getConfig("development");
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {

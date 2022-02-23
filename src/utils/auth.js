@@ -4,8 +4,8 @@ import getConfig from "../config"
 
 // FIXME: The ui is not correctly fetching the envs so we hardcode it here
 // Initialize NEAR config.
-// const nearConfig = getConfig("mainnet");
-const nearConfig = getConfig("development");
+const nearConfig = getConfig("mainnet");
+// const nearConfig = getConfig("development");
 
 export async function initContract() {
   // Initialize contract & set global variables

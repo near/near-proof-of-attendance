@@ -2,8 +2,8 @@ import { Account, connect, keyStores, providers } from "near-api-js";
 
 import getConfig from "../config";
 // FIXME: The ui is not correctly fetching the envs so we hardcode it here
-// const nearConfig = getConfig("mainnet");
-const nearConfig = getConfig("development");
+const nearConfig = getConfig("mainnet");
+// const nearConfig = getConfig("development");
 const config = {
   deps: {
     keyStore: new keyStores.BrowserLocalStorageKeyStore(),

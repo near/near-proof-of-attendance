@@ -11,7 +11,7 @@ Exploring The Code
 2. Tests: You can run smart contract tests with the `./test` script. This runs
    standard AssemblyScript tests using [as-pect].
 
-  [smart contract]: https://docs.near.org/docs/roles/developer/contracts/intro
+  [smart contract]: https://docs.near.org/develop/welcome
   [AssemblyScript]: https://www.assemblyscript.org/
   [create-near-app]: https://github.com/near/create-near-app
   [Node.js]: https://nodejs.org/en/download/package-manager/

@@ -38,8 +38,7 @@ Deploy
 
 Every smart contract in NEAR has its [own associated account][NEAR accounts]. When you run `yarn dev`, your smart contract gets deployed to the live NEAR TestNet with a throwaway account. When you're ready to make it permanent, here's how.
 
-When you're ready to deploy to mainnet follow this guide. 
-https://docs.near.org/docs/tutorials/contracts/general/deploy-to-mainnet
+When you're ready to deploy to mainnet [follow this guide](https://docs.near.org/develop/deploy).
 
 Step 0: Install near-cli (optional)
 -------------------------------------
@@ -102,7 +101,7 @@ On Windows, if you're seeing an error containing `EPERM` it may be related to sp
   [create-near-app]: https://github.com/near/create-near-app
   [Node.js]: https://nodejs.org/en/download/package-manager/
   [jest]: https://jestjs.io/
-  [NEAR accounts]: https://docs.near.org/docs/concepts/account
+  [NEAR accounts]: https://docs.near.org/concepts/basics/account
   [NEAR Wallet]: https://wallet.testnet.near.org/
   [near-cli]: https://github.com/near/near-cli
   [gh-pages]: https://github.com/tschaub/gh-pages
